@@ -26,6 +26,7 @@ class MarkerLixeira extends React.Component {
         const minHeight = this.props.iconStyle.height
         const popupPosition = this.props.popupPosition
         const popupTipHeight = this.props.popupTipHeight
+        const popupOnButtonPress = () => this.props.popupOnButtonPress(coordinate)
         
         let width
         let height
@@ -105,7 +106,12 @@ class MarkerLixeira extends React.Component {
                         capacity={capacity}
                         onPress={() => togglePopup(coordinate.toString())}/>
                     {this.props.showPopup &&
-                        <PopupLixeira tipHeight={popupTipHeight} capacity={capacity} position={popupPosition} style={style.popup}/>
+                        <PopupLixeira
+                            style={style.popup}
+                            capacity={capacity}
+                            position={popupPosition}
+                            tipHeight={popupTipHeight}
+                            onButtonPress={popupOnButtonPress}/>
                     }
                 </Pressable>
             </MapboxGL.MarkerView>

@@ -18,6 +18,7 @@ class PopupLixeira extends React.Component {
 
     render (){
 
+        const onButtonPress = this.props.onButtonPress
         const capacity = this.props.capacity
         const position = this.props.position
         const tipHeight = this.props.tipHeight
@@ -114,7 +115,7 @@ class PopupLixeira extends React.Component {
             <View style={style.container}>
                 <View style={style.content}>
                     <Text style={style.capacity}>{capacity + '%'}</Text>
-                    <Button title='Rota' onPress={() => {}}/>
+                    <Button title='Rota' onPress={onButtonPress}/>
                 </View>
                 <View style={{alignItems : 'center', justifyContent: 'center'}}>
                     <View style={style.tip}/>

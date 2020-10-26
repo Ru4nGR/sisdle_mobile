@@ -7,7 +7,7 @@ const routingProfiles = {
     cycling : 'cycling'
 }
 
-async function getRota(profile, userPosition, destinationPosition) {
+async function getRoute(profile, userPosition, destinationPosition) {
     try {
         let response = await fetch (
             "https://api.mapbox.com/directions/v5/mapbox/" +
@@ -25,4 +25,4 @@ async function getRota(profile, userPosition, destinationPosition) {
     }
 }
 
-export {getRota}
+export {getRoute, routingProfiles}

@@ -6,6 +6,7 @@ import {
 import {MAPBOX_ACCESS_TOKEN} from 'sisdle_mobile/src/api/constants'
 import MapboxGL from '@react-native-mapbox-gl/maps'
 import {getLixeiras} from 'sisdle_mobile/src/api/lixeiras'
+import {getRoute, routingProfiles} from 'sisdle_mobile/src/api/rotas'
 import MarkerLixeira from 'sisdle_mobile/src/components/MarkerLixeira'
 
 MapboxGL.setAccessToken(MAPBOX_ACCESS_TOKEN)
@@ -34,14 +35,24 @@ class Map extends React.Component {
         requestLocationPermission()
         super(props)
         this.state = {
+            route : {},
             userLocation : [],
             markers : {}
         }
     }
 
+    getRoute = async (destinationLocation) => {
+        console.log(destinationLocation)
+        console.log(this.state.userLocation)
+        const route = await getRoute(routingProfiles.driving, this.state.userLocation, destinationLocation)
+        this.setState({
+            route : route
+        })
+    }
+
     updateUserLocation = (location) => {
         this.setState({
-            userLocation : location
+            userLocation : [location.coords.longitude, location.coords.latitude]
         })
     }
 
@@ -92,6 +103,7 @@ class Map extends React.Component {
                             iconStyle={style.markerIcon}
                             popupStyle={style.markerPopup}
                             togglePopup = {this.togglePopup}
+                            popupOnButtonPress={this.getRoute}
                             capacity={lixeira.properties.capacity}/>
                     }
                 })}
