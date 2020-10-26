@@ -1,6 +1,7 @@
 import React from 'react'
 import {
-    StyleSheet
+    StyleSheet,
+    PermissionsAndroid
 } from 'react-native'
 import {MAPBOX_ACCESS_TOKEN} from 'sisdle_mobile/src/api/constants'
 import MapboxGL from '@react-native-mapbox-gl/maps'
@@ -10,13 +11,38 @@ import MarkerLixeira from 'sisdle_mobile/src/components/MarkerLixeira'
 MapboxGL.setAccessToken(MAPBOX_ACCESS_TOKEN)
 const lixeiras = getLixeiras()
 
+const requestLocationPermission = async () => {
+    try {
+        const granted = await PermissionsAndroid.request(
+            PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
+        )
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+            console.log("ok");
+        }
+        else {
+            console.log("negado");
+        }
+    }
+    catch (err) {
+        console.warn(err);
+    }
+}
+
 class Map extends React.Component {
 
     constructor(props){
+        requestLocationPermission()
         super(props)
         this.state = {
+            userLocation : [],
             markers : {}
         }
+    }
+
+    updateUserLocation = (location) => {
+        this.setState({
+            userLocation : location
+        })
     }
 
     togglePopup = (key) => {
@@ -69,6 +95,7 @@ class Map extends React.Component {
                             capacity={lixeira.properties.capacity}/>
                     }
                 })}
+                <MapboxGL.UserLocation onUpdate={this.updateUserLocation}/>
             </MapboxGL.MapView>
         )
     }
