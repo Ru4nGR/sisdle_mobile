@@ -36,6 +36,7 @@ class Map extends React.Component {
         super(props)
         this.state = {
             route : {},
+            hasRoute : false,
             userLocation : [],
             markers : {}
         }
@@ -46,7 +47,8 @@ class Map extends React.Component {
         console.log(this.state.userLocation)
         const route = await getRoute(routingProfiles.driving, this.state.userLocation, destinationLocation)
         this.setState({
-            route : route
+            route : route,
+            hasRoute : true
         })
     }
 
@@ -83,7 +85,7 @@ class Map extends React.Component {
                     const coordinate = lixeira.geometry.coordinates
                     if (!this.state.markers[coordinate.toString()]) {
                         return <MarkerLixeira
-                            showPopup={false}
+                        showPopup={false}
                             coordinate={coordinate}
                             key={coordinate.toString()}
                             iconStyle={style.markerIcon}
@@ -105,9 +107,14 @@ class Map extends React.Component {
                             togglePopup = {this.togglePopup}
                             popupOnButtonPress={this.getRoute}
                             capacity={lixeira.properties.capacity}/>
-                    }
-                })}
+                        }
+                    })}
                 <MapboxGL.UserLocation onUpdate={this.updateUserLocation}/>
+                {this.state.hasRoute &&
+                    <MapboxGL.ShapeSource id="route" shape={this.state.route.geometry}>
+                        <MapboxGL.LineLayer id="line1" style={{lineColor : 'blue', lineWidth : 3}}/>
+                    </MapboxGL.ShapeSource>
+                }
             </MapboxGL.MapView>
         )
     }
