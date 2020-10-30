@@ -27,21 +27,21 @@ class Icon extends React.Component {
 
     render() {
 
+        const lixeira = this.props.lixeira
         const onPress = this.props.onPress
         const width = this.props.style.width
-        const capacity = this.props.capacity
 
         return (
             <Pressable onPress={onPress} style={style.icon}>
                 <View style={{
                     width : width,
-                    flex : 100 - capacity,
+                    flex : 100 - lixeira.capacity,
                     backgroundColor : 'white'
                 }}/>
                 <View style={{
                     width : width,
-                    flex : capacity,
-                    backgroundColor : capacity < 80 ? 'green' : 'red'
+                    flex : lixeira.capacity,
+                    backgroundColor : lixeira.capacity < 80 ? 'green' : 'red'
                 }}/>
             </Pressable>
         )

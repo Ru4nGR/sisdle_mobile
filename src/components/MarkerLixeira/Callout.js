@@ -18,10 +18,10 @@ class Callout extends React.Component {
 
     render (){
 
-        const onButtonPress = this.props.onButtonPress
-        const capacity = this.props.capacity
+        const lixeira = this.props.lixeira
         const position = this.props.position
         const tipHeight = this.props.tipHeight
+        const onButtonPress = this.props.onButtonPress
 
         let style = {
             container: {
@@ -114,8 +114,8 @@ class Callout extends React.Component {
         return (
             <View style={style.container}>
                 <View style={style.content}>
-                    <Text style={style.capacity}>{capacity + '%'}</Text>
-                    <Button title='Rota' onPress={onButtonPress}/>
+                    <Text style={style.capacity}>{lixeira.capacity + '%'}</Text>
+                    <Button title='Rota' onPress={() => onButtonPress(lixeira)}/>
                 </View>
                 <View style={{alignItems : 'center', justifyContent: 'center'}}>
                     <View style={style.tip}/>

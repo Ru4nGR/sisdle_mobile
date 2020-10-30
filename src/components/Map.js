@@ -15,6 +15,8 @@ import Icon from 'react-native-vector-icons/MaterialIcons'
 MapboxGL.setAccessToken(MAPBOX_ACCESS_TOKEN)
 const lixeiras = getLixeiras()
 
+console.log(lixeiras)
+
 const requestLocationPermission = async () => {
     try {
         const granted = await PermissionsAndroid.request(
@@ -43,10 +45,10 @@ class Map extends React.Component {
         }
     }
 
-    getRoute = async (destinationLocation) => {
-        const route = await getRoute(this.state.routingProfile, this.state.userLocation, destinationLocation)
+    getRoute = async (lixeira) => {
+        const route = await getRoute(this.state.routingProfile, this.state.userLocation, lixeira.coordinate)
         this.setState({
-            destinationLocation : destinationLocation,
+            selectedLixeira : lixeira,
             route : route,
             hasRoute : true
         })
@@ -73,7 +75,7 @@ class Map extends React.Component {
             routingProfile : value
         })
         if (this.state.route) {
-            this.getRoute(this.state.destinationLocation)
+            this.getRoute(this.state.selectedLixeira)
         }
     }
 
@@ -91,34 +93,26 @@ class Map extends React.Component {
         return (
             <View style={{flex : 1}}>
                 <MapboxGL.MapView style={{flex : 1}} onPress={this.hideAllPopups}>
-                    {lixeiras.features.map((lixeira) => {
-                        const coordinate = lixeira.geometry.coordinates
-                        if (!this.state.markers[coordinate.toString()]) {
-                            return <MarkerLixeira
-                            showPopup={false}
-                                coordinate={coordinate}
-                                key={coordinate.toString()}
-                                iconStyle={style.markerIcon}
-                                togglePopup = {this.togglePopup}
-                                capacity={lixeira.properties.capacity}/>
-                        }
-                    })}
-                    {lixeiras.features.map((lixeira) => {
-                        const coordinate = lixeira.geometry.coordinates
-                        if (this.state.markers[coordinate.toString()]) {
-                            return <MarkerLixeira
-                                showPopup={true}
-                                popupTipHeight={16}
-                                popupPosition="right"
-                                coordinate={coordinate}
-                                key={coordinate.toString()}
-                                iconStyle={style.markerIcon}
-                                popupStyle={style.markerPopup}
-                                togglePopup = {this.togglePopup}
-                                popupOnButtonPress={this.getRoute}
-                                capacity={lixeira.properties.capacity}/>
-                            }
-                        })}
+                    {lixeiras.map((lixeira) => (!this.state.markers[lixeira.coordinate.toString()] &&
+                        <MarkerLixeira
+                            showCallout={false}
+                            lixeira={lixeira}
+                            iconStyle={style.markerIcon}
+                            toggleCallout = {this.togglePopup}
+                            key={lixeira.coordinate.toString()}/>
+                    ))}
+                    {lixeiras.map((lixeira) => (this.state.markers[lixeira.coordinate.toString()] &&
+                        <MarkerLixeira
+                            showCallout={true}
+                            lixeira={lixeira}
+                            calloutTipHeight={16}
+                            calloutPosition="right"
+                            iconStyle={style.markerIcon}
+                            calloutStyle={style.markerCallout}
+                            toggleCallout = {this.togglePopup}
+                            key={lixeira.coordinate.toString()}
+                            calloutOnButtonPress={this.getRoute}/>
+                    ))}
                     <MapboxGL.UserLocation onUpdate={this.updateUserLocation}/>
                     {this.state.hasRoute &&
                         <MapboxGL.ShapeSource id="route" shape={this.state.route.geometry}>
@@ -164,7 +158,7 @@ const style = StyleSheet.create({
         width : 30,
         height : 30
     },
-    markerPopup : {
+    markerCallout : {
         width : 150,
         height : 150,
     }

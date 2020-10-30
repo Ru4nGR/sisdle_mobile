@@ -7,13 +7,14 @@ function getLixeiras(){
     const DELTA_LNG = MATINHOS_LNG_MAX - MATINHOS_LNG_MIN
     const DELTA_LAT = MATINHOS_LAT_MAX - MATINHOS_LAT_MIN
 
-    let out = {
+    //substituir por chamada da API SISDLE
+    let geojson = {
         'type' : 'FeatureCollection',
         'features' : []
     }
 
     for(let i = 0; i < 10; i++){
-        out.features.push({
+        geojson.features.push({
             'type' : 'Feature',
             'geometry' : {
                 'type' : 'Point',
@@ -28,7 +29,12 @@ function getLixeiras(){
         })
     }
 
-    return out
+    const lixeiras = geojson.features.map((feature) => ({
+        capacity : feature.properties.capacity,
+        coordinate : feature.geometry.coordinates
+    }))
+
+    return lixeiras
 }
 
 export {getLixeiras}
