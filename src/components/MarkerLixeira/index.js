@@ -1,3 +1,3 @@
-import MarkerLixeira from './MarkerLixeira'
+import {default as MarkerLixeira} from './Marker'
 
 export default MarkerLixeira

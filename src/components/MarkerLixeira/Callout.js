@@ -14,7 +14,7 @@ const positions = {
 }
 
 
-class PopupLixeira extends React.Component {
+class Callout extends React.Component {
 
     render (){
 
@@ -125,4 +125,4 @@ class PopupLixeira extends React.Component {
     }
 }
 
-export default PopupLixeira
+export default Callout

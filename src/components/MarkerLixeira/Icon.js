@@ -6,7 +6,7 @@ import {
 
 let style
 
-class IconLixeira extends React.Component {
+class Icon extends React.Component {
     constructor(props){
         super(props)
 
@@ -48,4 +48,4 @@ class IconLixeira extends React.Component {
     }
 }
 
-export default IconLixeira
+export default Icon

@@ -44,8 +44,6 @@ class Map extends React.Component {
     }
 
     getRoute = async (destinationLocation) => {
-        console.log(destinationLocation)
-        console.log(this.state.userLocation)
         const route = await getRoute(this.state.routingProfile, this.state.userLocation, destinationLocation)
         this.setState({
             destinationLocation : destinationLocation,

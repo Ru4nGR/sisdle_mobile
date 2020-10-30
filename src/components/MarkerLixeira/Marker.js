@@ -4,8 +4,8 @@ import {
     Pressable
 } from 'react-native'
 import MapboxGL from '@react-native-mapbox-gl/maps'
-import IconLixeira from './IconLixeira'
-import PopupLixeira from './PopupLixeira'
+import Icon from './Icon'
+import Callout from './Callout'
 
 const popupPositions = {
     'top' : 'column-reverse',
@@ -14,7 +14,7 @@ const popupPositions = {
     'right' : 'row'
 }
 
-class MarkerLixeira extends React.Component {
+class Marker extends React.Component {
 
     render() {
 
@@ -101,12 +101,12 @@ class MarkerLixeira extends React.Component {
         return (
             <MapboxGL.MarkerView anchor={anchor} coordinate={coordinate}>
                 <Pressable style={style.container}>
-                    <IconLixeira
+                    <Icon
                         style={style.icon}
                         capacity={capacity}
                         onPress={() => togglePopup(coordinate.toString())}/>
                     {this.props.showPopup &&
-                        <PopupLixeira
+                        <Callout
                             style={style.popup}
                             capacity={capacity}
                             position={popupPosition}
@@ -119,4 +119,4 @@ class MarkerLixeira extends React.Component {
     }
 }
 
-export default MarkerLixeira
+export default Marker

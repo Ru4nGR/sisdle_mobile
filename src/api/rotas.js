@@ -17,7 +17,6 @@ async function getRoute(profile, userPosition, destinationPosition) {
             `&access_token=${MAPBOX_ACCESS_TOKEN}`
         )
         let json = await response.json()
-        console.log(json)
         return json.routes[0]
     }
     catch (error) {
