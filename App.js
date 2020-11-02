@@ -1,9 +1,9 @@
 import React from 'react';
-import Map from 'sisdle_mobile/src/components/Map.js'
+import MapScreen from 'sisdle_mobile/src/components/MapScreen'
 
 function App() {
   return (
-    <Map/>
+    <MapScreen/>
   )
 }
 
