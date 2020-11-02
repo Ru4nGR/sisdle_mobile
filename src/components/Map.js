@@ -66,6 +66,8 @@ class Map extends React.Component {
 
         return (
             <MapboxGL.MapView style={{flex : 1}} onPress={this.hideAllPopups}>
+                <MapboxGL.Camera
+                    followUserLocation={true}/>
                 {lixeiras.map((lixeira) => (!markers[lixeira.coordinate.toString()] &&
                     <MarkerLixeira
                         showCallout={false}
