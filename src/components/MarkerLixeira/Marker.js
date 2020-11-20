@@ -103,7 +103,7 @@ class Marker extends React.Component {
                     <Icon
                         style={style.icon}
                         lixeira={lixeira}
-                        onPress={() => toggleCallout(lixeira.coordinate.toString())}/>
+                        onPress={() => toggleCallout(lixeira.id)}/>
                     {this.props.showCallout &&
                         <Callout
                             style={style.callout}

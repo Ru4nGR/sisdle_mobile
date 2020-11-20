@@ -9,8 +9,6 @@ import {getLixeiras} from 'sisdle_mobile/src/api/lixeiras'
 import PillSelector from 'sisdle_mobile/src/components/PillSelector'
 import {getRoute, routingProfiles} from 'sisdle_mobile/src/api/rotas'
 
-const lixeiras = getLixeiras()
-
 const options = {
     [routingProfiles.drivingTraffic] : <Icon name="directions-car" size={30}/>,
     [routingProfiles.walking] : <Icon name="directions-walk" size={30}/>,
@@ -21,8 +19,14 @@ class MapScreen extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            routingProfile : routingProfiles.drivingTraffic
+            routingProfile : routingProfiles.drivingTraffic,
+            lixeiras : []
         }
+        getLixeiras().then((lixeiras) => {
+            this.setState({
+                lixeiras : lixeiras
+            })
+        })
     }
 
     updateUserLocation = (location) => {
@@ -53,7 +57,7 @@ class MapScreen extends React.Component {
         return (
             <View style={{flex : 1}}>
                 <Map
-                    lixeiras={lixeiras}
+                    lixeiras={this.state.lixeiras}
                     onMarkerCalloutButtonPress={this.getRoute}
                     onUserLocationUpdate={this.updateUserLocation} 
                     route={this.state.route && this.state.route.geometry}/>

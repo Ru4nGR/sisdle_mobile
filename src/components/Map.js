@@ -68,15 +68,15 @@ class Map extends React.Component {
             <MapboxGL.MapView style={{flex : 1}} onPress={this.hideAllPopups}>
                 <MapboxGL.Camera
                     followUserLocation={true}/>
-                {lixeiras.map((lixeira) => (!markers[lixeira.coordinate.toString()] &&
+                {lixeiras.map((lixeira) => (!markers[lixeira.id] &&
                     <MarkerLixeira
                         showCallout={false}
                         lixeira={lixeira}
                         iconStyle={style.markerIcon}
                         toggleCallout={this.togglePopup}
-                        key={lixeira.coordinate.toString()}/>
+                        key={lixeira.id}/>
                 ))}
-                {lixeiras.map((lixeira) => (markers[lixeira.coordinate.toString()] &&
+                {lixeiras.map((lixeira) => (markers[lixeira.id] &&
                     <MarkerLixeira
                         showCallout={true}
                         lixeira={lixeira}
@@ -85,7 +85,7 @@ class Map extends React.Component {
                         iconStyle={style.markerIcon}
                         calloutStyle={style.markerCallout}
                         toggleCallout={this.togglePopup}
-                        key={lixeira.coordinate.toString()}
+                        key={lixeira.id}
                         calloutOnButtonPress={onMarkerCalloutButtonPress}/>
                 ))}
                 <MapboxGL.UserLocation onUpdate={onUserLocationUpdate}/>
