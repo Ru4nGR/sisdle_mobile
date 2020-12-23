@@ -15,27 +15,40 @@ const options = {
     [routingProfiles.cycling] : <Icon name="directions-bike" size={30}/>
 }
 
-class MapScreen extends React.Component {
-    constructor(props) {
+interface State {
+    lixeiras : any,
+    routingProfile : any,
+    userLocation : any,
+    selectedLixeira : any,
+    route : any,
+    hasRoute : boolean
+}
+
+class MapScreen extends React.Component<{}, State> {
+    constructor(props : {}) {
         super(props)
         this.state = {
             routingProfile : routingProfiles.drivingTraffic,
-            lixeiras : []
+            lixeiras : [],
+            userLocation : null,
+            selectedLixeira : null,
+            route : null,
+            hasRoute : false
         }
-        getLixeiras().then((lixeiras) => {
+        getLixeiras().then((lixeiras : any) => {
             this.setState({
                 lixeiras : lixeiras
             })
         })
     }
 
-    updateUserLocation = (location) => {
+    updateUserLocation = (location : any) => {
         this.setState({
             userLocation : [location.coords.longitude, location.coords.latitude]
         })
     }
 
-    getRoute = async (lixeira) => {
+    getRoute = async (lixeira : any) => {
         const route = await getRoute(this.state.routingProfile, this.state.userLocation, lixeira.coordinate)
         this.setState({
             selectedLixeira : lixeira,
@@ -44,7 +57,7 @@ class MapScreen extends React.Component {
         })
     }
 
-    onRoutingProfileChanged = (value) => {
+    onRoutingProfileChanged = (value : any) => {
         this.setState({
             routingProfile : value
         })

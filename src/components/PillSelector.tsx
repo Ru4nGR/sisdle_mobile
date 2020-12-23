@@ -1,10 +1,24 @@
 import React from 'react'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, View, ViewStyle } from 'react-native'
 import PillButton from './PillButton'
 
-class PillSelector extends React.Component {
+interface Props {
+    selected : any,
+    onChange : (option : string) => void,
+    buttonStyle : ViewStyle,
+    selectionColor : string,
+    style : ViewStyle,
+    options : any
+}
 
-    constructor(props) {
+interface State {
+    showOptions : boolean,
+    selected : any
+}
+
+class PillSelector extends React.Component<Props, State> {
+
+    constructor(props : Props) {
         super(props)
         this.state = {
             showOptions : false,
@@ -18,7 +32,7 @@ class PillSelector extends React.Component {
         }))
     }
 
-    select = (value) => {
+    select = (value : any) => {
         this.setState({
             selected : value
         })
@@ -38,25 +52,25 @@ class PillSelector extends React.Component {
         const icons = this.props.options
         const options = Object.keys(this.props.options)
         
-        let width
-        let height
+        let width : number
+        let height : number
 
         if (flexDirection === 'row' || flexDirection === 'row-reverse') {
-            width = showOptions ? (options.length + 1) * buttonStyle.width : buttonStyle.width
-            height = buttonStyle.height
+            width = showOptions ? (options.length + 1) * parseFloat(buttonStyle.width!.toString()) : parseFloat(buttonStyle.width!.toString())
+            height = parseFloat(buttonStyle.height!.toString())
         }
         else if (flexDirection === 'column' || flexDirection === 'column-reverse') {
-            width = buttonStyle.width
-            height = showOptions ? (options.length + 1) * buttonStyle.height : buttonStyle.height
+            width = parseFloat(buttonStyle.width!.toString())
+            height = showOptions ? (options.length + 1) * parseFloat(buttonStyle.height!.toString()) : parseFloat(buttonStyle.height!.toString())
         }
 
         const style = StyleSheet.create({
             container : {
                 flexDirection : flexDirection,
-                width : width,
-                height : height,
+                width : width!,
+                height : height!,
                 backgroundColor : backgroundColor,
-                borderRadius : Math.min(width, height) / 2
+                borderRadius : Math.min(width!, height!) / 2
             },
             selection : {
                 ...buttonStyle,
@@ -68,11 +82,11 @@ class PillSelector extends React.Component {
         })
         return (
             <View style={style.container}>
-                <PillButton style={style.selection} onPress={this.toggleOptions}>
+                <PillButton onLongPress={() => {}} onPressIn={() => {}} onPressOut={() => {}} style={style.selection} onPress={this.toggleOptions}>
                     {icons[selected]}
                 </PillButton>
                 {this.state.showOptions && options.map((option) => (
-                    <PillButton key={option} style={style.option} onPress={() => {
+                    <PillButton onLongPress={() => {}} onPressIn={() => {}} onPressOut={() => {}} key={option} style={style.option} onPress={() => {
                         this.select(option)
                         onChange && onChange(option)
                     }}>

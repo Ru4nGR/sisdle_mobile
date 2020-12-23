@@ -1,4 +1,5 @@
 import React from 'react'
+import { StyleProp, TextStyle, ViewStyle } from 'react-native'
 import {
     Text,
     View,
@@ -6,15 +7,36 @@ import {
     StyleSheet
 } from 'react-native'
 
-const positions = {
+interface Positions {
+    [key : string] : 'column' | 'column-reverse' | 'row' | 'row-reverse'
+}
+
+const positions : Positions = {
     'top' : 'column',
     'bottom' : 'column-reverse',
     'left' : 'row',
     'right' : 'row-reverse'
 }
 
+interface Style {
+    [key : string] : StyleProp<ViewStyle> | StyleProp<TextStyle>
+}
 
-class Callout extends React.Component {
+interface Lixeira {
+    id : number,
+    coordinate : Array<number>,
+    capacity : number
+}
+
+interface Props {
+    lixeira : Lixeira,
+    position : 'top' | 'bottom' | 'left' | 'right',
+    tipHeight : number,
+    onButtonPress : (lixeira : Lixeira) => void,
+    style : ViewStyle
+}
+
+class Callout extends React.Component<Props> {
 
     render (){
 
@@ -23,8 +45,8 @@ class Callout extends React.Component {
         const tipHeight = this.props.tipHeight
         const onButtonPress = this.props.onButtonPress
 
-        let style = {
-            container: {
+        let style : Style = {
+            container : {
                 flexDirection : positions[position],
             },
             content: {
@@ -109,7 +131,7 @@ class Callout extends React.Component {
             }
         }
 
-        style = StyleSheet.create(style)
+        style = StyleSheet.create(style as StyleSheet.NamedStyles<ViewStyle | TextStyle>)
 
         return (
             <View style={style.container}>

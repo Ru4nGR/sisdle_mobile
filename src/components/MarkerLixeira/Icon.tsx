@@ -1,17 +1,31 @@
 import React from 'react'
 import {
     View,
-    StyleSheet, Pressable
+    StyleSheet, Pressable, ViewStyle, GestureResponderEvent, StyleProp
 } from 'react-native'
 
-let style
+interface Lixeira {
+    capacity : number
+}
 
-class Icon extends React.Component {
-    constructor(props){
+interface Props {
+    style : ViewStyle,
+    lixeira : Lixeira,
+    onPress : (event : GestureResponderEvent) => void
+}
+
+interface Style {
+    [key : string] : StyleProp<ViewStyle>
+}
+
+let style : Style
+
+class Icon extends React.Component<Props> {
+    constructor(props : Props){
         super(props)
 
-        const width = this.props.style.width
-        const height = this.props.style.height
+        const width = parseFloat(this.props.style.width!.toString())
+        const height = parseFloat(this.props.style.height!.toString())
 
         style = StyleSheet.create({
             icon : {

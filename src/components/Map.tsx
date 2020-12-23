@@ -26,17 +26,34 @@ const requestLocationPermission = async () => {
     }
 }
 
-class Map extends React.Component {
+interface Lixeira {
+    id : number,
+    coordinate : Array<number>,
+    capacity : number
+}
 
-    constructor(props){
-        requestLocationPermission()
+interface Props {
+    route : any,
+    lixeiras : Array<Lixeira>,
+    onMarkerCalloutButtonPress : any,
+    onUserLocationUpdate : any,
+}
+
+interface State {
+    markers : any
+}
+
+class Map extends React.Component<Props, State> {
+
+    constructor(props : Props){
         super(props)
+        requestLocationPermission()
         this.state = {
             markers : {},
         }
     }
 
-    togglePopup = (key) => {
+    togglePopup = (key : number) => {
         this.setState((state) => {
             let markers = state.markers
             markers[key] = !markers[key]

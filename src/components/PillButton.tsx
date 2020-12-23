@@ -2,17 +2,27 @@ import React from 'react'
 import {
     View,
     StyleSheet,
-    Pressable
+    Pressable,
+    GestureResponderEvent,
+    ViewStyle
 } from 'react-native'
 
-class PillButton extends React.Component {
+interface Props {
+    onPress : (event : GestureResponderEvent) => void,
+    onPressIn : (event : GestureResponderEvent) => void,
+    style : ViewStyle,
+    onPressOut : (event : GestureResponderEvent) => void,
+    onLongPress : (event : GestureResponderEvent) => void
+}
+
+class PillButton extends React.Component<Props> {
 
     render() {
 
         const onPress = this.props.onPress
-        const onPresIn = this.props.onPresIn
-        const width = this.props.style.width
-        const height = this.props.style.height
+        const onPressIn = this.props.onPressIn
+        const width = parseFloat(this.props.style.width!.toString())
+        const height = parseFloat(this.props.style.height!.toString())
         const onPressOut = this.props.onPressOut
         const onLongPress = this.props.onLongPress
         const backgroundColor = this.props.style.backgroundColor
@@ -35,8 +45,8 @@ class PillButton extends React.Component {
                 <Pressable
                     style={{width : '100%', height : '100%', position : 'absolute'}}
                     onPress={onPress}
-                    onPresIn={onPresIn}
-                    onPresOut={onPressOut}
+                    onPressIn={onPressIn}
+                    onPressOut={onPressOut}
                     onLongPress={onLongPress}
                     android_ripple={{color : 'white'}}/>
             </View>

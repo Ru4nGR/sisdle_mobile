@@ -1,7 +1,8 @@
 import React from 'react'
 import {
     StyleSheet,
-    Pressable
+    Pressable,
+    ViewStyle,
 } from 'react-native'
 import MapboxGL from '@react-native-mapbox-gl/maps'
 import Icon from './Icon'
@@ -14,14 +15,31 @@ const calloutPositions = {
     'right' : 'row'
 }
 
-class Marker extends React.Component {
+interface Lixeira {
+    id : number,
+    coordinate : Array<number>,
+    capacity : number
+}
+
+interface Props {
+    lixeira : Lixeira,
+    showCallout : boolean,
+    iconStyle : ViewStyle,
+    toggleCallout : (id : number) => void
+    calloutPosition : 'top' | 'bottom' | 'left' | 'right',
+    calloutTipHeight : number,
+    calloutOnButtonPress : (lixeira : Lixeira) => void,
+    calloutStyle : ViewStyle
+}
+
+class Marker extends React.Component<Props> {
 
     render() {
 
         const lixeira = this.props.lixeira
         const showCallout = this.props.showCallout
-        const minWidth = this.props.iconStyle.width
-        const minHeight = this.props.iconStyle.height
+        const minWidth = parseFloat(this.props.iconStyle.width!.toString())
+        const minHeight = parseFloat(this.props.iconStyle.height!.toString())
         const toggleCallout = this.props.toggleCallout
         const calloutPosition = this.props.calloutPosition
         const calloutTipHeight = this.props.calloutTipHeight
@@ -40,41 +58,41 @@ class Marker extends React.Component {
         if (showCallout){
             if (calloutPosition === 'top') {
 
-                width = Math.max(minWidth, style.callout.width)
-                height = minHeight + style.callout.height + calloutTipHeight
+                width = Math.max(minWidth, parseFloat(style.callout.width!.toString()))
+                height = minHeight + parseFloat(style.callout.height!.toString()) + calloutTipHeight
 
                 anchor = {
                     x : 0.5,
-                    y : 1 - (style.icon.height / (2 * height))
+                    y : 1 - (parseFloat(style.icon.height!.toString()) / (2 * height))
                 }
             }
             else if (calloutPosition === 'bottom') {
 
-                width = Math.max(minWidth, style.callout.width)
-                height = minHeight + style.callout.height + calloutTipHeight
+                width = Math.max(minWidth, parseFloat(style.callout.width!.toString()))
+                height = minHeight + parseFloat(style.callout.height!.toString()) + calloutTipHeight
 
                 anchor = {
                     x : 0.5,
-                    y : style.icon.height / (2 * height)
+                    y : parseFloat(style.icon.height!.toString()) / (2 * height)
                 }
             }
             else if (calloutPosition === 'left') {
 
-                width = minWidth + style.callout.width + calloutTipHeight
-                height = Math.max(minHeight, style.callout.height)
+                width = minWidth + parseFloat(style.callout.width!.toString()) + calloutTipHeight
+                height = Math.max(minHeight, parseFloat(style.callout.height!.toString()))
 
                 anchor = {
-                    x : 1 - (style.icon.width / (2 * width)),
+                    x : 1 - (parseFloat(style.icon.width!.toString()) / (2 * width)),
                     y : 0.5
                 }
             }
             else if (calloutPosition === 'right') {
 
-                width = minWidth + style.callout.width + calloutTipHeight
-                height = Math.max(minHeight, style.callout.height)
+                width = minWidth + parseFloat(style.callout.width!.toString()) + calloutTipHeight
+                height = Math.max(minHeight, parseFloat(style.callout.height!.toString()))
 
                 anchor = {
-                    x : style.icon.width / (2 * width),
+                    x : parseFloat(style.icon.width!.toString()) / (2 * width),
                     y : 0.5
                 }
             }
@@ -98,7 +116,7 @@ class Marker extends React.Component {
         style = StyleSheet.create(style)
 
         return (
-            <MapboxGL.MarkerView anchor={anchor} coordinate={lixeira.coordinate}>
+            <MapboxGL.MarkerView id={''} anchor={anchor} coordinate={lixeira.coordinate}>
                 <Pressable style={style.container}>
                     <Icon
                         style={style.icon}
