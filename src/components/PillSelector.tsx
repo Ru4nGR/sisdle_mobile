@@ -1,19 +1,18 @@
 import React from 'react'
-import { StyleSheet, View, ViewStyle } from 'react-native'
-import PillButton from './PillButton'
+import {
+    View,
+    Pressable,
+    StyleSheet
+} from 'react-native'
 
 interface Props {
+    options : any,
     selected : any,
-    onChange : (option : string) => void,
-    buttonStyle : ViewStyle,
-    selectionColor : string,
-    style : ViewStyle,
-    options : any
+    onChange : (option : string) => void
 }
 
 interface State {
     showOptions : boolean,
-    selected : any
 }
 
 class PillSelector extends React.Component<Props, State> {
@@ -21,8 +20,7 @@ class PillSelector extends React.Component<Props, State> {
     constructor(props : Props) {
         super(props)
         this.state = {
-            showOptions : false,
-            selected : this.props.selected
+            showOptions : false
         }
     }
 
@@ -33,70 +31,52 @@ class PillSelector extends React.Component<Props, State> {
     }
 
     select = (value : any) => {
-        this.setState({
-            selected : value
-        })
+        this.props.onChange(value)
         this.toggleOptions()
     }
     
     render() {
-
-        const selected = this.state.selected
-        const onChange = this.props.onChange
-        const showOptions = this.state.showOptions
-        const buttonStyle = this.props.buttonStyle
-        const selectionColor = this.props.selectionColor
-        const flexDirection = this.props.style.flexDirection
-        const backgroundColor = this.props.style.backgroundColor
-
-        const icons = this.props.options
-        const options = Object.keys(this.props.options)
         
-        let width : number
-        let height : number
+        const icons = this.props.options
+        const selected = this.props.selected
+        const options = Object.keys(this.props.options) 
 
-        if (flexDirection === 'row' || flexDirection === 'row-reverse') {
-            width = showOptions ? (options.length + 1) * parseFloat(buttonStyle.width!.toString()) : parseFloat(buttonStyle.width!.toString())
-            height = parseFloat(buttonStyle.height!.toString())
-        }
-        else if (flexDirection === 'column' || flexDirection === 'column-reverse') {
-            width = parseFloat(buttonStyle.width!.toString())
-            height = showOptions ? (options.length + 1) * parseFloat(buttonStyle.height!.toString()) : parseFloat(buttonStyle.height!.toString())
-        }
-
-        const style = StyleSheet.create({
-            container : {
-                flexDirection : flexDirection,
-                width : width!,
-                height : height!,
-                backgroundColor : backgroundColor,
-                borderRadius : Math.min(width!, height!) / 2
-            },
-            selection : {
-                ...buttonStyle,
-                backgroundColor : selectionColor
-            },
-            option : {
-                ...buttonStyle
-            }
-        })
         return (
-            <View style={style.container}>
-                <PillButton onLongPress={() => {}} onPressIn={() => {}} onPressOut={() => {}} style={style.selection} onPress={this.toggleOptions}>
+            <View style={styles.container}>
+                <Pressable style={styles.selection} onPress={this.toggleOptions}>
                     {icons[selected]}
-                </PillButton>
+                </Pressable>
                 {this.state.showOptions && options.map((option) => (
-                    <PillButton onLongPress={() => {}} onPressIn={() => {}} onPressOut={() => {}} key={option} style={style.option} onPress={() => {
-                        this.select(option)
-                        onChange && onChange(option)
-                    }}>
+                    <Pressable key={option} style={styles.option} onPress={() => this.select(option)}>
                         {icons[option]}
-                    </PillButton>
+                    </Pressable>
                 ))}
             </View>
         )
     }
 }
 
+const styles = StyleSheet.create({
+    container : {
+        borderRadius : 25,
+        flexDirection : 'row',
+        backgroundColor : 'lightgray'
+    },
+    selection : {
+        width : 50,
+        height : 50,
+        borderRadius : 25,
+        alignItems : 'center',
+        justifyContent : 'center',
+        backgroundColor : '#2196F3'
+    },
+    option : {
+        width : 50,
+        height : 50,
+        borderRadius : 25,
+        alignItems : 'center',
+        justifyContent : 'center'
+    }
+})
 
 export default PillSelector

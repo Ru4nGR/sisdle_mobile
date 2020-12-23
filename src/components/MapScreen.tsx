@@ -76,12 +76,9 @@ class MapScreen extends React.Component<{}, State> {
                     route={this.state.route && this.state.route.geometry}/>
                 <View style={style.selectorContainer}>
                     <PillSelector
-                        selected={this.state.routingProfile}
                         options={options}
-                        style={style.selector}
-                        buttonStyle={style.selectorButton}
-                        onChange={this.onRoutingProfileChanged}
-                        selectionColor='#2196F3'/>
+                        selected={this.state.routingProfile}
+                        onChange={this.onRoutingProfileChanged}/>
                 </View>
             </View>
         )
