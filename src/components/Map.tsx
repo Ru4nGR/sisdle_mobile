@@ -1,6 +1,5 @@
 import React from 'react'
 import {
-    StyleSheet,
     PermissionsAndroid,
 } from 'react-native'
 import {MAPBOX_ACCESS_TOKEN} from 'src/api/constants'

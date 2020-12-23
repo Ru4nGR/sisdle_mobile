@@ -1,7 +1,9 @@
 import React from 'react'
 import {
     View,
-    StyleSheet, Pressable, ViewStyle, GestureResponderEvent, StyleProp
+    Pressable,
+    StyleSheet,
+    GestureResponderEvent
 } from 'react-native'
 
 interface Lixeira {
@@ -36,9 +38,9 @@ const styles = StyleSheet.create({
     container : {
         width : 30,
         height : 30,
+        borderWidth : 1,
         borderRadius : 15,
         overflow : 'hidden',
-        borderWidth : 1,
         backgroundColor : 'white'
     }
 })

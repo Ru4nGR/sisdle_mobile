@@ -17,8 +17,8 @@ const calloutPositions = {
 
 interface Lixeira {
     id : number,
-    coordinate : Array<number>,
     capacity : number
+    coordinate : Array<number>,
 }
 
 interface Props {
@@ -34,6 +34,7 @@ class Marker extends React.Component<Props> {
         const lixeira = this.props.lixeira
         const toggleCallout = this.props.toggleCallout
         const calloutOnButtonPress = this.props.calloutOnButtonPress
+
         const showCallout = calloutOnButtonPress != undefined
 
         return (

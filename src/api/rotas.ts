@@ -1,10 +1,10 @@
 import {MAPBOX_ACCESS_TOKEN} from 'src/api/constants'
 
 const routingProfiles = {
-    drivingTraffic : 'driving-traffic',
     driving : 'driving',
     walking : 'walking',
-    cycling : 'cycling'
+    cycling : 'cycling',
+    drivingTraffic : 'driving-traffic'
 }
 
 type RoutingProfile = 'driving-traffic' | 'driving' | 'walking' | 'cycling'

@@ -1,5 +1,4 @@
 import React from 'react'
-import { StyleProp, TextStyle, ViewStyle } from 'react-native'
 import {
     Text,
     View,
@@ -9,8 +8,8 @@ import {
 
 interface Lixeira {
     id : number,
-    coordinate : Array<number>,
-    capacity : number
+    capacity : number,
+    coordinate : Array<number>
 }
 
 interface Props {
@@ -45,12 +44,12 @@ const styles = StyleSheet.create({
     },
     content : {
         padding: 8,
+        width : 150,
+        height : 150,
         borderWidth: 1,
         borderRadius: 3,
         backgroundColor: 'white',
-        width : 150,
         justifyContent : 'space-around',
-        height : 150,
         borderColor: 'rgba(0, 0, 0, 0.2)'
     },
     capacity : {
@@ -59,15 +58,15 @@ const styles = StyleSheet.create({
     },
     tip : {
         marginRight: -2,
-        borderRightWidth: 16,
-        borderBottomWidth: 8,
         borderTopWidth: 8,
         borderLeftWidth: 0,
+        borderRightWidth: 16,
+        borderBottomWidth: 8,
         borderRightColor: 'white',
-        borderBottomColor: 'transparent',
         borderTopColor: 'transparent',
         borderLeftColor: 'transparent',
         backgroundColor: 'transparent',
+        borderBottomColor: 'transparent',
     }
 })
 

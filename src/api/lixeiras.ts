@@ -1,14 +1,14 @@
 interface Lixeira {
     id : string,
+    local : string,
+    capacity : number
     local_id : string,
-    descricao : string,
-    profundidade : string,
-    tempo_info : string,
     latitude : string,
     longitude : string,
-    local : string,
+    descricao : string,
+    tempo_info : string,
+    profundidade : string,
     coordinate : Array<number>,
-    capacity : number
 }
 
 async function getLixeiras(){
@@ -16,15 +16,15 @@ async function getLixeiras(){
     const json = await response.json()
     return json.map((lixeira : Lixeira) => ({
         id : lixeira.id,
+        local : lixeira.local,
         local_id : lixeira.local_id,
-        descricao : lixeira.descricao,
-        profundidade : lixeira.profundidade,
-        tempo_info : lixeira.tempo_info,
         latitude : lixeira.latitude,
         longitude : lixeira.longitude,
-        local : lixeira.local,
-        coordinate : [parseFloat(lixeira.longitude), parseFloat(lixeira.latitude)],
-        capacity : parseFloat(lixeira.profundidade)
+        descricao : lixeira.descricao,
+        tempo_info : lixeira.tempo_info,
+        profundidade : lixeira.profundidade,
+        capacity : parseFloat(lixeira.profundidade),
+        coordinate : [parseFloat(lixeira.longitude), parseFloat(lixeira.latitude)]
     }))
 }
 
