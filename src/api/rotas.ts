@@ -1,4 +1,4 @@
-import {MAPBOX_ACCESS_TOKEN} from 'sisdle_mobile/src/api/constants'
+import {MAPBOX_ACCESS_TOKEN} from 'src/api/constants'
 
 const routingProfiles = {
     drivingTraffic : 'driving-traffic',
@@ -7,7 +7,9 @@ const routingProfiles = {
     cycling : 'cycling'
 }
 
-async function getRoute(profile, userPosition, destinationPosition) {
+type RoutingProfile = 'driving-traffic' | 'driving' | 'walking' | 'cycling'
+
+async function getRoute(profile : RoutingProfile, userPosition : Array<number>, destinationPosition : Array<number>) {
     try {
         let response = await fetch (
             "https://api.mapbox.com/directions/v5/mapbox/" +
