@@ -23,9 +23,8 @@ interface Lixeira {
 
 interface Props {
     lixeira : Lixeira,
-    showCallout : boolean,
     toggleCallout : (id : number) => void
-    calloutOnButtonPress : (lixeira : Lixeira) => void,
+    calloutOnButtonPress? : (lixeira : Lixeira) => void,
 }
 
 class Marker extends React.Component<Props> {
@@ -35,14 +34,14 @@ class Marker extends React.Component<Props> {
         const lixeira = this.props.lixeira
         const toggleCallout = this.props.toggleCallout
         const calloutOnButtonPress = this.props.calloutOnButtonPress
-        const showCallout = this.props.showCallout
+        const showCallout = calloutOnButtonPress != undefined
 
         return (
             <MapboxGL.MarkerView id={''} anchor={showCallout ? {x : 15 / 194, y : 0.5} : {x : 0.5, y : 0.5}} coordinate={lixeira.coordinate}>
                 <Pressable style={[styles.container, {width : showCallout ? 194 : 30}]}>
                     <Icon lixeira={lixeira} onPress={() => toggleCallout(lixeira.id)}/>
                     {showCallout &&
-                        <Callout lixeira={lixeira} onButtonPress={calloutOnButtonPress}/>
+                        <Callout lixeira={lixeira} onButtonPress={calloutOnButtonPress!}/>
                     }
                 </Pressable>
             </MapboxGL.MarkerView>

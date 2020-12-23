@@ -89,14 +89,12 @@ class Map extends React.Component<Props, State> {
                     <MarkerLixeira
                         key={lixeira.id}
                         lixeira={lixeira}
-                        showCallout={false}
                         toggleCallout={this.togglePopup}/>
                 ))}
                 {lixeiras.map((lixeira) => (markers[lixeira.id] &&
                     <MarkerLixeira
                         key={lixeira.id}
                         lixeira={lixeira}
-                        showCallout={true}
                         toggleCallout={this.togglePopup}
                         calloutOnButtonPress={onMarkerCalloutButtonPress}/>
                 ))}
