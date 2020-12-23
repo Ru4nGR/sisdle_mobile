@@ -87,22 +87,17 @@ class Map extends React.Component<Props, State> {
                     followUserLocation={true}/>
                 {lixeiras.map((lixeira) => (!markers[lixeira.id] &&
                     <MarkerLixeira
-                        showCallout={false}
+                        key={lixeira.id}
                         lixeira={lixeira}
-                        iconStyle={style.markerIcon}
-                        toggleCallout={this.togglePopup}
-                        key={lixeira.id}/>
+                        showCallout={false}
+                        toggleCallout={this.togglePopup}/>
                 ))}
                 {lixeiras.map((lixeira) => (markers[lixeira.id] &&
                     <MarkerLixeira
-                        showCallout={true}
-                        lixeira={lixeira}
-                        calloutTipHeight={16}
-                        calloutPosition="right"
-                        iconStyle={style.markerIcon}
-                        calloutStyle={style.markerCallout}
-                        toggleCallout={this.togglePopup}
                         key={lixeira.id}
+                        lixeira={lixeira}
+                        showCallout={true}
+                        toggleCallout={this.togglePopup}
                         calloutOnButtonPress={onMarkerCalloutButtonPress}/>
                 ))}
                 <MapboxGL.UserLocation onUpdate={onUserLocationUpdate}/>
@@ -115,16 +110,5 @@ class Map extends React.Component<Props, State> {
         )
     }
 }
-
-const style = StyleSheet.create({
-    markerIcon : {
-        width : 30,
-        height : 30
-    },
-    markerCallout : {
-        width : 150,
-        height : 150,
-    }
-})
 
 export default Map
