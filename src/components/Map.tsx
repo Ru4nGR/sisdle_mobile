@@ -3,9 +3,9 @@ import {
     StyleSheet,
     PermissionsAndroid,
 } from 'react-native'
-import {MAPBOX_ACCESS_TOKEN} from 'sisdle_mobile/src/api/constants'
+import {MAPBOX_ACCESS_TOKEN} from 'src/api/constants'
 import MapboxGL from '@react-native-mapbox-gl/maps'
-import MarkerLixeira from 'sisdle_mobile/src/components/MarkerLixeira'
+import MarkerLixeira from 'src/components/MarkerLixeira'
 
 MapboxGL.setAccessToken(MAPBOX_ACCESS_TOKEN)
 

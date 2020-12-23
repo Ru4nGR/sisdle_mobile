@@ -1,5 +1,5 @@
 import React from 'react';
-import MapScreen from 'sisdle_mobile/src/components/MapScreen'
+import MapScreen from 'src/components/MapScreen'
 
 function App() {
   return (

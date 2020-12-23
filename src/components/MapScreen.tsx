@@ -3,11 +3,11 @@ import {
     View,
     StyleSheet
 } from 'react-native'
-import Map from 'sisdle_mobile/src/components/Map'
+import Map from 'src/components/Map'
 import Icon from 'react-native-vector-icons/MaterialIcons'
-import {getLixeiras} from 'sisdle_mobile/src/api/lixeiras'
-import PillSelector from 'sisdle_mobile/src/components/PillSelector'
-import {getRoute, routingProfiles} from 'sisdle_mobile/src/api/rotas'
+import {getLixeiras} from 'src/api/lixeiras'
+import PillSelector from 'src/components/PillSelector'
+import {getRoute, routingProfiles} from 'src/api/rotas'
 
 const options = {
     [routingProfiles.drivingTraffic] : <Icon name="directions-car" size={30}/>,
