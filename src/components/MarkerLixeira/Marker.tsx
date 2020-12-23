@@ -123,12 +123,7 @@ class Marker extends React.Component<Props> {
                         lixeira={lixeira}
                         onPress={() => toggleCallout(lixeira.id)}/>
                     {this.props.showCallout &&
-                        <Callout
-                            style={style.callout}
-                            lixeira={lixeira}
-                            position={calloutPosition}
-                            tipHeight={calloutTipHeight}
-                            onButtonPress={calloutOnButtonPress}/>
+                        <Callout lixeira={lixeira} onButtonPress={calloutOnButtonPress}/>
                     }
                 </Pressable>
             </MapboxGL.MarkerView>
