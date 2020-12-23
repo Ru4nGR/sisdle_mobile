@@ -118,10 +118,7 @@ class Marker extends React.Component<Props> {
         return (
             <MapboxGL.MarkerView id={''} anchor={anchor} coordinate={lixeira.coordinate}>
                 <Pressable style={style.container}>
-                    <Icon
-                        style={style.icon}
-                        lixeira={lixeira}
-                        onPress={() => toggleCallout(lixeira.id)}/>
+                    <Icon lixeira={lixeira} onPress={() => toggleCallout(lixeira.id)}/>
                     {this.props.showCallout &&
                         <Callout lixeira={lixeira} onButtonPress={calloutOnButtonPress}/>
                     }
