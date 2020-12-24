@@ -7,7 +7,12 @@ import Map from 'src/components/Map'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import {getLixeiras, Lixeira} from 'src/api/lixeiras'
 import PillSelector from 'src/components/PillSelector'
-import {getRoute as APIGetRoute, routingProfiles} from 'src/api/rotas'
+import {
+    getRoute as APIGetRoute,
+    routingProfiles,
+    RoutingProfile,
+    Route
+} from 'src/api/rotas'
 
 const options = {
     [routingProfiles.drivingTraffic] : <Icon name="directions-car" size={30}/>,
@@ -17,11 +22,11 @@ const options = {
 
 const MapScreen : React.FC = () => {
 
-    const [routingProfile, setRoutingProfile] = useState(routingProfiles.drivingTraffic)
+    const [routingProfile, setRoutingProfile] = useState<RoutingProfile>(routingProfiles.drivingTraffic)
     const [lixeiras, setLixeiras] = useState(new Array<Lixeira>())
     const [userLocation, setUserLocation] = useState(new Array())
     const [selectedLixeira, setSelectedLixeira] = useState(null)
-    const [route, setRoute] = useState(null)
+    const [route, setRoute] = useState<Route | undefined>(undefined)
     const [hasRoute, setHasRoute] = useState(false)
 
     useEffect(() => {
