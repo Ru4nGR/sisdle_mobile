@@ -6,16 +6,11 @@ import {
 import MapboxGL from '@react-native-mapbox-gl/maps'
 import Icon from './Icon'
 import Callout from './Callout'
-
-interface Lixeira {
-    id : number,
-    capacity : number
-    coordinate : Array<number>,
-}
+import { Lixeira } from 'src/api/lixeiras'
 
 interface Props {
     lixeira : Lixeira,
-    toggleCallout : (id : number) => void
+    toggleCallout : (id : string) => void
     calloutOnButtonPress? : (lixeira : Lixeira) => void,
 }
 

@@ -5,6 +5,7 @@ import {
 import {MAPBOX_ACCESS_TOKEN} from 'src/api/constants'
 import MapboxGL from '@react-native-mapbox-gl/maps'
 import MarkerLixeira from 'src/components/MarkerLixeira'
+import { Lixeira } from 'src/api/lixeiras'
 
 MapboxGL.setAccessToken(MAPBOX_ACCESS_TOKEN)
 
@@ -25,12 +26,6 @@ const requestLocationPermission = async () => {
     }
 }
 
-interface Lixeira {
-    id : number,
-    coordinate : Array<number>,
-    capacity : number
-}
-
 interface Props {
     route : any,
     lixeiras : Array<Lixeira>,
@@ -46,7 +41,7 @@ const Map : React.FC<Props> = (props) => {
 
     const [markers, setMarkers] = useState(new Markers())
 
-    function togglePopup(key : number) {
+    function togglePopup(key : string) {
         setMarkers(prevMarkers => {
             prevMarkers[key] = !prevMarkers[key]
             return prevMarkers

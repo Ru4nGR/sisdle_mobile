@@ -5,12 +5,7 @@ import {
     Button,
     StyleSheet
 } from 'react-native'
-
-interface Lixeira {
-    id : number,
-    capacity : number,
-    coordinate : Array<number>
-}
+import { Lixeira } from 'src/api/lixeiras'
 
 interface Props {
     lixeira : Lixeira,

@@ -1,4 +1,4 @@
-interface Lixeira {
+export interface Lixeira {
     id : string,
     local : string,
     capacity : number

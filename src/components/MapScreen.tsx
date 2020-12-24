@@ -5,7 +5,7 @@ import {
 } from 'react-native'
 import Map from 'src/components/Map'
 import Icon from 'react-native-vector-icons/MaterialIcons'
-import {getLixeiras} from 'src/api/lixeiras'
+import {getLixeiras, Lixeira} from 'src/api/lixeiras'
 import PillSelector from 'src/components/PillSelector'
 import {getRoute as APIGetRoute, routingProfiles} from 'src/api/rotas'
 
@@ -18,7 +18,7 @@ const options = {
 const MapScreen : React.FC = () => {
 
     const [routingProfile, setRoutingProfile] = useState(routingProfiles.drivingTraffic)
-    const [lixeiras, setLixeiras] = useState(new Array())
+    const [lixeiras, setLixeiras] = useState(new Array<Lixeira>())
     const [userLocation, setUserLocation] = useState(new Array())
     const [selectedLixeira, setSelectedLixeira] = useState(null)
     const [route, setRoute] = useState(null)
