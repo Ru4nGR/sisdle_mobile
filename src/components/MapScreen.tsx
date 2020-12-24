@@ -13,6 +13,7 @@ import {
     RoutingProfile,
     Route
 } from 'src/api/rotas'
+import MapboxGL from '@react-native-mapbox-gl/maps'
 
 const options = {
     [routingProfiles.drivingTraffic] : <Icon name="directions-car" size={30}/>,
@@ -22,12 +23,11 @@ const options = {
 
 const MapScreen : React.FC = () => {
 
-    const [routingProfile, setRoutingProfile] = useState<RoutingProfile>(routingProfiles.drivingTraffic)
-    const [lixeiras, setLixeiras] = useState(new Array<Lixeira>())
-    const [userLocation, setUserLocation] = useState(new Array())
-    const [selectedLixeira, setSelectedLixeira] = useState(null)
     const [route, setRoute] = useState<Route | undefined>(undefined)
-    const [hasRoute, setHasRoute] = useState(false)
+    const [lixeiras, setLixeiras] = useState<Array<Lixeira> | undefined>(undefined)
+    const [userLocation, setUserLocation] = useState<Array<number> | undefined>(undefined)
+    const [selectedLixeira, setSelectedLixeira] = useState<Lixeira | undefined>(undefined)
+    const [routingProfile, setRoutingProfile] = useState<RoutingProfile>(routingProfiles.drivingTraffic)
 
     useEffect(() => {
         getLixeiras().then((lixeiras : any) => {
@@ -35,15 +35,16 @@ const MapScreen : React.FC = () => {
         })
     }, [])
 
-    function updateUserLocation(location : any) {
+    function updateUserLocation(location : MapboxGL.Location) {
         setUserLocation([location.coords.longitude, location.coords.latitude])
     }
 
     async function getRoute(lixeira : any) {
-        const route = await APIGetRoute(routingProfile, userLocation, lixeira.coordinate)
-        setSelectedLixeira(lixeira)
-        setRoute(route)
-        setHasRoute(true)
+        if (userLocation != undefined) {
+            const route = await APIGetRoute(routingProfile, userLocation, lixeira.coordinate)
+            setSelectedLixeira(lixeira)
+            setRoute(route)
+        }
     }
 
     function onRoutingProfileChanged(value : any) {

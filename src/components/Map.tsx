@@ -28,7 +28,7 @@ const requestLocationPermission = async () => {
 
 interface Props {
     route : any,
-    lixeiras : Array<Lixeira>,
+    lixeiras? : Array<Lixeira>,
     onMarkerCalloutButtonPress : any,
     onUserLocationUpdate : any,
 }
@@ -66,13 +66,13 @@ const Map : React.FC<Props> = (props) => {
         <MapboxGL.MapView style={{flex : 1}} onPress={hideAllPopups}>
             <MapboxGL.Camera
                 followUserLocation={true}/>
-            {lixeiras.map((lixeira) => (!markers[lixeira.id] &&
+            {lixeiras != undefined && lixeiras.map((lixeira) => (!markers[lixeira.id] &&
                 <MarkerLixeira
                     key={lixeira.id}
                     lixeira={lixeira}
                     toggleCallout={togglePopup}/>
             ))}
-            {lixeiras.map((lixeira) => (markers[lixeira.id] &&
+            {lixeiras != undefined && lixeiras.map((lixeira) => (markers[lixeira.id] &&
                 <MarkerLixeira
                     key={lixeira.id}
                     lixeira={lixeira}
