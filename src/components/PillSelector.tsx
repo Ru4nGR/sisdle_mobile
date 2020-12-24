@@ -41,6 +41,7 @@ const PillSelector : React.FC<Props> = (props) => {
         </View>
     )
 }
+export default PillSelector
 
 const styles = StyleSheet.create({
     container : {
@@ -64,5 +65,3 @@ const styles = StyleSheet.create({
         justifyContent : 'center'
     }
 })
-
-export default PillSelector

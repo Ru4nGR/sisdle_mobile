@@ -11,7 +11,7 @@ export interface Lixeira {
     coordinate : Array<number>,
 }
 
-async function getLixeiras(){
+export async function getLixeiras(){
     const response = await fetch('http://api.ifprinteligente.com.br/sisdle/rest.php/trash')
     const json = await response.json()
     return json.map((lixeira : Lixeira) => ({
@@ -27,5 +27,3 @@ async function getLixeiras(){
         coordinate : [parseFloat(lixeira.longitude), parseFloat(lixeira.latitude)]
     }))
 }
-
-export {getLixeiras}

@@ -61,32 +61,31 @@ const Map : React.FC<Props> = (props) => {
     const lixeiras = props.lixeiras
     const onMarkerCalloutButtonPress = props.onMarkerCalloutButtonPress
     const onUserLocationUpdate = props.onUserLocationUpdate
-
+    
     return (
         <MapboxGL.MapView style={{flex : 1}} onPress={hideAllPopups}>
             <MapboxGL.Camera
                 followUserLocation={true}/>
             {lixeiras != undefined && lixeiras.map((lixeira) => (!markers[lixeira.id] &&
                 <MarkerLixeira
-                    key={lixeira.id}
-                    lixeira={lixeira}
-                    toggleCallout={togglePopup}/>
-            ))}
+                key={lixeira.id}
+                lixeira={lixeira}
+                toggleCallout={togglePopup}/>
+                ))}
             {lixeiras != undefined && lixeiras.map((lixeira) => (markers[lixeira.id] &&
                 <MarkerLixeira
-                    key={lixeira.id}
-                    lixeira={lixeira}
-                    toggleCallout={togglePopup}
-                    calloutOnButtonPress={onMarkerCalloutButtonPress}/>
-            ))}
+                key={lixeira.id}
+                lixeira={lixeira}
+                toggleCallout={togglePopup}
+                calloutOnButtonPress={onMarkerCalloutButtonPress}/>
+                ))}
             <MapboxGL.UserLocation onUpdate={onUserLocationUpdate}/>
             {route &&
-                <MapboxGL.ShapeSource id="route" shape={route}>
-                    <MapboxGL.LineLayer id="line1" style={{lineColor : 'blue', lineWidth : 3}}/>
+                <MapboxGL.ShapeSource id="route_shape" shape={route}>
+                    <MapboxGL.LineLayer id="route_line" style={{lineColor : 'blue', lineWidth : 3}}/>
                 </MapboxGL.ShapeSource>
             }
         </MapboxGL.MapView>
     )
 }
-
 export default Map

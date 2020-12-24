@@ -30,6 +30,7 @@ const Icon : React.FC<Props> = (props) => {
         </Pressable>
     )
 }
+export default Icon
 
 const styles = StyleSheet.create({
     container : {
@@ -41,5 +42,3 @@ const styles = StyleSheet.create({
         backgroundColor : 'white'
     }
 })
-
-export default Icon

@@ -8,7 +8,7 @@ export interface Route {
     geometry : GeoJSON.LineString
 }
 
-const routingProfiles : RoutingProfiles = {
+export const routingProfiles : RoutingProfiles = {
     driving : 'driving',
     walking : 'walking',
     cycling : 'cycling',
@@ -17,7 +17,7 @@ const routingProfiles : RoutingProfiles = {
 
 export type RoutingProfile = 'driving-traffic' | 'driving' | 'walking' | 'cycling'
 
-async function getRoute(profile : RoutingProfile, userPosition : Array<number>, destinationPosition : Array<number>) {
+export async function getRoute(profile : RoutingProfile, userPosition : Array<number>, destinationPosition : Array<number>) {
     try {
         let response = await fetch (
             "https://api.mapbox.com/directions/v5/mapbox/" +
@@ -33,5 +33,3 @@ async function getRoute(profile : RoutingProfile, userPosition : Array<number>, 
         console.log(error);
     }
 }
-
-export {getRoute, routingProfiles}

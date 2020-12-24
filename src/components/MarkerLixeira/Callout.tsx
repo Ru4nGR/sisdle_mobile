@@ -29,6 +29,7 @@ const Callout : React.FC<Props> = (props) => {
         </View>
     )
 }
+export default Callout
 
 const styles = StyleSheet.create({
     container : {
@@ -61,5 +62,3 @@ const styles = StyleSheet.create({
         borderBottomColor: 'transparent',
     }
 })
-
-export default Callout

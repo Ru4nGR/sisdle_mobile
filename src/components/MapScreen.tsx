@@ -8,10 +8,10 @@ import Icon from 'react-native-vector-icons/MaterialIcons'
 import {getLixeiras, Lixeira} from 'src/api/lixeiras'
 import PillSelector from 'src/components/PillSelector'
 import {
-    getRoute as APIGetRoute,
-    routingProfiles,
+    Route,
     RoutingProfile,
-    Route
+    routingProfiles,
+    getRoute as APIGetRoute
 } from 'src/api/rotas'
 import MapboxGL from '@react-native-mapbox-gl/maps'
 
@@ -70,6 +70,7 @@ const MapScreen : React.FC = () => {
         </View>
     )
 }
+export default MapScreen
 
 const style = StyleSheet.create({
     selectorContainer : {
@@ -86,5 +87,3 @@ const style = StyleSheet.create({
         backgroundColor : 'lightgrey'
     },
 })
-
-export default MapScreen

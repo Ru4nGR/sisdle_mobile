@@ -1,7 +1,7 @@
 import React from 'react'
 import {
     StyleSheet,
-    Pressable,
+    Pressable
 } from 'react-native'
 import MapboxGL from '@react-native-mapbox-gl/maps'
 import Icon from './Icon'
@@ -23,7 +23,7 @@ const Marker : React.FC<Props> = (props) => {
     const showCallout = calloutOnButtonPress != undefined
 
     return (
-        <MapboxGL.MarkerView id={''} anchor={showCallout ? {x : 15 / 194, y : 0.5} : {x : 0.5, y : 0.5}} coordinate={lixeira.coordinate}>
+        <MapboxGL.MarkerView id={lixeira.id} anchor={showCallout ? {x : 15 / 194, y : 0.5} : {x : 0.5, y : 0.5}} coordinate={lixeira.coordinate}>
             <Pressable style={[styles.container, {width : showCallout ? 194 : 30}]}>
                 <Icon lixeira={lixeira} onPress={() => toggleCallout(lixeira.id)}/>
                 {showCallout &&
@@ -33,6 +33,7 @@ const Marker : React.FC<Props> = (props) => {
         </MapboxGL.MarkerView>
     )
 }
+export default Marker
 
 const styles = StyleSheet.create({
     container : {
@@ -40,5 +41,3 @@ const styles = StyleSheet.create({
         flexDirection : 'row',
     }
 })
-
-export default Marker
