@@ -1,7 +1,7 @@
 import React from 'react';
 import MapScreen from 'src/components/MapScreen'
 
-function App() {
+const App : React.FC = () => {
   return (
     <MapScreen/>
   )

@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     View,
     StyleSheet
@@ -7,7 +7,7 @@ import Map from 'src/components/Map'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import {getLixeiras} from 'src/api/lixeiras'
 import PillSelector from 'src/components/PillSelector'
-import {getRoute, routingProfiles} from 'src/api/rotas'
+import {getRoute as APIGetRoute, routingProfiles} from 'src/api/rotas'
 
 const options = {
     [routingProfiles.drivingTraffic] : <Icon name="directions-car" size={30}/>,
@@ -15,74 +15,54 @@ const options = {
     [routingProfiles.cycling] : <Icon name="directions-bike" size={30}/>
 }
 
-interface State {
-    lixeiras : any,
-    routingProfile : any,
-    userLocation : any,
-    selectedLixeira : any,
-    route : any,
-    hasRoute : boolean
-}
+const MapScreen : React.FC = () => {
 
-class MapScreen extends React.Component<{}, State> {
-    constructor(props : {}) {
-        super(props)
-        this.state = {
-            routingProfile : routingProfiles.drivingTraffic,
-            lixeiras : [],
-            userLocation : null,
-            selectedLixeira : null,
-            route : null,
-            hasRoute : false
-        }
+    const [routingProfile, setRoutingProfile] = useState(routingProfiles.drivingTraffic)
+    const [lixeiras, setLixeiras] = useState(new Array())
+    const [userLocation, setUserLocation] = useState(new Array())
+    const [selectedLixeira, setSelectedLixeira] = useState(null)
+    const [route, setRoute] = useState(null)
+    const [hasRoute, setHasRoute] = useState(false)
+
+    useEffect(() => {
         getLixeiras().then((lixeiras : any) => {
-            this.setState({
-                lixeiras : lixeiras
-            })
+            setLixeiras(lixeiras)
         })
+    }, [])
+
+    function updateUserLocation(location : any) {
+        setUserLocation([location.coords.longitude, location.coords.latitude])
     }
 
-    updateUserLocation = (location : any) => {
-        this.setState({
-            userLocation : [location.coords.longitude, location.coords.latitude]
-        })
+    async function getRoute(lixeira : any) {
+        const route = await APIGetRoute(routingProfile, userLocation, lixeira.coordinate)
+        setSelectedLixeira(lixeira)
+        setRoute(route)
+        setHasRoute(true)
     }
 
-    getRoute = async (lixeira : any) => {
-        const route = await getRoute(this.state.routingProfile, this.state.userLocation, lixeira.coordinate)
-        this.setState({
-            selectedLixeira : lixeira,
-            route : route,
-            hasRoute : true
-        })
-    }
-
-    onRoutingProfileChanged = (value : any) => {
-        this.setState({
-            routingProfile : value
-        })
-        if (this.state.route) {
-            this.getRoute(this.state.selectedLixeira)
+    function onRoutingProfileChanged(value : any) {
+        setRoutingProfile(value)
+        if (route) {
+            getRoute(selectedLixeira)
         }
     }
 
-    render() {
-        return (
-            <View style={{flex : 1}}>
-                <Map
-                    lixeiras={this.state.lixeiras}
-                    onMarkerCalloutButtonPress={this.getRoute}
-                    onUserLocationUpdate={this.updateUserLocation} 
-                    route={this.state.route && this.state.route.geometry}/>
-                <View style={style.selectorContainer}>
-                    <PillSelector
-                        options={options}
-                        selected={this.state.routingProfile}
-                        onChange={this.onRoutingProfileChanged}/>
-                </View>
+    return (
+        <View style={{flex : 1}}>
+            <Map
+                lixeiras={lixeiras}
+                onMarkerCalloutButtonPress={getRoute}
+                onUserLocationUpdate={updateUserLocation} 
+                route={route && route.geometry}/>
+            <View style={style.selectorContainer}>
+                <PillSelector
+                    options={options}
+                    selected={routingProfile}
+                    onChange={onRoutingProfileChanged}/>
             </View>
-        )
-    }
+        </View>
+    )
 }
 
 const style = StyleSheet.create({

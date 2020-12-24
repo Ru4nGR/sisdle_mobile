@@ -17,25 +17,22 @@ interface Props {
     onButtonPress : (lixeira : Lixeira) => void,
 }
 
-class Callout extends React.Component<Props> {
+const Callout : React.FC<Props> = (props) => {
 
-    render (){
+    const lixeira = props.lixeira
+    const onButtonPress = props.onButtonPress
 
-        const lixeira = this.props.lixeira
-        const onButtonPress = this.props.onButtonPress
-
-        return (
-            <View style={styles.container}>
-                <View style={styles.content}>
-                    <Text style={styles.capacity}>{lixeira.capacity + '%'}</Text>
-                    <Button title='Rota' onPress={() => onButtonPress(lixeira)}/>
-                </View>
-                <View style={{alignItems : 'center', justifyContent: 'center'}}>
-                    <View style={styles.tip}/>
-                </View>
+    return (
+        <View style={styles.container}>
+            <View style={styles.content}>
+                <Text style={styles.capacity}>{lixeira.capacity + '%'}</Text>
+                <Button title='Rota' onPress={() => onButtonPress(lixeira)}/>
             </View>
-        )
-    }
+            <View style={{alignItems : 'center', justifyContent: 'center'}}>
+                <View style={styles.tip}/>
+            </View>
+        </View>
+    )
 }
 
 const styles = StyleSheet.create({

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     PermissionsAndroid,
 } from 'react-native'
@@ -38,74 +38,60 @@ interface Props {
     onUserLocationUpdate : any,
 }
 
-interface State {
-    markers : any
+class Markers {
+    [key : string] : boolean
 }
 
-class Map extends React.Component<Props, State> {
+const Map : React.FC<Props> = (props) => {
 
-    constructor(props : Props){
-        super(props)
+    const [markers, setMarkers] = useState(new Markers())
+
+    function togglePopup(key : number) {
+        setMarkers(prevMarkers => {
+            prevMarkers[key] = !prevMarkers[key]
+            return prevMarkers
+        })
+    }
+
+    function hideAllPopups() {
+        setMarkers({})
+    }
+
+    useEffect(() => {
         requestLocationPermission()
-        this.state = {
-            markers : {},
-        }
-    }
-
-    togglePopup = (key : number) => {
-        this.setState((state) => {
-            let markers = state.markers
-            markers[key] = !markers[key]
-            return {
-                markers : markers
-            }
-        })
-    }
-
-    hideAllPopups = () => {
-        this.setState({
-            markers : {}
-        })
-    }
-
-    componentDidMount(){
         MapboxGL.setTelemetryEnabled(false)
-    }
+    }, [])
 
-    render() {
+    const route = props.route
+    const lixeiras = props.lixeiras
+    const onMarkerCalloutButtonPress = props.onMarkerCalloutButtonPress
+    const onUserLocationUpdate = props.onUserLocationUpdate
 
-        const route = this.props.route
-        const markers = this.state.markers
-        const lixeiras = this.props.lixeiras
-        const onMarkerCalloutButtonPress = this.props.onMarkerCalloutButtonPress
-        const onUserLocationUpdate = this.props.onUserLocationUpdate
-
-        return (
-            <MapboxGL.MapView style={{flex : 1}} onPress={this.hideAllPopups}>
-                <MapboxGL.Camera
-                    followUserLocation={true}/>
-                {lixeiras.map((lixeira) => (!markers[lixeira.id] &&
-                    <MarkerLixeira
-                        key={lixeira.id}
-                        lixeira={lixeira}
-                        toggleCallout={this.togglePopup}/>
-                ))}
-                {lixeiras.map((lixeira) => (markers[lixeira.id] &&
-                    <MarkerLixeira
-                        key={lixeira.id}
-                        lixeira={lixeira}
-                        toggleCallout={this.togglePopup}
-                        calloutOnButtonPress={onMarkerCalloutButtonPress}/>
-                ))}
-                <MapboxGL.UserLocation onUpdate={onUserLocationUpdate}/>
-                {route &&
-                    <MapboxGL.ShapeSource id="route" shape={route}>
-                        <MapboxGL.LineLayer id="line1" style={{lineColor : 'blue', lineWidth : 3}}/>
-                    </MapboxGL.ShapeSource>
-                }
-            </MapboxGL.MapView>
-        )
-    }
+    return (
+        <MapboxGL.MapView style={{flex : 1}} onPress={hideAllPopups}>
+            <MapboxGL.Camera
+                followUserLocation={true}/>
+            {lixeiras.map((lixeira) => (!markers[lixeira.id] &&
+                <MarkerLixeira
+                    key={lixeira.id}
+                    lixeira={lixeira}
+                    toggleCallout={togglePopup}/>
+            ))}
+            {lixeiras.map((lixeira) => (markers[lixeira.id] &&
+                <MarkerLixeira
+                    key={lixeira.id}
+                    lixeira={lixeira}
+                    toggleCallout={togglePopup}
+                    calloutOnButtonPress={onMarkerCalloutButtonPress}/>
+            ))}
+            <MapboxGL.UserLocation onUpdate={onUserLocationUpdate}/>
+            {route &&
+                <MapboxGL.ShapeSource id="route" shape={route}>
+                    <MapboxGL.LineLayer id="line1" style={{lineColor : 'blue', lineWidth : 3}}/>
+                </MapboxGL.ShapeSource>
+            }
+        </MapboxGL.MapView>
+    )
 }
 
 export default Map

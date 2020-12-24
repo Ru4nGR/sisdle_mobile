@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
     View,
     Pressable,
@@ -11,49 +11,35 @@ interface Props {
     onChange : (option : string) => void
 }
 
-interface State {
-    showOptions : boolean,
-}
+const PillSelector : React.FC<Props> = (props) => {
 
-class PillSelector extends React.Component<Props, State> {
+    const [showOptions, setShowOptions] = useState(false)
 
-    constructor(props : Props) {
-        super(props)
-        this.state = {
-            showOptions : false
-        }
+    function toggleOptions() {
+        setShowOptions(prevShowOptions => !prevShowOptions)
     }
 
-    toggleOptions = () => {
-        this.setState((state) => ({
-            showOptions : !state.showOptions
-        }))
-    }
-
-    select = (value : any) => {
-        this.props.onChange(value)
-        this.toggleOptions()
+    function select(value : any) {
+        props.onChange(value)
+        toggleOptions()
     }
     
-    render() {
-        
-        const icons = this.props.options
-        const selected = this.props.selected
-        const options = Object.keys(this.props.options) 
+    const icons = props.options
+    const selected = props.selected
+    const options = Object.keys(props.options) 
 
-        return (
-            <View style={styles.container}>
-                <Pressable style={styles.selection} onPress={this.toggleOptions}>
-                    {icons[selected]}
+    return (
+        <View style={styles.container}>
+            <Pressable style={styles.selection} onPress={toggleOptions}>
+                {icons[selected]}
+            </Pressable>
+            {showOptions && options.map((option) => (
+                <Pressable key={option} style={styles.option} onPress={() => select(option)}>
+                    {icons[option]}
                 </Pressable>
-                {this.state.showOptions && options.map((option) => (
-                    <Pressable key={option} style={styles.option} onPress={() => this.select(option)}>
-                        {icons[option]}
-                    </Pressable>
-                ))}
-            </View>
-        )
-    }
+            ))}
+        </View>
+    )
 }
 
 const styles = StyleSheet.create({

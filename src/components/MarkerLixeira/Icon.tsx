@@ -15,23 +15,20 @@ interface Props {
     onPress : (event : GestureResponderEvent) => void
 }
 
-class Icon extends React.Component<Props> {
+const Icon : React.FC<Props> = (props) => {
 
-    render() {
+    const lixeira = props.lixeira
+    const onPress = props.onPress
 
-        const lixeira = this.props.lixeira
-        const onPress = this.props.onPress
-
-        return (
-            <Pressable onPress={onPress} style={styles.container}>
-                <View style={{flex : 100 - lixeira.capacity}}/>
-                <View style={{
-                    flex : lixeira.capacity,
-                    backgroundColor : lixeira.capacity < 80 ? 'green' : 'red'
-                }}/>
-            </Pressable>
-        )
-    }
+    return (
+        <Pressable onPress={onPress} style={styles.container}>
+            <View style={{flex : 100 - lixeira.capacity}}/>
+            <View style={{
+                flex : lixeira.capacity,
+                backgroundColor : lixeira.capacity < 80 ? 'green' : 'red'
+            }}/>
+        </Pressable>
+    )
 }
 
 const styles = StyleSheet.create({
