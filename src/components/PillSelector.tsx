@@ -2,13 +2,17 @@ import React, { useState } from 'react'
 import {
     View,
     Pressable,
-    StyleSheet
+    StyleSheet,
+    GestureResponderEvent
 } from 'react-native'
+import Icon from 'react-native-vector-icons/MaterialIcons'
 
 interface Props {
     options : any,
     selected : any,
-    onChange : (option : string) => void
+    btnCancel : boolean,
+    onChange : (option : string) => void,
+    onBtnCancelPress : (event : GestureResponderEvent) => void
 }
 
 const PillSelector : React.FC<Props> = (props) => {
@@ -27,6 +31,8 @@ const PillSelector : React.FC<Props> = (props) => {
     const icons = props.options
     const selected = props.selected
     const options = Object.keys(props.options) 
+    const btnCancel = props.btnCancel
+    const onBtnCancelPress = props.onBtnCancelPress
 
     return (
         <View style={styles.container}>
@@ -38,6 +44,11 @@ const PillSelector : React.FC<Props> = (props) => {
                     {icons[option]}
                 </Pressable>
             ))}
+            {btnCancel &&
+                <Pressable style={styles.option} onPress={onBtnCancelPress}>
+                    <Icon size={30} name='close'/>
+                </Pressable>
+            }
         </View>
     )
 }

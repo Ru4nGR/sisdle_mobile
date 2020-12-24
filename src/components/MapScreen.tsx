@@ -63,6 +63,8 @@ const MapScreen : React.FC = () => {
                 route={route && route.geometry}/>
             <View style={style.selectorContainer}>
                 <PillSelector
+                    btnCancel={route != undefined}
+                    onBtnCancelPress={() => setRoute(undefined)}
                     options={options}
                     selected={routingProfile}
                     onChange={onRoutingProfileChanged}/>
