@@ -27,10 +27,10 @@ const requestLocationPermission = async () => {
 }
 
 interface Props {
-    route : any,
+    route? : GeoJSON.LineString,
     lixeiras? : Array<Lixeira>,
-    onMarkerCalloutButtonPress : any,
-    onUserLocationUpdate : any,
+    onMarkerCalloutButtonPress : (lixeira : Lixeira) => void,
+    onUserLocationUpdate : (location : MapboxGL.Location) => void,
 }
 
 class Markers {
