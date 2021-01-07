@@ -16,10 +16,10 @@ interface Props {
 }
 
 const icons = {
-    'driving' : 'directions-car',
+    'driving' : '',
     'walking' : 'directions-walk',
     'cycling' : 'directions-bike',
-    'driving-traffic' : ''
+    'driving-traffic' : 'directions-car'
 }
 
 const PillSelector : React.FC<Props> = (props) => {
