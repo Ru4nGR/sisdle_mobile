@@ -68,16 +68,16 @@ const Map : React.FC<Props> = (props) => {
                 followUserLocation={true}/>
             {lixeiras != undefined && lixeiras.map((lixeira) => (!markers[lixeira.id] &&
                 <MarkerLixeira
-                key={lixeira.id}
-                lixeira={lixeira}
-                toggleCallout={togglePopup}/>
+                    key={lixeira.id}
+                    lixeira={lixeira}
+                    toggleCallout={togglePopup}/>
                 ))}
             {lixeiras != undefined && lixeiras.map((lixeira) => (markers[lixeira.id] &&
                 <MarkerLixeira
-                key={lixeira.id}
-                lixeira={lixeira}
-                toggleCallout={togglePopup}
-                calloutOnButtonPress={onMarkerCalloutButtonPress}/>
+                    key={lixeira.id}
+                    lixeira={lixeira}
+                    toggleCallout={togglePopup}
+                    calloutOnButtonPress={onMarkerCalloutButtonPress}/>
                 ))}
             <MapboxGL.UserLocation onUpdate={onUserLocationUpdate}/>
             {route &&

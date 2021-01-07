@@ -15,12 +15,6 @@ import {
 } from 'src/api/rotas'
 import MapboxGL from '@react-native-mapbox-gl/maps'
 
-const options = {
-    [routingProfiles.drivingTraffic] : <Icon name="directions-car" size={30}/>,
-    [routingProfiles.walking] : <Icon name="directions-walk" size={30}/>,
-    [routingProfiles.cycling] : <Icon name="directions-bike" size={30}/>
-}
-
 const MapScreen : React.FC = () => {
 
     const [route, setRoute] = useState<Route | undefined>(undefined)
