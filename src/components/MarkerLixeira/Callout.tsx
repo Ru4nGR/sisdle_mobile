@@ -3,7 +3,8 @@ import {
     Text,
     View,
     Button,
-    StyleSheet
+    StyleSheet,
+    Pressable
 } from 'react-native'
 import { Lixeira } from 'src/api/lixeiras'
 
@@ -21,7 +22,9 @@ const Callout : React.FC<Props> = (props) => {
         <View style={styles.container}>
             <View style={styles.content}>
                 <Text style={styles.txtCapacity}>{lixeira.capacity + '%'}</Text>
-                <Button title='Rota' onPress={() => onButtonPress(lixeira)}/>
+                <Pressable style={styles.btnRota} onPress={() => onButtonPress(lixeira)}>
+                    <Text>Rota</Text>
+                </Pressable>
             </View>
             <View style={{alignItems : 'center', justifyContent: 'center'}}>
                 <View style={styles.tip}/>
@@ -42,12 +45,19 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 3,
         backgroundColor: 'white',
-        justifyContent : 'space-around',
         borderColor: 'rgba(0, 0, 0, 0.2)'
     },
     txtCapacity : {
         color: 'black',
         textAlign: 'center',
+        textAlignVertical : 'center',
+        flex : 2,
+    },
+    btnRota : {
+        justifyContent : 'center',
+        alignItems : 'center',
+        backgroundColor : '#2196F3',
+        flex : 1
     },
     tip : {
         marginRight: -2,
