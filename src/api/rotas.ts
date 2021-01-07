@@ -1,18 +1,14 @@
 import {MAPBOX_ACCESS_TOKEN} from 'src/api/constants'
 
-interface RoutingProfiles {
-    [key : string] : RoutingProfile
-}
-
 export interface Route {
     geometry : GeoJSON.LineString
 }
 
-export const routingProfiles : RoutingProfiles = {
-    driving : 'driving',
-    walking : 'walking',
-    cycling : 'cycling',
-    drivingTraffic : 'driving-traffic'
+export const routingProfiles = {
+    driving : 'driving' as RoutingProfile,
+    walking : 'walking' as RoutingProfile,
+    cycling : 'cycling' as RoutingProfile,
+    drivingTraffic : 'driving-traffic' as RoutingProfile
 }
 
 export type RoutingProfile = 'driving-traffic' | 'driving' | 'walking' | 'cycling'

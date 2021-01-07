@@ -30,7 +30,7 @@ const PillSelector : React.FC<Props> = (props) => {
         setShowOptions(prevShowOptions => !prevShowOptions)
     }
 
-    function select(value : any) {
+    function select(value : RoutingProfile) {
         props.onChange(value)
         toggleOptions()
     }
