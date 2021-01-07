@@ -6,7 +6,7 @@ import {
 import Map from 'src/components/Map'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import {getLixeiras, Lixeira} from 'src/api/lixeiras'
-import PillSelector from 'src/components/PillSelector'
+import RoutingProfileSelector from 'src/components/RoutingProfileSelector'
 import {
     Route,
     RoutingProfile,
@@ -62,10 +62,9 @@ const MapScreen : React.FC = () => {
                 onUserLocationUpdate={updateUserLocation} 
                 route={route && route.geometry}/>
             <View style={styles.selector}>
-                <PillSelector
+                <RoutingProfileSelector
                     btnCancel={route != undefined}
                     onBtnCancelPress={() => setRoute(undefined)}
-                    options={options}
                     selected={routingProfile}
                     onChange={onRoutingProfileChanged}/>
             </View>

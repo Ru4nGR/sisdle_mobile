@@ -5,14 +5,21 @@ import {
     StyleSheet,
     GestureResponderEvent
 } from 'react-native'
+import {routingProfiles, RoutingProfile} from 'src/api/rotas'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 
 interface Props {
-    options : any,
-    selected : any,
+    selected : RoutingProfile,
     btnCancel : boolean,
     onChange : (option : string) => void,
     onBtnCancelPress : (event : GestureResponderEvent) => void
+}
+
+const icons = {
+    'driving' : 'directions-car',
+    'walking' : 'directions-walk',
+    'cycling' : 'directions-bike',
+    'driving-traffic' : ''
 }
 
 const PillSelector : React.FC<Props> = (props) => {
@@ -28,22 +35,28 @@ const PillSelector : React.FC<Props> = (props) => {
         toggleOptions()
     }
     
-    const icons = props.options
     const selected = props.selected
-    const options = Object.keys(props.options) 
     const btnCancel = props.btnCancel
     const onBtnCancelPress = props.onBtnCancelPress
 
     return (
         <View style={styles.container}>
             <Pressable style={styles.selection} onPress={toggleOptions}>
-                {icons[selected]}
+                <Icon name={icons[selected]} size={30}/>
             </Pressable>
-            {showOptions && options.map((option) => (
-                <Pressable key={option} style={styles.btnOption} onPress={() => select(option)}>
-                    {icons[option]}
+            {showOptions &&
+                <>
+                <Pressable style={styles.btnOption} onPress={() => select(routingProfiles.driving)}>
+                    <Icon name='directions-car' size={30}/>
                 </Pressable>
-            ))}
+                <Pressable style={styles.btnOption} onPress={() => select(routingProfiles.walking)}>
+                    <Icon name='directions-walk' size={30}/>
+                </Pressable>
+                <Pressable style={styles.btnOption} onPress={() => select(routingProfiles.cycling)}>
+                    <Icon name='directions-bike' size={30}/>
+                </Pressable>
+                </>
+            }
             {btnCancel &&
                 <Pressable style={styles.btnOption} onPress={onBtnCancelPress}>
                     <Icon size={30} name='close'/>
