@@ -61,7 +61,7 @@ const MapScreen : React.FC = () => {
                 onMarkerCalloutButtonPress={getRoute}
                 onUserLocationUpdate={updateUserLocation} 
                 route={route && route.geometry}/>
-            <View style={style.selectorContainer}>
+            <View style={styles.selector}>
                 <PillSelector
                     btnCancel={route != undefined}
                     onBtnCancelPress={() => setRoute(undefined)}
@@ -74,18 +74,9 @@ const MapScreen : React.FC = () => {
 }
 export default MapScreen
 
-const style = StyleSheet.create({
-    selectorContainer : {
+const styles = StyleSheet.create({
+    selector : {
         position : 'absolute',
         margin : 10
-    },
-    selector : {
-        flexDirection : 'row',
-        backgroundColor : 'lightgrey'
-    },
-    selectorButton : {
-        width : 50,
-        height : 50,
-        backgroundColor : 'lightgrey'
-    },
+    }
 })

@@ -40,12 +40,12 @@ const PillSelector : React.FC<Props> = (props) => {
                 {icons[selected]}
             </Pressable>
             {showOptions && options.map((option) => (
-                <Pressable key={option} style={styles.option} onPress={() => select(option)}>
+                <Pressable key={option} style={styles.btnOption} onPress={() => select(option)}>
                     {icons[option]}
                 </Pressable>
             ))}
             {btnCancel &&
-                <Pressable style={styles.option} onPress={onBtnCancelPress}>
+                <Pressable style={styles.btnOption} onPress={onBtnCancelPress}>
                     <Icon size={30} name='close'/>
                 </Pressable>
             }
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
         justifyContent : 'center',
         backgroundColor : '#2196F3'
     },
-    option : {
+    btnOption : {
         width : 50,
         height : 50,
         borderRadius : 25,

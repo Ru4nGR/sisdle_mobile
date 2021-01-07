@@ -20,7 +20,7 @@ const Callout : React.FC<Props> = (props) => {
     return (
         <View style={styles.container}>
             <View style={styles.content}>
-                <Text style={styles.capacity}>{lixeira.capacity + '%'}</Text>
+                <Text style={styles.txtCapacity}>{lixeira.capacity + '%'}</Text>
                 <Button title='Rota' onPress={() => onButtonPress(lixeira)}/>
             </View>
             <View style={{alignItems : 'center', justifyContent: 'center'}}>
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
         justifyContent : 'space-around',
         borderColor: 'rgba(0, 0, 0, 0.2)'
     },
-    capacity : {
+    txtCapacity : {
         color: 'black',
         textAlign: 'center',
     },
