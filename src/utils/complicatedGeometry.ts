@@ -12,7 +12,37 @@ export class Point {
     }
 }
 
-function magnitude(point : Array<number>) {
+// https://gist.github.com/battmanz/e28311f765a18fc6a841201912422d60
+function dot(vector1 : Array<number>, vector2 : Array<number>) {
+    return vector1.reduce((sum, element, index) => sum += element * vector2[index], 0);
+}
+
+// https://lucidar.me/en/mathematics/check-if-a-point-belongs-on-a-line-segment/#:~:text=The%20cross%20product%20of%20A,t%20belongs%20on%20the%20segment.
+export function isOnSegment(A : Array<number>, B : Array<number>, P : Array<number>) {
+    const KAC = dot(
+        [
+            B[0] - A[0],
+            B[1] - A[1]
+        ],
+        [
+            P[0] - A[0],
+            P[1] - A[1]
+        ]
+    )
+    const KAB = dot(
+        [
+            B[0] - A[0],
+            B[1] - A[1]
+        ],
+        [
+            B[0] - A[0],
+            B[1] - A[1]
+        ]
+    )
+    return !(KAC < 0 || KAC > KAB)
+}
+
+export function magnitude(point : Array<number>) {
     const x = point[0]
     const y = point[1]
     return Math.sqrt((x * x + y * y))

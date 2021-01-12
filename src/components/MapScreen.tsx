@@ -13,7 +13,7 @@ import {
     getRoute as APIGetRoute
 } from 'src/api/rotas'
 import MapboxGL from '@react-native-mapbox-gl/maps'
-import { getOrtogonalProjection } from 'src/utils/complicatedGeometry'
+import { getOrtogonalProjection, magnitude, isOnSegment } from 'src/utils/complicatedGeometry'
 
 const MapScreen : React.FC = () => {
 
@@ -50,14 +50,25 @@ const MapScreen : React.FC = () => {
 
     let projection
     if (route != undefined && userLocation != undefined) {
-        projection = getOrtogonalProjection(
-            route.geometry.coordinates[0],
-            route.geometry.coordinates[1],
-            userLocation
-        )
-        if (projection.length == 0) {
-            projection = undefined
+        const projections = []
+        for (let j = 1; j < route.geometry.coordinates.length; j++) {
+            const i = j - 1
+            const result = getOrtogonalProjection(
+                route.geometry.coordinates[i],
+                route.geometry.coordinates[j],
+                userLocation
+            )
+            if (isOnSegment(route.geometry.coordinates[i], route.geometry.coordinates[j], result)) {
+                projections.push(result)
+            }
         }
+        projections.sort((a, b) => {
+            const da = magnitude([a[0] - userLocation[0], a[1] - userLocation[1]])
+            const db = magnitude([b[0] - userLocation[0], b[1] - userLocation[1]])
+            return da - db
+        })
+        projection = projections[0]
+        
     }
 
     return (
