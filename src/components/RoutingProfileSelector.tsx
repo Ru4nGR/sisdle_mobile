@@ -46,7 +46,7 @@ const PillSelector : React.FC<Props> = (props) => {
             </Pressable>
             {showOptions &&
                 <>
-                <Pressable style={styles.btnOption} onPress={() => select(routingProfiles.driving)}>
+                <Pressable style={styles.btnOption} onPress={() => select(routingProfiles.drivingTraffic)}>
                     <Icon name='directions-car' size={30}/>
                 </Pressable>
                 <Pressable style={styles.btnOption} onPress={() => select(routingProfiles.walking)}>
