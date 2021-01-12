@@ -49,6 +49,7 @@ const MapScreen : React.FC = () => {
     }
 
     let projection
+    let newRoute = route && JSON.parse(JSON.stringify(route))
     if (route != undefined && userLocation != undefined) {
         const projections = []
         for (let j = 1; j < route.geometry.coordinates.length; j++) {
@@ -59,29 +60,36 @@ const MapScreen : React.FC = () => {
                 userLocation
             )
             if (isOnSegment(route.geometry.coordinates[i], route.geometry.coordinates[j], result)) {
-                projections.push(result)
+                projections.push({
+                    projection : result,
+                    segment : [route.geometry.coordinates[i], route.geometry.coordinates[j]]
+                })
             }
         }
-        projections.push([...route.geometry.coordinates].sort((a, b) => 
+        const closestPoint = [...route.geometry.coordinates].sort((a, b) => 
             magnitude([a[0] - userLocation[0], a[1] - userLocation[1]]) - magnitude([b[0] - userLocation[0], b[1] - userLocation[1]])
-        )[0])
+        )[0]
+        projections.push({
+            projection : closestPoint,
+            segment : [closestPoint, route.geometry.coordinates[route.geometry.coordinates.indexOf(closestPoint) + 1]]
+        })
         projections.sort((a, b) => {
-            const da = magnitude([a[0] - userLocation[0], a[1] - userLocation[1]])
-            const db = magnitude([b[0] - userLocation[0], b[1] - userLocation[1]])
+            const da = magnitude([a.projection[0] - userLocation[0], a.projection[1] - userLocation[1]])
+            const db = magnitude([b.projection[0] - userLocation[0], b.projection[1] - userLocation[1]])
             return da - db
         })
         projection = projections[0]
-        
+        newRoute.geometry.coordinates.splice(0, route.geometry.coordinates.indexOf(projection.segment[1]))
+        newRoute.geometry.coordinates.unshift(projection.projection)
     }
 
     return (
         <View style={{flex : 1}}>
             <Map
-                projection={projection}
                 lixeiras={lixeiras}
                 onMarkerCalloutButtonPress={getRoute}
                 onUserLocationUpdate={updateUserLocation} 
-                route={route && route.geometry}/>
+                route={newRoute?.geometry}/>
             <View style={styles.selector}>
                 <RoutingProfileSelector
                     btnCancel={route != undefined}
