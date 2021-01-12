@@ -62,6 +62,9 @@ const MapScreen : React.FC = () => {
                 projections.push(result)
             }
         }
+        projections.push([...route.geometry.coordinates].sort((a, b) => 
+            magnitude([a[0] - userLocation[0], a[1] - userLocation[1]]) - magnitude([b[0] - userLocation[0], b[1] - userLocation[1]])
+        )[0])
         projections.sort((a, b) => {
             const da = magnitude([a[0] - userLocation[0], a[1] - userLocation[1]])
             const db = magnitude([b[0] - userLocation[0], b[1] - userLocation[1]])
