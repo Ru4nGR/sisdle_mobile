@@ -4,7 +4,6 @@ import {
     StyleSheet
 } from 'react-native'
 import Map from 'src/components/Map'
-import Icon from 'react-native-vector-icons/MaterialIcons'
 import {getLixeiras, Lixeira} from 'src/api/lixeiras'
 import RoutingProfileSelector from 'src/components/RoutingProfileSelector'
 import {
@@ -14,6 +13,7 @@ import {
     getRoute as APIGetRoute
 } from 'src/api/rotas'
 import MapboxGL from '@react-native-mapbox-gl/maps'
+import { getOrtogonalProjection } from 'src/utils/complicatedGeometry'
 
 const MapScreen : React.FC = () => {
 
@@ -48,9 +48,22 @@ const MapScreen : React.FC = () => {
         }
     }
 
+    let projection
+    if (route != undefined && userLocation != undefined) {
+        projection = getOrtogonalProjection(
+            route.geometry.coordinates[0],
+            route.geometry.coordinates[1],
+            userLocation
+        )
+        if (projection.length == 0) {
+            projection = undefined
+        }
+    }
+
     return (
         <View style={{flex : 1}}>
             <Map
+                projection={projection}
                 lixeiras={lixeiras}
                 onMarkerCalloutButtonPress={getRoute}
                 onUserLocationUpdate={updateUserLocation} 

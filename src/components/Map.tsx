@@ -27,6 +27,7 @@ const requestLocationPermission = async () => {
 }
 
 interface Props {
+    projection? : Array<number>,
     route? : GeoJSON.LineString,
     lixeiras? : Array<Lixeira>,
     onMarkerCalloutButtonPress : (lixeira : Lixeira) => void,
@@ -84,6 +85,9 @@ const Map : React.FC<Props> = (props) => {
                 <MapboxGL.ShapeSource id="route_shape" shape={route}>
                     <MapboxGL.LineLayer id="route_line" style={{lineColor : 'blue', lineWidth : 3}}/>
                 </MapboxGL.ShapeSource>
+            }
+            {props.projection != undefined &&
+                <MapboxGL.PointAnnotation id='projection' coordinate={props.projection}/>
             }
         </MapboxGL.MapView>
     )
