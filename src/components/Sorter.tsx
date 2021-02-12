@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import {
     View,
     Text,
@@ -7,6 +7,7 @@ import {
 } from 'react-native'
 import {Lixeira} from 'src/api/lixeiras'
 import {magnitude} from 'src/utils/complicatedGeometry'
+import Icon from 'react-native-vector-icons/MaterialIcons'
 
 interface Props {
     userLocation : Array<number>
@@ -77,9 +78,13 @@ const Sorter : React.FC<Props> = (props) => {
     return (
         <View style={styles.container}>
             <Pressable onPress={() => console.log(byNormalizedProduct())} style={styles.btn}>
-                <Text style={{color : 'white'}}>
+                <Text style={styles.txtBtn}>
                     Lixeira mais proxima
                 </Text>
+            </Pressable>
+            <View style={styles.separator}/>
+            <Pressable style={styles.btnSelector}>
+                <Icon style={styles.iconSelector} name='keyboard-arrow-up'/>
             </Pressable>
         </View>
     )
@@ -99,6 +104,24 @@ const styles = StyleSheet.create({
         alignItems : 'center',
         justifyContent : 'center',
         flexDirection : 'row',
+    },
+    txtBtn : {
+        color : 'white'
+    },
+    separator : {
+        width : 3 * StyleSheet.hairlineWidth,
+        backgroundColor : 'black',
+        opacity : 0.1,
+        marginVertical : 10
+    },
+    btnSelector : {
+        flex : 1,
+        justifyContent : 'center',
+        alignItems : 'center'
+    },
+    iconSelector : {
+        color : 'white',
+        fontSize : 20
     }
 })
 
