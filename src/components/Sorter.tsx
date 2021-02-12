@@ -16,6 +16,8 @@ interface Props {
 
 const Sorter : React.FC<Props> = (props) => {
 
+    const [showOptions, setShowOptions] = useState(false)
+
     function byDistance() {
         return props.lixeiras.sort(
             (a, b) => {
@@ -75,23 +77,48 @@ const Sorter : React.FC<Props> = (props) => {
         )
     }
 
+    function toggleOptions() {
+        setShowOptions(prevShowOptions => !prevShowOptions)
+    }
+
     return (
         <View style={styles.container}>
-            <Pressable onPress={() => console.log(byNormalizedProduct())} style={styles.btn}>
-                <Text style={styles.txtBtn}>
-                    Lixeira mais proxima
-                </Text>
-            </Pressable>
-            <View style={styles.separator}/>
-            <Pressable style={styles.btnSelector}>
-                <Icon style={styles.iconSelector} name='keyboard-arrow-up'/>
-            </Pressable>
+            {showOptions &&
+                <>
+                <Pressable style={styles.btnOption}>
+                    <Text>Melhor lixeira</Text>
+                </Pressable>
+                <View style={styles.hSeparator}/>
+                <Pressable style={styles.btnOption}>
+                    <Text>Lixeira mais próxima</Text>
+                </Pressable>
+                <View style={styles.hSeparator}/>
+                <Pressable style={styles.btnOption}>
+                    <Text>Lixeira mais vazia</Text>
+                </Pressable>
+                </>
+            }
+            <View style={styles.btnGroup}>
+                <Pressable onPress={() => console.log(byNormalizedProduct())} style={styles.btn}>
+                    <Text style={styles.txtBtn}>
+                        Lixeira mais proxima
+                    </Text>
+                </Pressable>
+                <View style={styles.vSeparator}/>
+                <Pressable onPress={toggleOptions} style={styles.btnSelector}>
+                    <Icon style={styles.iconSelector} name={showOptions ? 'keyboard-arrow-down' : 'keyboard-arrow-up'}/>
+                </Pressable>
+            </View>
         </View>
     )
 }
 
 const styles = StyleSheet.create({
     container : {
+        borderRadius : 25,
+        backgroundColor : 'lightgray'
+    },
+    btnGroup : {
         width : 200,
         height : 50,
         borderRadius : 25,
@@ -108,11 +135,17 @@ const styles = StyleSheet.create({
     txtBtn : {
         color : 'white'
     },
-    separator : {
-        width : 3 * StyleSheet.hairlineWidth,
+    vSeparator : {
+        width : 2 * StyleSheet.hairlineWidth,
         backgroundColor : 'black',
         opacity : 0.1,
         marginVertical : 10
+    },
+    hSeparator : {
+        height : StyleSheet.hairlineWidth,
+        backgroundColor : 'black',
+        opacity : 0.1,
+        marginHorizontal : 10
     },
     btnSelector : {
         flex : 1,
@@ -122,6 +155,12 @@ const styles = StyleSheet.create({
     iconSelector : {
         color : 'white',
         fontSize : 20
+    },
+    btnOption : {
+        height : 50,
+        width : 200,
+        justifyContent : 'center',
+        alignItems : 'center'
     }
 })
 
