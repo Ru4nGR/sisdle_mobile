@@ -4,14 +4,12 @@ export interface Route {
     geometry : GeoJSON.LineString
 }
 
-export const routingProfiles = {
-    driving : 'driving' as RoutingProfile,
-    walking : 'walking' as RoutingProfile,
-    cycling : 'cycling' as RoutingProfile,
-    drivingTraffic : 'driving-traffic' as RoutingProfile
+export enum RoutingProfile {
+    Driving = 'driving',
+    Walking = 'walking',
+    Cycling = 'cycling',
+    DrivingTraffic = 'driving-traffic'
 }
-
-export type RoutingProfile = 'driving-traffic' | 'driving' | 'walking' | 'cycling'
 
 export async function getRoute(profile : RoutingProfile, userPosition : Array<number>, destinationPosition : Array<number>) {
     try {

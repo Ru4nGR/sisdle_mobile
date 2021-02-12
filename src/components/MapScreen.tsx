@@ -10,7 +10,6 @@ import RoutingProfileSelector from 'src/components/RoutingProfileSelector'
 import {
     Route,
     RoutingProfile,
-    routingProfiles,
     getRoute as APIGetRoute
 } from 'src/api/rotas'
 import MapboxGL from '@react-native-mapbox-gl/maps'
@@ -22,7 +21,7 @@ const MapScreen : React.FC = () => {
     const [lixeiras, setLixeiras] = useState<Array<Lixeira> | undefined>(undefined)
     const [userLocation, setUserLocation] = useState<Array<number> | undefined>(undefined)
     const [selectedLixeira, setSelectedLixeira] = useState<Lixeira | undefined>(undefined)
-    const [routingProfile, setRoutingProfile] = useState<RoutingProfile>(routingProfiles.drivingTraffic)
+    const [routingProfile, setRoutingProfile] = useState<RoutingProfile>(RoutingProfile.DrivingTraffic)
 
     useEffect(() => {
         getLixeiras().then((lixeiras : any) => {

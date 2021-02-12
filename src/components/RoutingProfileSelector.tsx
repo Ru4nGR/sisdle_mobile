@@ -5,7 +5,7 @@ import {
     StyleSheet,
     GestureResponderEvent
 } from 'react-native'
-import {routingProfiles, RoutingProfile} from 'src/api/rotas'
+import {RoutingProfile} from 'src/api/rotas'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 
 interface Props {
@@ -16,10 +16,10 @@ interface Props {
 }
 
 const icons = {
-    'driving' : '',
-    'walking' : 'directions-walk',
-    'cycling' : 'directions-bike',
-    'driving-traffic' : 'directions-car'
+    [RoutingProfile.Driving] : '',
+    [RoutingProfile.Walking] : 'directions-walk',
+    [RoutingProfile.Cycling] : 'directions-bike',
+    [RoutingProfile.DrivingTraffic] : 'directions-car'
 }
 
 const PillSelector : React.FC<Props> = (props) => {
@@ -46,13 +46,13 @@ const PillSelector : React.FC<Props> = (props) => {
             </Pressable>
             {showOptions &&
                 <>
-                <Pressable style={styles.btnOption} onPress={() => select(routingProfiles.drivingTraffic)}>
+                <Pressable style={styles.btnOption} onPress={() => select(RoutingProfile.DrivingTraffic)}>
                     <Icon name='directions-car' size={30}/>
                 </Pressable>
-                <Pressable style={styles.btnOption} onPress={() => select(routingProfiles.walking)}>
+                <Pressable style={styles.btnOption} onPress={() => select(RoutingProfile.Walking)}>
                     <Icon name='directions-walk' size={30}/>
                 </Pressable>
-                <Pressable style={styles.btnOption} onPress={() => select(routingProfiles.cycling)}>
+                <Pressable style={styles.btnOption} onPress={() => select(RoutingProfile.Cycling)}>
                     <Icon name='directions-bike' size={30}/>
                 </Pressable>
                 </>
