@@ -4,6 +4,7 @@ import {
     StyleSheet
 } from 'react-native'
 import Map from 'src/components/Map'
+import Sorter from 'src/components/Sorter'
 import {getLixeiras, Lixeira} from 'src/api/lixeiras'
 import RoutingProfileSelector from 'src/components/RoutingProfileSelector'
 import {
@@ -97,6 +98,9 @@ const MapScreen : React.FC = () => {
                     selected={routingProfile}
                     onChange={onRoutingProfileChanged}/>
             </View>
+            <View style={styles.sorter}>
+                <Sorter userLocation={userLocation!} lixeiras={lixeiras!}/>
+            </View>
         </View>
     )
 }
@@ -106,5 +110,12 @@ const styles = StyleSheet.create({
     selector : {
         position : 'absolute',
         margin : 10
+    },
+    sorter : {
+        position : 'absolute',
+        bottom : 0,
+        marginBottom : 30,
+        width : '100%',
+        alignItems : 'center'
     }
 })
