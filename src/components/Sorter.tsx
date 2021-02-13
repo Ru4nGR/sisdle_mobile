@@ -9,6 +9,12 @@ import {Lixeira} from 'src/api/lixeiras'
 import {magnitude} from 'src/utils/complicatedGeometry'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 
+enum SortingMethod {
+    ByDistance = 'Lixeira mais próxima',
+    ByCapacity = 'Lixeira mais vazia',
+    ByNormalizedProduct = 'Melhor lixeira'
+}
+
 interface Props {
     userLocation : Array<number>
     lixeiras : Array<Lixeira>
@@ -17,27 +23,25 @@ interface Props {
 const Sorter : React.FC<Props> = (props) => {
 
     const [showOptions, setShowOptions] = useState(false)
+    const [sortingMethod, setSortingMethod] = useState(SortingMethod.ByNormalizedProduct)
 
-    function byDistance() {
-        return props.lixeiras.sort(
-            (a, b) => {
-                const da = magnitude([
-                    parseFloat(a.longitude) - props.userLocation[0],
-                    parseFloat(a.latitude) - props.userLocation[1]
-                ])
-                const db = magnitude([
-                    parseFloat(b.longitude) - props.userLocation[0],
-                    parseFloat(b.latitude) - props.userLocation[1]
-                ])
-                return da - db
-            }
-        )
+    function selectMethod(method : SortingMethod) {
+        setSortingMethod(method)
+        setShowOptions(false)
     }
 
-    function byCapacity() {
-        return props.lixeiras.sort((a, b) => a.capacity - b.capacity)
+    function sort(method : SortingMethod) {
+        if (method  == SortingMethod.ByNormalizedProduct) {
+            return byNormalizedProduct()
+        }
+        else if (method == SortingMethod.ByDistance) {
+            return byDistance()
+        }
+        else if (method == SortingMethod.ByCapacity) {
+            return byCapacity()
+        }
     }
-
+    
     function byNormalizedProduct() {
         const distances = byDistance().map(lixeira => {
             return magnitude([
@@ -77,6 +81,26 @@ const Sorter : React.FC<Props> = (props) => {
         )
     }
 
+    function byDistance() {
+        return props.lixeiras.sort(
+            (a, b) => {
+                const da = magnitude([
+                    parseFloat(a.longitude) - props.userLocation[0],
+                    parseFloat(a.latitude) - props.userLocation[1]
+                ])
+                const db = magnitude([
+                    parseFloat(b.longitude) - props.userLocation[0],
+                    parseFloat(b.latitude) - props.userLocation[1]
+                ])
+                return da - db
+            }
+        )
+    }
+
+    function byCapacity() {
+        return props.lixeiras.sort((a, b) => a.capacity - b.capacity)
+    }
+
     function toggleOptions() {
         setShowOptions(prevShowOptions => !prevShowOptions)
     }
@@ -85,23 +109,23 @@ const Sorter : React.FC<Props> = (props) => {
         <View style={styles.container}>
             {showOptions &&
                 <>
-                <Pressable style={styles.btnOption}>
-                    <Text>Melhor lixeira</Text>
+                <Pressable onPress={() => selectMethod(SortingMethod.ByNormalizedProduct)} style={styles.btnOption}>
+                    <Text>{SortingMethod.ByNormalizedProduct}</Text>
                 </Pressable>
                 <View style={styles.hSeparator}/>
-                <Pressable style={styles.btnOption}>
-                    <Text>Lixeira mais próxima</Text>
+                <Pressable onPress={() => selectMethod(SortingMethod.ByDistance)} style={styles.btnOption}>
+                    <Text>{SortingMethod.ByDistance}</Text>
                 </Pressable>
                 <View style={styles.hSeparator}/>
-                <Pressable style={styles.btnOption}>
-                    <Text>Lixeira mais vazia</Text>
+                <Pressable onPress={() => selectMethod(SortingMethod.ByCapacity)} style={styles.btnOption}>
+                    <Text>{SortingMethod.ByCapacity}</Text>
                 </Pressable>
                 </>
             }
             <View style={styles.btnGroup}>
-                <Pressable onPress={() => console.log(byNormalizedProduct())} style={styles.btn}>
+                <Pressable onPress={() => console.log(sort(sortingMethod))} style={styles.btn}>
                     <Text style={styles.txtBtn}>
-                        Lixeira mais proxima
+                        {sortingMethod}
                     </Text>
                 </Pressable>
                 <View style={styles.vSeparator}/>
