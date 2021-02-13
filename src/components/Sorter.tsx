@@ -140,7 +140,7 @@ const Sorter : React.FC<Props> = (props) => {
 const styles = StyleSheet.create({
     container : {
         borderRadius : 25,
-        backgroundColor : 'lightgray'
+        backgroundColor : 'lightgray',
     },
     btnGroup : {
         width : 200,

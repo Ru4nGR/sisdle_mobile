@@ -90,15 +90,18 @@ const MapScreen : React.FC = () => {
                 onMarkerCalloutButtonPress={getRoute}
                 onUserLocationUpdate={updateUserLocation} 
                 route={newRoute?.geometry}/>
-            <View style={styles.selector}>
-                <RoutingProfileSelector
-                    btnCancel={route != undefined}
-                    onBtnCancelPress={() => setRoute(undefined)}
-                    selected={routingProfile}
-                    onChange={onRoutingProfileChanged}/>
-            </View>
-            <View style={styles.sorter}>
-                <Sorter userLocation={userLocation!} lixeiras={lixeiras!}/>
+            <View style={styles.controlLayer}>
+                <View>
+                    <RoutingProfileSelector
+                        btnCancel={route != undefined}
+                        onBtnCancelPress={() => setRoute(undefined)}
+                        selected={routingProfile}
+                        onChange={onRoutingProfileChanged}/>
+                </View>
+                <View>
+                    <Sorter userLocation={userLocation!} lixeiras={lixeiras!}/>
+                </View>
+                <View style={styles.filler}/>
             </View>
         </View>
     )
@@ -106,15 +109,17 @@ const MapScreen : React.FC = () => {
 export default MapScreen
 
 const styles = StyleSheet.create({
-    selector : {
-        position : 'absolute',
-        margin : 10
-    },
-    sorter : {
-        position : 'absolute',
+    controlLayer : {
         bottom : 0,
-        marginBottom : 30,
         width : '100%',
-        alignItems : 'center'
+        position : 'absolute',
+        marginVertical : 30,
+        flexDirection : 'row',
+        justifyContent : 'space-evenly',
+        alignItems : 'flex-end'
+    },
+    filler : {
+        width : 50,
+        height : 50,
     }
 })

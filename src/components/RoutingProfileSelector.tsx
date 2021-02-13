@@ -70,7 +70,7 @@ export default PillSelector
 const styles = StyleSheet.create({
     container : {
         borderRadius : 25,
-        flexDirection : 'row',
+        flexDirection : 'column-reverse',
         backgroundColor : 'lightgray'
     },
     selection : {
