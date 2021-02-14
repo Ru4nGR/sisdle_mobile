@@ -1,5 +1,6 @@
 import React, { RefObject, useEffect, useState } from 'react'
 import {
+    GestureResponderEvent,
     PermissionsAndroid,
 } from 'react-native'
 import {MAPBOX_ACCESS_TOKEN} from 'src/api/constants'
@@ -31,6 +32,7 @@ interface Props {
     lixeiras? : Array<Lixeira>,
     followUserLocation : boolean
     cameraRef : RefObject<MapboxGL.Camera>
+    onTouchStart : (event : GestureResponderEvent) => void
     onMarkerCalloutButtonPress : (lixeira : Lixeira) => void,
     onUserLocationUpdate : (location : MapboxGL.Location) => void,
 }
@@ -65,7 +67,7 @@ const Map : React.FC<Props> = (props) => {
     const onUserLocationUpdate = props.onUserLocationUpdate
     
     return (
-        <MapboxGL.MapView style={{flex : 1}} onPress={hideAllPopups}>
+        <MapboxGL.MapView style={{flex : 1}} onTouchStart={props.onTouchStart} onPress={hideAllPopups}>
             <MapboxGL.Camera
                 followUserLocation={props.followUserLocation}
                 ref={props.cameraRef}/>

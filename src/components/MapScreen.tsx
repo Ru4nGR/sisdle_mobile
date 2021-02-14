@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react'
 import {
     View,
-    StyleSheet
+    StyleSheet,
+    Pressable
 } from 'react-native'
 import Map from 'src/components/Map'
 import Sorter from 'src/components/Sorter'
@@ -14,6 +15,7 @@ import {
 } from 'src/api/rotas'
 import MapboxGL from '@react-native-mapbox-gl/maps'
 import { getOrtogonalProjection, magnitude, isOnSegment } from 'src/utils/complicatedGeometry'
+import Icon from 'react-native-vector-icons/MaterialIcons'
 
 const MapScreen : React.FC = () => {
 
@@ -105,6 +107,7 @@ const MapScreen : React.FC = () => {
             <Map
                 cameraRef={camera}
                 lixeiras={lixeiras}
+                onTouchStart={() => setFollowUserLocation(false)}
                 followUserLocation={followUserLocation}
                 onMarkerCalloutButtonPress={getRoute}
                 onUserLocationUpdate={updateUserLocation} 
@@ -120,7 +123,9 @@ const MapScreen : React.FC = () => {
                 <View>
                     <Sorter onSort={onSort} userLocation={userLocation!} lixeiras={lixeiras!}/>
                 </View>
-                <View style={styles.filler}/>
+                <Pressable onPress={() => setFollowUserLocation(true)} style={styles.btnCenterOnUserLocation}>
+                    <Icon name='gps-fixed' style={styles.iconCenterOnUserLocation}/>
+                </Pressable>
             </View>
         </View>
     )
@@ -140,5 +145,17 @@ const styles = StyleSheet.create({
     filler : {
         width : 50,
         height : 50,
+    },
+    btnCenterOnUserLocation : {
+        width : 50,
+        height : 50,
+        borderRadius : 25,
+        backgroundColor : '#2196F3',
+        justifyContent : 'center',
+        alignItems : 'center'
+    },
+    iconCenterOnUserLocation : {
+        fontSize : 30,
+        color : 'white'
     }
 })
