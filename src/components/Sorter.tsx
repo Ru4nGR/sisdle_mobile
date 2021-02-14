@@ -18,6 +18,7 @@ enum SortingMethod {
 interface Props {
     userLocation : Array<number>
     lixeiras : Array<Lixeira>
+    onSort : (lixeiras : Array<Lixeira>) => void
 }
 
 const Sorter : React.FC<Props> = (props) => {
@@ -37,7 +38,8 @@ const Sorter : React.FC<Props> = (props) => {
         else if (method == SortingMethod.ByDistance) {
             return byDistance()
         }
-        else if (method == SortingMethod.ByCapacity) {
+        // if (method == SortingMethod.ByCapacity)
+        else {
             return byCapacity()
         }
     }
@@ -123,7 +125,7 @@ const Sorter : React.FC<Props> = (props) => {
                 </>
             }
             <View style={styles.btnGroup}>
-                <Pressable onPress={() => console.log(sort(sortingMethod))} style={styles.btn}>
+                <Pressable onPress={() => props.onSort(sort(sortingMethod))} style={styles.btn}>
                     <Text style={styles.txtBtn}>
                         {sortingMethod}
                     </Text>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { RefObject, useEffect, useState } from 'react'
 import {
     PermissionsAndroid,
 } from 'react-native'
@@ -29,6 +29,8 @@ const requestLocationPermission = async () => {
 interface Props {
     route? : GeoJSON.LineString,
     lixeiras? : Array<Lixeira>,
+    followUserLocation : boolean
+    cameraRef : RefObject<MapboxGL.Camera>
     onMarkerCalloutButtonPress : (lixeira : Lixeira) => void,
     onUserLocationUpdate : (location : MapboxGL.Location) => void,
 }
@@ -65,7 +67,8 @@ const Map : React.FC<Props> = (props) => {
     return (
         <MapboxGL.MapView style={{flex : 1}} onPress={hideAllPopups}>
             <MapboxGL.Camera
-                followUserLocation={true}/>
+                followUserLocation={props.followUserLocation}
+                ref={props.cameraRef}/>
             {lixeiras != undefined && lixeiras.map((lixeira) => (!markers[lixeira.id] &&
                 <MarkerLixeira
                     key={lixeira.id}

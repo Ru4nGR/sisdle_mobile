@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {
     View,
     StyleSheet
@@ -17,17 +17,34 @@ import { getOrtogonalProjection, magnitude, isOnSegment } from 'src/utils/compli
 
 const MapScreen : React.FC = () => {
 
+    const [sorted, setSorted] = useState(false)
     const [route, setRoute] = useState<Route | undefined>(undefined)
+    const [followUserLocation, setFollowUserLocation] = useState(true)
     const [lixeiras, setLixeiras] = useState<Array<Lixeira> | undefined>(undefined)
     const [userLocation, setUserLocation] = useState<Array<number> | undefined>(undefined)
     const [selectedLixeira, setSelectedLixeira] = useState<Lixeira | undefined>(undefined)
     const [routingProfile, setRoutingProfile] = useState<RoutingProfile>(RoutingProfile.DrivingTraffic)
+
+    const camera = useRef<MapboxGL.Camera>(null)
 
     useEffect(() => {
         getLixeiras().then((lixeiras : any) => {
             setLixeiras(lixeiras)
         })
     }, [])
+
+    useEffect(() => {
+        if (sorted) {
+            camera.current?.flyTo(lixeiras![0].coordinate)
+            setSorted(false)
+        }
+    }, [sorted])
+
+    function onSort(lixeiras : Array<Lixeira>) {
+        setLixeiras(lixeiras)
+        setFollowUserLocation(false)
+        setSorted(true)
+    }
 
     function updateUserLocation(location : MapboxGL.Location) {
         setUserLocation([location.coords.longitude, location.coords.latitude])
@@ -86,7 +103,9 @@ const MapScreen : React.FC = () => {
     return (
         <View style={{flex : 1}}>
             <Map
+                cameraRef={camera}
                 lixeiras={lixeiras}
+                followUserLocation={followUserLocation}
                 onMarkerCalloutButtonPress={getRoute}
                 onUserLocationUpdate={updateUserLocation} 
                 route={newRoute?.geometry}/>
@@ -99,7 +118,7 @@ const MapScreen : React.FC = () => {
                         onChange={onRoutingProfileChanged}/>
                 </View>
                 <View>
-                    <Sorter userLocation={userLocation!} lixeiras={lixeiras!}/>
+                    <Sorter onSort={onSort} userLocation={userLocation!} lixeiras={lixeiras!}/>
                 </View>
                 <View style={styles.filler}/>
             </View>
