@@ -42,24 +42,24 @@ const PillSelector : React.FC<Props> = (props) => {
     return (
         <View style={styles.container}>
             <Pressable style={styles.selection} onPress={toggleOptions}>
-                <Icon name={icons[selected]} size={30}/>
+                <Icon name={icons[selected]} style={styles.iconOption}/>
             </Pressable>
             {showOptions &&
                 <>
                 <Pressable style={styles.btnOption} onPress={() => select(RoutingProfile.DrivingTraffic)}>
-                    <Icon name='directions-car' size={30}/>
+                    <Icon name='directions-car' style={styles.iconOption}/>
                 </Pressable>
                 <Pressable style={styles.btnOption} onPress={() => select(RoutingProfile.Walking)}>
-                    <Icon name='directions-walk' size={30}/>
+                    <Icon name='directions-walk' style={styles.iconOption}/>
                 </Pressable>
                 <Pressable style={styles.btnOption} onPress={() => select(RoutingProfile.Cycling)}>
-                    <Icon name='directions-bike' size={30}/>
+                    <Icon name='directions-bike' style={styles.iconOption}/>
                 </Pressable>
                 </>
             }
             {btnCancel &&
                 <Pressable style={styles.btnOption} onPress={onBtnCancelPress}>
-                    <Icon size={30} name='close'/>
+                    <Icon style={styles.iconOption}name='close'/>
                 </Pressable>
             }
         </View>
@@ -87,5 +87,9 @@ const styles = StyleSheet.create({
         borderRadius : 25,
         alignItems : 'center',
         justifyContent : 'center'
+    },
+    iconOption : {
+        fontSize : 30,
+        color : 'white'
     }
 })
