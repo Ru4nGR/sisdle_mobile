@@ -28,11 +28,11 @@ const MapScreen : React.FC = () => {
     const status = useSelector((state : RootState) => state.lixeiras.status)
     const error = useSelector((state : RootState) => state.lixeiras.error)
     const lixeiras = useSelector((state : RootState) => state.lixeiras.data)
+    const userLocation = useSelector((state : RootState) => state.userPosition)
 
     const [sorted, setSorted] = useState(false)
     const [route, setRoute] = useState<Route | undefined>(undefined)
     const [followUserLocation, setFollowUserLocation] = useState(true)
-    const [userLocation, setUserLocation] = useState<Array<number> | undefined>(undefined)
     const [selectedLixeira, setSelectedLixeira] = useState<Lixeira | undefined>(undefined)
     const [routingProfile, setRoutingProfile] = useState<RoutingProfile>(RoutingProfile.DrivingTraffic)
 
@@ -55,10 +55,6 @@ const MapScreen : React.FC = () => {
         dispatch(setLixeiras(lixeiras))
         setFollowUserLocation(false)
         setSorted(true)
-    }
-
-    function updateUserLocation(location : MapboxGL.Location) {
-        setUserLocation([location.coords.longitude, location.coords.latitude])
     }
 
     async function getRoute(lixeira : any) {
@@ -121,7 +117,6 @@ const MapScreen : React.FC = () => {
                     onTouchStart={() => setFollowUserLocation(false)}
                     followUserLocation={followUserLocation}
                     onMarkerCalloutButtonPress={getRoute}
-                    onUserLocationUpdate={updateUserLocation} 
                     route={newRoute?.geometry}/>
                 <View style={styles.controlLayer}>
                     <View>

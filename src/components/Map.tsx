@@ -7,6 +7,8 @@ import {MAPBOX_ACCESS_TOKEN} from 'src/api/constants'
 import MapboxGL from '@react-native-mapbox-gl/maps'
 import MarkerLixeira from 'src/components/MarkerLixeira'
 import { Lixeira } from 'src/reducers/lixeirasSlice'
+import { useDispatch } from 'react-redux'
+import { update } from 'src/reducers/userPositionSlice'
 
 MapboxGL.setAccessToken(MAPBOX_ACCESS_TOKEN)
 
@@ -34,7 +36,6 @@ interface Props {
     cameraRef : RefObject<MapboxGL.Camera>
     onTouchStart : (event : GestureResponderEvent) => void
     onMarkerCalloutButtonPress : (lixeira : Lixeira) => void,
-    onUserLocationUpdate : (location : MapboxGL.Location) => void,
 }
 
 class Markers {
@@ -42,6 +43,8 @@ class Markers {
 }
 
 const Map : React.FC<Props> = (props) => {
+
+    const dispatch = useDispatch()
 
     const [markers, setMarkers] = useState(new Markers())
 
@@ -56,6 +59,10 @@ const Map : React.FC<Props> = (props) => {
         setMarkers({})
     }
 
+    function onUserLocationUpdate(location : MapboxGL.Location) {
+        dispatch(update([location.coords.longitude, location.coords.latitude]))
+    }
+
     useEffect(() => {
         requestLocationPermission()
         MapboxGL.setTelemetryEnabled(false)
@@ -64,7 +71,6 @@ const Map : React.FC<Props> = (props) => {
     const route = props.route
     const lixeiras = props.lixeiras
     const onMarkerCalloutButtonPress = props.onMarkerCalloutButtonPress
-    const onUserLocationUpdate = props.onUserLocationUpdate
     
     return (
         <MapboxGL.MapView style={{flex : 1}} onTouchStart={props.onTouchStart} onPress={hideAllPopups}>
