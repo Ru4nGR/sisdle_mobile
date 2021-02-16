@@ -5,10 +5,7 @@ import {
     StyleSheet,
     GestureResponderEvent
 } from 'react-native'
-
-interface Lixeira {
-    capacity : number
-}
+import { Lixeira } from 'src/reducers/lixeirasSlice'
 
 interface Props {
     lixeira : Lixeira,

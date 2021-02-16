@@ -5,7 +5,7 @@ import {
     Pressable,
     StyleSheet
 } from 'react-native'
-import {Lixeira} from 'src/api/lixeiras'
+import { Lixeira } from 'src/reducers/lixeirasSlice'
 import {magnitude} from 'src/utils/complicatedGeometry'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 
@@ -59,7 +59,7 @@ const Sorter : React.FC<Props> = (props) => {
         const minC = capacities[0]
         const maxC = capacities[capacities.length - 1]
 
-        return props.lixeiras.sort(
+        return props.lixeiras.slice().sort(
             (a, b) => {
                 const da = magnitude([
                     parseFloat(a.longitude) - props.userLocation[0],
@@ -84,7 +84,7 @@ const Sorter : React.FC<Props> = (props) => {
     }
 
     function byDistance() {
-        return props.lixeiras.sort(
+        return props.lixeiras.slice().sort(
             (a, b) => {
                 const da = magnitude([
                     parseFloat(a.longitude) - props.userLocation[0],
@@ -100,7 +100,7 @@ const Sorter : React.FC<Props> = (props) => {
     }
 
     function byCapacity() {
-        return props.lixeiras.sort((a, b) => a.capacity - b.capacity)
+        return props.lixeiras.slice().sort((a, b) => a.capacity - b.capacity)
     }
 
     function toggleOptions() {

@@ -6,7 +6,7 @@ import {
 import {MAPBOX_ACCESS_TOKEN} from 'src/api/constants'
 import MapboxGL from '@react-native-mapbox-gl/maps'
 import MarkerLixeira from 'src/components/MarkerLixeira'
-import { Lixeira } from 'src/api/lixeiras'
+import { Lixeira } from 'src/reducers/lixeirasSlice'
 
 MapboxGL.setAccessToken(MAPBOX_ACCESS_TOKEN)
 

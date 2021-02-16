@@ -6,7 +6,7 @@ import {
 import MapboxGL from '@react-native-mapbox-gl/maps'
 import Icon from './Icon'
 import Callout from './Callout'
-import { Lixeira } from 'src/api/lixeiras'
+import { Lixeira } from 'src/reducers/lixeirasSlice'
 
 interface Props {
     lixeira : Lixeira,

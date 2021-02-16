@@ -6,7 +6,7 @@ import {
     StyleSheet,
     Pressable
 } from 'react-native'
-import { Lixeira } from 'src/api/lixeiras'
+import { Lixeira } from 'src/reducers/lixeirasSlice'
 
 interface Props {
     lixeira : Lixeira,

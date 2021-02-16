@@ -2,11 +2,13 @@ import React, { useEffect, useRef, useState } from 'react'
 import {
     View,
     StyleSheet,
-    Pressable
+    Pressable,
+    Text
 } from 'react-native'
 import Map from 'src/components/Map'
 import Sorter from 'src/components/Sorter'
-import {getLixeiras, Lixeira} from 'src/api/lixeiras'
+import { getLixeiras } from 'src/api/lixeiras'
+import { Lixeira, loadLixeiras, setLixeiras, Status } from 'src/reducers/lixeirasSlice'
 import RoutingProfileSelector from 'src/components/RoutingProfileSelector'
 import {
     Route,
@@ -16,13 +18,20 @@ import {
 import MapboxGL from '@react-native-mapbox-gl/maps'
 import { getOrtogonalProjection, magnitude, isOnSegment } from 'src/utils/complicatedGeometry'
 import Icon from 'react-native-vector-icons/MaterialIcons'
+import { useDispatch, useSelector } from 'react-redux'
+import { RootState } from 'src/reducers'
 
 const MapScreen : React.FC = () => {
+
+    const dispatch = useDispatch()
+
+    const status = useSelector((state : RootState) => state.lixeiras.status)
+    const error = useSelector((state : RootState) => state.lixeiras.error)
+    const lixeiras = useSelector((state : RootState) => state.lixeiras.data)
 
     const [sorted, setSorted] = useState(false)
     const [route, setRoute] = useState<Route | undefined>(undefined)
     const [followUserLocation, setFollowUserLocation] = useState(true)
-    const [lixeiras, setLixeiras] = useState<Array<Lixeira> | undefined>(undefined)
     const [userLocation, setUserLocation] = useState<Array<number> | undefined>(undefined)
     const [selectedLixeira, setSelectedLixeira] = useState<Lixeira | undefined>(undefined)
     const [routingProfile, setRoutingProfile] = useState<RoutingProfile>(RoutingProfile.DrivingTraffic)
@@ -30,9 +39,9 @@ const MapScreen : React.FC = () => {
     const camera = useRef<MapboxGL.Camera>(null)
 
     useEffect(() => {
-        getLixeiras().then((lixeiras : any) => {
-            setLixeiras(lixeiras)
-        })
+        if (status === Status.Idle) {
+            dispatch(loadLixeiras())
+        }
     }, [])
 
     useEffect(() => {
@@ -43,7 +52,7 @@ const MapScreen : React.FC = () => {
     }, [sorted])
 
     function onSort(lixeiras : Array<Lixeira>) {
-        setLixeiras(lixeiras)
+        dispatch(setLixeiras(lixeiras))
         setFollowUserLocation(false)
         setSorted(true)
     }
@@ -104,29 +113,39 @@ const MapScreen : React.FC = () => {
 
     return (
         <View style={{flex : 1}}>
-            <Map
-                cameraRef={camera}
-                lixeiras={lixeiras}
-                onTouchStart={() => setFollowUserLocation(false)}
-                followUserLocation={followUserLocation}
-                onMarkerCalloutButtonPress={getRoute}
-                onUserLocationUpdate={updateUserLocation} 
-                route={newRoute?.geometry}/>
-            <View style={styles.controlLayer}>
-                <View>
-                    <RoutingProfileSelector
-                        btnCancel={route != undefined}
-                        onBtnCancelPress={() => setRoute(undefined)}
-                        selected={routingProfile}
-                        onChange={onRoutingProfileChanged}/>
+            {status === Status.Fulfilled && 
+                <>
+                <Map
+                    cameraRef={camera}
+                    lixeiras={lixeiras}
+                    onTouchStart={() => setFollowUserLocation(false)}
+                    followUserLocation={followUserLocation}
+                    onMarkerCalloutButtonPress={getRoute}
+                    onUserLocationUpdate={updateUserLocation} 
+                    route={newRoute?.geometry}/>
+                <View style={styles.controlLayer}>
+                    <View>
+                        <RoutingProfileSelector
+                            btnCancel={route != undefined}
+                            onBtnCancelPress={() => setRoute(undefined)}
+                            selected={routingProfile}
+                            onChange={onRoutingProfileChanged}/>
+                    </View>
+                    <View>
+                        <Sorter onSort={onSort} userLocation={userLocation!} lixeiras={lixeiras!}/>
+                    </View>
+                    <Pressable onPress={() => setFollowUserLocation(true)} style={styles.btnCenterOnUserLocation}>
+                        <Icon name='gps-fixed' style={styles.iconCenterOnUserLocation}/>
+                    </Pressable>
                 </View>
-                <View>
-                    <Sorter onSort={onSort} userLocation={userLocation!} lixeiras={lixeiras!}/>
-                </View>
-                <Pressable onPress={() => setFollowUserLocation(true)} style={styles.btnCenterOnUserLocation}>
-                    <Icon name='gps-fixed' style={styles.iconCenterOnUserLocation}/>
-                </Pressable>
-            </View>
+                </>
+            }
+            {status === Status.Pending &&
+                <Text style={{flex : 1, textAlign : 'center', textAlignVertical : 'center'}}>Carregando...</Text>
+            }
+            {status === Status.Rejected &&
+                <Text style={{flex : 1, textAlign : 'center', textAlignVertical : 'center'}}>{error}</Text>
+            }
         </View>
     )
 }
