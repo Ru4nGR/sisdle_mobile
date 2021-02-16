@@ -8,6 +8,8 @@ import {
 import { Lixeira } from 'src/reducers/lixeirasSlice'
 import {magnitude} from 'src/utils/complicatedGeometry'
 import Icon from 'react-native-vector-icons/MaterialIcons'
+import { useSelector } from 'react-redux'
+import { RootState } from 'src/reducers'
 
 enum SortingMethod {
     ByDistance = 'Lixeira mais próxima',
@@ -16,12 +18,13 @@ enum SortingMethod {
 }
 
 interface Props {
-    userLocation : Array<number>
-    lixeiras : Array<Lixeira>
     onSort : (lixeiras : Array<Lixeira>) => void
 }
 
 const Sorter : React.FC<Props> = (props) => {
+
+    const userLocation = useSelector((state : RootState) => state.userPosition)
+    const lixeiras = useSelector((state : RootState) => state.lixeiras.data)
 
     const [showOptions, setShowOptions] = useState(false)
     const [sortingMethod, setSortingMethod] = useState(SortingMethod.ByNormalizedProduct)
@@ -47,8 +50,8 @@ const Sorter : React.FC<Props> = (props) => {
     function byNormalizedProduct() {
         const distances = byDistance().map(lixeira => {
             return magnitude([
-                parseFloat(lixeira.longitude) - props.userLocation[0],
-                parseFloat(lixeira.latitude) - props.userLocation[1]
+                parseFloat(lixeira.longitude) - userLocation[0],
+                parseFloat(lixeira.latitude) - userLocation[1]
             ])
         })
         const capacities = byCapacity().map(lixeira => lixeira.capacity)
@@ -59,15 +62,15 @@ const Sorter : React.FC<Props> = (props) => {
         const minC = capacities[0]
         const maxC = capacities[capacities.length - 1]
 
-        return props.lixeiras.slice().sort(
+        return lixeiras.slice().sort(
             (a, b) => {
                 const da = magnitude([
-                    parseFloat(a.longitude) - props.userLocation[0],
-                    parseFloat(a.latitude) - props.userLocation[1]
+                    parseFloat(a.longitude) - userLocation[0],
+                    parseFloat(a.latitude) - userLocation[1]
                 ])
                 const db = magnitude([
-                    parseFloat(b.longitude) - props.userLocation[0],
-                    parseFloat(b.latitude) - props.userLocation[1]
+                    parseFloat(b.longitude) - userLocation[0],
+                    parseFloat(b.latitude) - userLocation[1]
                 ])
 
                 // normalized distance
@@ -84,15 +87,15 @@ const Sorter : React.FC<Props> = (props) => {
     }
 
     function byDistance() {
-        return props.lixeiras.slice().sort(
+        return lixeiras.slice().sort(
             (a, b) => {
                 const da = magnitude([
-                    parseFloat(a.longitude) - props.userLocation[0],
-                    parseFloat(a.latitude) - props.userLocation[1]
+                    parseFloat(a.longitude) - userLocation[0],
+                    parseFloat(a.latitude) - userLocation[1]
                 ])
                 const db = magnitude([
-                    parseFloat(b.longitude) - props.userLocation[0],
-                    parseFloat(b.latitude) - props.userLocation[1]
+                    parseFloat(b.longitude) - userLocation[0],
+                    parseFloat(b.latitude) - userLocation[1]
                 ])
                 return da - db
             }
@@ -100,7 +103,7 @@ const Sorter : React.FC<Props> = (props) => {
     }
 
     function byCapacity() {
-        return props.lixeiras.slice().sort((a, b) => a.capacity - b.capacity)
+        return lixeiras.slice().sort((a, b) => a.capacity - b.capacity)
     }
 
     function toggleOptions() {

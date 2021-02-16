@@ -127,7 +127,7 @@ const MapScreen : React.FC = () => {
                             onChange={onRoutingProfileChanged}/>
                     </View>
                     <View>
-                        <Sorter onSort={onSort} userLocation={userLocation!} lixeiras={lixeiras!}/>
+                        <Sorter onSort={onSort}/>
                     </View>
                     <Pressable onPress={() => setFollowUserLocation(true)} style={styles.btnCenterOnUserLocation}>
                         <Icon name='gps-fixed' style={styles.iconCenterOnUserLocation}/>
