@@ -59,11 +59,17 @@ const Map : React.FC<Props> = (props) => {
         dispatch(update([location.coords.longitude, location.coords.latitude]))
     }
 
+    const routePast : GeoJSON.LineString = route != undefined && JSON.parse(JSON.stringify(route))
     const routeLeft : GeoJSON.LineString = route != undefined && JSON.parse(JSON.stringify(route))
     if (route != undefined) {
-        const projection = getProjectionOnLineString(userPosition, routeLeft.coordinates.slice())
-        routeLeft.coordinates.splice(0, routeLeft.coordinates.indexOf(projection.segment[1]))
+        const projection = getProjectionOnLineString(userPosition, route.coordinates.slice())
+
+        routePast.coordinates.splice(route.coordinates.indexOf(projection.segment[1]))
+        routePast.coordinates.push(projection.projection)
+
+        routeLeft.coordinates.splice(0, route.coordinates.indexOf(projection.segment[1]))
         routeLeft.coordinates.unshift(projection.projection)
+
     }
     
     return (
@@ -76,12 +82,17 @@ const Map : React.FC<Props> = (props) => {
                     key={lixeira.id}
                     lixeira={lixeira}/>
             ))}
-            {route &&
-                <MapboxGL.ShapeSource id="route_shape" shape={routeLeft}>
-                    <MapboxGL.LineLayer id="route_line" style={{lineColor : 'blue', lineWidth : 3}}/>
-                </MapboxGL.ShapeSource>
-            }
             <MapboxGL.UserLocation onUpdate={onUserLocationUpdate}/>
+            {route &&
+                <>
+                <MapboxGL.ShapeSource id="route_past_shape" shape={routePast}>
+                    <MapboxGL.LineLayer layerIndex={105} id="route_past_line" style={{lineColor : 'lightgray', lineWidth : 5, lineCap : 'round', lineJoin : 'round'}}/>
+                </MapboxGL.ShapeSource>
+                <MapboxGL.ShapeSource id="route_left_shape" shape={routeLeft}>
+                    <MapboxGL.LineLayer layerIndex={105} id="route_left_line" style={{lineColor : 'blue', lineWidth : 5, lineCap : 'round', lineJoin : 'round'}}/>
+                </MapboxGL.ShapeSource>
+                </>
+            }
         </MapboxGL.MapView>
     )
 }
