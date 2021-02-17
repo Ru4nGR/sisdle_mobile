@@ -22,7 +22,7 @@ export async function getRoute(start : Array<number>, finish : Array<number>, pr
         )
         let json = await response.json()
         console.log(json)
-        return json.routes[0]
+        return json.routes[0].geometry
     }
     catch (error) {
         console.log(error);
