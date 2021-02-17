@@ -13,6 +13,7 @@ import MapboxGL from '@react-native-mapbox-gl/maps'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'src/reducers'
+import Splash from './Splash'
 
 const MapScreen : React.FC = () => {
 
@@ -68,7 +69,7 @@ const MapScreen : React.FC = () => {
                 </>
             }
             {status === Status.Pending &&
-                <Text style={{flex : 1, textAlign : 'center', textAlignVertical : 'center'}}>Carregando...</Text>
+                <Splash/>
             }
             {status === Status.Rejected &&
                 <Text style={{flex : 1, textAlign : 'center', textAlignVertical : 'center'}}>{error}</Text>
