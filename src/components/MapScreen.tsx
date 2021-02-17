@@ -36,7 +36,7 @@ const MapScreen : React.FC = () => {
 
     useEffect(() => {
         if (sorted) {
-            camera.current?.flyTo(lixeiras![0].coordinate)
+            camera.current?.flyTo(lixeiras[0].coordinates)
             setSorted(false)
         }
     }, [sorted])

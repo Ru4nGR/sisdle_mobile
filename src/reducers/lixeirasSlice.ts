@@ -9,16 +9,11 @@ export enum Status {
 }
 
 export interface Lixeira {
-    id : string,
-    local : string,
+    id : string
+    coordinates : Array<number>
     capacity : number
-    local_id : string,
-    latitude : string,
-    longitude : string,
-    descricao : string,
-    tempo_info : string,
-    profundidade : string,
-    coordinate : Array<number>,
+    location : string
+    description : string
 }
 
 export const loadLixeiras = createAsyncThunk('lixeiras/loadLixeiras', async () => {

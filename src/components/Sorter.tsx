@@ -50,8 +50,8 @@ const Sorter : React.FC<Props> = (props) => {
     function byNormalizedProduct() {
         const distances = byDistance().map(lixeira => {
             return magnitude([
-                parseFloat(lixeira.longitude) - userLocation[0],
-                parseFloat(lixeira.latitude) - userLocation[1]
+                lixeira.coordinates[0] - userLocation[0],
+                lixeira.coordinates[1] - userLocation[1]
             ])
         })
         const capacities = byCapacity().map(lixeira => lixeira.capacity)
@@ -65,12 +65,12 @@ const Sorter : React.FC<Props> = (props) => {
         return lixeiras.slice().sort(
             (a, b) => {
                 const da = magnitude([
-                    parseFloat(a.longitude) - userLocation[0],
-                    parseFloat(a.latitude) - userLocation[1]
+                    a.coordinates[0] - userLocation[0],
+                    a.coordinates[1] - userLocation[1]
                 ])
                 const db = magnitude([
-                    parseFloat(b.longitude) - userLocation[0],
-                    parseFloat(b.latitude) - userLocation[1]
+                    b.coordinates[0] - userLocation[0],
+                    b.coordinates[1] - userLocation[1]
                 ])
 
                 // normalized distance
@@ -90,12 +90,12 @@ const Sorter : React.FC<Props> = (props) => {
         return lixeiras.slice().sort(
             (a, b) => {
                 const da = magnitude([
-                    parseFloat(a.longitude) - userLocation[0],
-                    parseFloat(a.latitude) - userLocation[1]
+                    a.coordinates[0] - userLocation[0],
+                    a.coordinates[1] - userLocation[1]
                 ])
                 const db = magnitude([
-                    parseFloat(b.longitude) - userLocation[0],
-                    parseFloat(b.latitude) - userLocation[1]
+                    b.coordinates[0] - userLocation[0],
+                    b.coordinates[1] - userLocation[1]
                 ])
                 return da - db
             }

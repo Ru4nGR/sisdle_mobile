@@ -28,27 +28,27 @@ const Callout : React.FC<Props> = (props) => {
             console.log('ok')
             dispatch(loadRoute({
                 start : userLocation,
-                finish : lixeira.coordinate,
+                finish : lixeira.coordinates,
                 profile : profile
             }))
         }
     }
 
-    const localSize = Math.sqrt(140*35/lixeira.local.length)
-    const descricaoSize = Math.sqrt(140*20/lixeira.descricao.length)
+    const localSize = Math.sqrt(140*35/lixeira.location.length)
+    const descricaoSize = Math.sqrt(140*20/lixeira.description.length)
 
     return (
         <View style={styles.container}>
             <View style={styles.content}>
-                <Text style={[styles.txtLocal, {fontSize : localSize}]}>
-                    {lixeira.local}
+                <Text style={[styles.txtLocation, {fontSize : localSize}]}>
+                    {lixeira.location}
                 </Text>
                 <View style={styles.separator}/>
                 <Text style={styles.txtCapacity}>
                     {lixeira.capacity + '%'}
                 </Text>
-                <Text style={[styles.txtDescricao, {fontSize : descricaoSize}]}>
-                    {lixeira.descricao}
+                <Text style={[styles.txtDescription, {fontSize : descricaoSize}]}>
+                    {lixeira.description}
                 </Text>
                 <Pressable style={styles.btnRoute} onPress={onBtnRoutePress}>
                     <Text>Rota</Text>
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         borderColor: 'rgba(0, 0, 0, 0.2)'
     },
-    txtLocal : {
+    txtLocation : {
         textAlign : 'center',
         textAlignVertical : 'center',
         height : 35,
@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
         textAlignVertical : 'center',
         flex : 2
     },
-    txtDescricao : {
+    txtDescription : {
         textAlign : 'center',
         color : 'lightgray',
         height : 20,
