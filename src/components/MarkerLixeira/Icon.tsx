@@ -5,17 +5,22 @@ import {
     StyleSheet,
     GestureResponderEvent
 } from 'react-native'
-import { Lixeira } from 'src/reducers/lixeirasSlice'
+import { useDispatch } from 'react-redux'
+import { Lixeira, toggleLixeiraSelected } from 'src/reducers/lixeirasSlice'
 
 interface Props {
     lixeira : Lixeira
-    onPress : (event : GestureResponderEvent) => void
 }
 
 const Icon : React.FC<Props> = (props) => {
 
+    const dispatch = useDispatch()
+
     const lixeira = props.lixeira
-    const onPress = props.onPress
+
+    function onPress() {
+        dispatch(toggleLixeiraSelected(lixeira.id))
+    }
 
     return (
         <Pressable onPress={onPress} style={styles.container}>
