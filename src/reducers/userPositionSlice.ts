@@ -5,7 +5,7 @@ const userPositionSlice = createSlice({
     initialState : [0, 0],
     reducers : {
         update(state, action) {
-            state = action.payload
+            return action.payload
         }
     }
 })
