@@ -7,7 +7,7 @@ import {
 } from 'react-native'
 import Map from 'src/components/Map'
 import Sorter from 'src/components/Sorter'
-import { Lixeira, loadLixeiras, setLixeiras, Status } from 'src/reducers/lixeirasSlice'
+import { deselectAllLixeiras, Lixeira, loadLixeiras, setLixeiras, Status, toggleLixeiraSelected } from 'src/reducers/lixeirasSlice'
 import RoutingProfileSelector from 'src/components/RoutingProfileSelector'
 import MapboxGL from '@react-native-mapbox-gl/maps'
 import Icon from 'react-native-vector-icons/MaterialIcons'
@@ -37,12 +37,14 @@ const MapScreen : React.FC = () => {
     useEffect(() => {
         if (sorted) {
             camera.current?.flyTo(lixeiras[0].coordinates)
+            dispatch(toggleLixeiraSelected(lixeiras[0].id))
             setSorted(false)
         }
     }, [sorted])
 
     function onSort(lixeiras : Array<Lixeira>) {
         dispatch(setLixeiras(lixeiras))
+        dispatch(deselectAllLixeiras())
         setFollowUserLocation(false)
         setSorted(true)
     }

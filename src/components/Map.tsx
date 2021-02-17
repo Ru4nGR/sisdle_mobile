@@ -11,6 +11,7 @@ import { update } from 'src/reducers/userPositionSlice'
 import { RootState } from 'src/reducers'
 import { deselectAllLixeiras } from 'src/reducers/lixeirasSlice'
 import { getProjectionOnLineString } from 'src/utils/complicatedGeometry'
+import MarkerCallout from 'src/components/MarkerLixeira/MarkerCallout'
 
 MapboxGL.setAccessToken(MAPBOX_ACCESS_TOKEN)
 
@@ -81,6 +82,9 @@ const Map : React.FC<Props> = (props) => {
                 <MarkerLixeira
                     key={lixeira.id}
                     lixeira={lixeira}/>
+            ))}
+            {lixeiras.map(lixeira => (lixeira.selected &&
+                <MarkerCallout key={lixeira.id} lixeira={lixeira}/>
             ))}
             <MapboxGL.UserLocation onUpdate={onUserLocationUpdate}/>
             {route &&
