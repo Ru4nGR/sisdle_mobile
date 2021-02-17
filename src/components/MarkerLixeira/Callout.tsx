@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     Text,
     View,
     StyleSheet,
-    Pressable
+    Pressable,
+    ActivityIndicator
 } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'src/reducers'
@@ -18,17 +19,24 @@ const Callout : React.FC<Props> = (props) => {
 
     const dispatch = useDispatch()
 
-    const status = useSelector((state : RootState) => state.route.status)
+    const routeStatus = useSelector((state : RootState) => state.route.status)
     const userLocation = useSelector((state : RootState) => state.userPosition)
+    const [status, setStatus] = useState(Status.Idle)
     const lixeira = props.lixeira
 
+    useEffect(() => {
+        if (routeStatus != Status.Pending) {
+            setStatus(Status.Idle)
+        }
+    }, [routeStatus])
+
     function onBtnRoutePress() {
-        if (status != Status.Pending) {
-            console.log('ok')
+        if (routeStatus != Status.Pending) {
             dispatch(loadRoute({
                 start : userLocation,
                 finish : lixeira.coordinates,
             }))
+            setStatus(Status.Pending)
         }
     }
 
@@ -49,7 +57,12 @@ const Callout : React.FC<Props> = (props) => {
                     {lixeira.description}
                 </Text>
                 <Pressable style={styles.btnRoute} onPress={onBtnRoutePress}>
-                    <Text>Rota</Text>
+                    {status === Status.Idle &&
+                        <Text style={{color : 'white'}}>Rota</Text>
+                    }
+                    {status === Status.Pending &&
+                        <ActivityIndicator color='white'/>
+                    }
                 </Pressable>
             </View>
             <View style={{alignItems : 'center', justifyContent: 'center'}}>
