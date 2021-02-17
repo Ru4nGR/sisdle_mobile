@@ -28,7 +28,10 @@ const routeSlice = createSlice({
         error : ''
     },
     reducers : {
-
+        clear(state) {
+            state.status = Status.Idle
+            state.data = null
+        }
     },
     extraReducers : builder => {
         builder.addCase(loadRoute.pending, (state, action) => {
@@ -46,3 +49,6 @@ const routeSlice = createSlice({
 })
 
 export default routeSlice.reducer
+export const {
+    clear
+} = routeSlice.actions

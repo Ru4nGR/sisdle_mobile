@@ -29,12 +29,12 @@ const MapScreen : React.FC = () => {
     const error = useSelector((state : RootState) => state.lixeiras.error)
     const lixeiras = useSelector((state : RootState) => state.lixeiras.data)
     const userLocation = useSelector((state : RootState) => state.userPosition)
+    const routingProfile = useSelector((state : RootState) => state.routingProfile)
 
     const [sorted, setSorted] = useState(false)
     const [route, setRoute] = useState<Route | undefined>(undefined)
     const [followUserLocation, setFollowUserLocation] = useState(true)
     const [selectedLixeira, setSelectedLixeira] = useState<Lixeira | undefined>(undefined)
-    const [routingProfile, setRoutingProfile] = useState<RoutingProfile>(RoutingProfile.DrivingTraffic)
 
     const camera = useRef<MapboxGL.Camera>(null)
 
@@ -62,13 +62,6 @@ const MapScreen : React.FC = () => {
             const route = await APIGetRoute(userLocation, lixeira.coordinate, routingProfile)
             setSelectedLixeira(lixeira)
             setRoute(route)
-        }
-    }
-
-    function onRoutingProfileChanged(value : any) {
-        setRoutingProfile(value)
-        if (route) {
-            getRoute(selectedLixeira)
         }
     }
 
@@ -120,11 +113,7 @@ const MapScreen : React.FC = () => {
                     route={newRoute?.geometry}/>
                 <View style={styles.controlLayer}>
                     <View>
-                        <RoutingProfileSelector
-                            btnCancel={route != undefined}
-                            onBtnCancelPress={() => setRoute(undefined)}
-                            selected={routingProfile}
-                            onChange={onRoutingProfileChanged}/>
+                        <RoutingProfileSelector/>
                     </View>
                     <View>
                         <Sorter onSort={onSort}/>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     View,
     Pressable,
@@ -7,13 +7,10 @@ import {
 } from 'react-native'
 import {RoutingProfile} from 'src/api/routes'
 import Icon from 'react-native-vector-icons/MaterialIcons'
-
-interface Props {
-    selected : RoutingProfile,
-    btnCancel : boolean,
-    onChange : (option : string) => void,
-    onBtnCancelPress : (event : GestureResponderEvent) => void
-}
+import { useDispatch, useSelector } from 'react-redux'
+import { RootState } from 'src/reducers'
+import { clear, loadRoute, Status } from 'src/reducers/routeSlice'
+import { set } from 'src/reducers/routingProfileSlice'
 
 const icons = {
     [RoutingProfile.Driving] : '',
@@ -22,8 +19,12 @@ const icons = {
     [RoutingProfile.DrivingTraffic] : 'directions-car'
 }
 
-const PillSelector : React.FC<Props> = (props) => {
+const PillSelector : React.FC = () => {
 
+    const dispatch = useDispatch()
+
+    const status = useSelector((state : RootState) => state.route.status)
+    const profile = useSelector((state : RootState) => state.routingProfile)
     const [showOptions, setShowOptions] = useState(false)
 
     function toggleOptions() {
@@ -31,18 +32,18 @@ const PillSelector : React.FC<Props> = (props) => {
     }
 
     function select(value : RoutingProfile) {
-        props.onChange(value)
+        dispatch(set(value))
         toggleOptions()
     }
-    
-    const selected = props.selected
-    const btnCancel = props.btnCancel
-    const onBtnCancelPress = props.onBtnCancelPress
+
+    function onBtnCancelPress() {
+        dispatch(clear())
+    }
 
     return (
         <View style={styles.container}>
             <Pressable style={styles.selection} onPress={toggleOptions}>
-                <Icon name={icons[selected]} style={styles.iconOption}/>
+                <Icon name={icons[profile]} style={styles.iconOption}/>
             </Pressable>
             {showOptions &&
                 <>
@@ -57,7 +58,7 @@ const PillSelector : React.FC<Props> = (props) => {
                 </Pressable>
                 </>
             }
-            {btnCancel &&
+            {status === Status.Fulfilled &&
                 <Pressable style={styles.btnOption} onPress={onBtnCancelPress}>
                     <Icon style={styles.iconOption}name='close'/>
                 </Pressable>

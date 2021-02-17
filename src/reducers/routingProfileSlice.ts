@@ -6,7 +6,7 @@ const routingProfileSlice = createSlice({
     initialState : RoutingProfile.DrivingTraffic,
     reducers : {
         set(state, action) {
-            state = action.payload
+            return action.payload
         }
     }
 })
