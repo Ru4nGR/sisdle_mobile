@@ -8,8 +8,7 @@ import {RoutingProfile} from 'src/api/routes'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'src/reducers'
-import { clear, Status } from 'src/reducers/routeSlice'
-import { set } from 'src/reducers/routingProfileSlice'
+import { clear, setProfile, Status } from 'src/reducers/routeSlice'
 
 const icons = {
     [RoutingProfile.Driving] : '',
@@ -23,7 +22,7 @@ const PillSelector : React.FC = () => {
     const dispatch = useDispatch()
 
     const status = useSelector((state : RootState) => state.route.status)
-    const profile = useSelector((state : RootState) => state.routingProfile)
+    const profile = useSelector((state : RootState) => state.route.profile)
     const [showOptions, setShowOptions] = useState(false)
 
     function toggleOptions() {
@@ -31,7 +30,7 @@ const PillSelector : React.FC = () => {
     }
 
     function select(value : RoutingProfile) {
-        dispatch(set(value))
+        dispatch(setProfile(value))
         toggleOptions()
     }
 

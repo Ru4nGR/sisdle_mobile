@@ -20,7 +20,6 @@ const Callout : React.FC<Props> = (props) => {
 
     const status = useSelector((state : RootState) => state.route.status)
     const userLocation = useSelector((state : RootState) => state.userPosition)
-    const profile = useSelector((state : RootState) => state.routingProfile)
     const lixeira = props.lixeira
 
     function onBtnRoutePress() {
@@ -29,7 +28,6 @@ const Callout : React.FC<Props> = (props) => {
             dispatch(loadRoute({
                 start : userLocation,
                 finish : lixeira.coordinates,
-                profile : profile
             }))
         }
     }
