@@ -6,7 +6,6 @@ import {
 import {MAPBOX_ACCESS_TOKEN} from 'src/api/constants'
 import MapboxGL from '@react-native-mapbox-gl/maps'
 import MarkerLixeira from 'src/components/MarkerLixeira'
-import { Lixeira } from 'src/reducers/lixeirasSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { update } from 'src/reducers/userPositionSlice'
 import { RootState } from 'src/reducers'
@@ -31,12 +30,9 @@ const requestLocationPermission = async () => {
 }
 
 interface Props {
-    route? : GeoJSON.LineString,
-    lixeiras? : Array<Lixeira>,
     followUserLocation : boolean
     cameraRef : RefObject<MapboxGL.Camera>
     onTouchStart : (event : GestureResponderEvent) => void
-    onMarkerCalloutButtonPress : (lixeira : Lixeira) => void,
 }
 
 class Markers {
@@ -47,6 +43,7 @@ const Map : React.FC<Props> = (props) => {
 
     const dispatch = useDispatch()
 
+    const lixeiras = useSelector((state : RootState) => state.lixeiras.data)
     const route = useSelector((state : RootState) => state.route.data)
     const [markers, setMarkers] = useState(new Markers())
 
@@ -69,27 +66,24 @@ const Map : React.FC<Props> = (props) => {
         requestLocationPermission()
         MapboxGL.setTelemetryEnabled(false)
     }, [])
-
-    const lixeiras = props.lixeiras
-    const onMarkerCalloutButtonPress = props.onMarkerCalloutButtonPress
     
     return (
         <MapboxGL.MapView style={{flex : 1}} onTouchStart={props.onTouchStart} onPress={hideAllPopups}>
             <MapboxGL.Camera
                 followUserLocation={props.followUserLocation}
                 ref={props.cameraRef}/>
-            {lixeiras != undefined && lixeiras.map((lixeira) => (!markers[lixeira.id] &&
+            {lixeiras.map((lixeira) => (!markers[lixeira.id] &&
                 <MarkerLixeira
                     key={lixeira.id}
                     lixeira={lixeira}
                     toggleCallout={togglePopup}/>
                 ))}
-            {lixeiras != undefined && lixeiras.map((lixeira) => (markers[lixeira.id] &&
+            {lixeiras.map((lixeira) => (markers[lixeira.id] &&
                 <MarkerLixeira
                     key={lixeira.id}
                     lixeira={lixeira}
                     toggleCallout={togglePopup}
-                    calloutOnButtonPress={onMarkerCalloutButtonPress}/>
+                    calloutOnButtonPress={() => {}}/>
                 ))}
             {route &&
                 <MapboxGL.ShapeSource id="route_shape" shape={route}>

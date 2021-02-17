@@ -9,9 +9,9 @@ import Callout from './Callout'
 import { Lixeira } from 'src/reducers/lixeirasSlice'
 
 interface Props {
-    lixeira : Lixeira,
+    lixeira : Lixeira
     toggleCallout : (id : string) => void
-    calloutOnButtonPress? : (lixeira : Lixeira) => void,
+    calloutOnButtonPress? : (lixeira : Lixeira) => void
 }
 
 const Marker : React.FC<Props> = (props) => {

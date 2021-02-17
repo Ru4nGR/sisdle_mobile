@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { Route, getRoute, RoutingProfile } from 'src/api/routes'
+import { getRoute, RoutingProfile } from 'src/api/routes'
 
 export enum Status {
     Idle,

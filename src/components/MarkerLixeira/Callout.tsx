@@ -2,7 +2,6 @@ import React from 'react'
 import {
     Text,
     View,
-    Button,
     StyleSheet,
     Pressable
 } from 'react-native'
@@ -12,7 +11,7 @@ import { Lixeira } from 'src/reducers/lixeirasSlice'
 import { loadRoute, Status } from 'src/reducers/routeSlice'
 
 interface Props {
-    lixeira : Lixeira,
+    lixeira : Lixeira
 }
 
 const Callout : React.FC<Props> = (props) => {

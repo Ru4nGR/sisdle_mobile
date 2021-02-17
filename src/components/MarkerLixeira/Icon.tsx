@@ -8,7 +8,7 @@ import {
 import { Lixeira } from 'src/reducers/lixeirasSlice'
 
 interface Props {
-    lixeira : Lixeira,
+    lixeira : Lixeira
     onPress : (event : GestureResponderEvent) => void
 }
 

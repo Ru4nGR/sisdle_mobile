@@ -1,15 +1,14 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import {
     View,
     Pressable,
     StyleSheet,
-    GestureResponderEvent
 } from 'react-native'
 import {RoutingProfile} from 'src/api/routes'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'src/reducers'
-import { clear, loadRoute, Status } from 'src/reducers/routeSlice'
+import { clear, Status } from 'src/reducers/routeSlice'
 import { set } from 'src/reducers/routingProfileSlice'
 
 const icons = {
