@@ -37,6 +37,13 @@ const lixeirasSlice = createSlice({
             const id = action.payload
             const lixeira = state.data.find(lixeira => lixeira.id == id)!
             lixeira.selected = !lixeira.selected
+            state.data.sort((a, b) => {
+                const ia = a.selected ? 1 : 0
+                const ib = b.selected ? 1 : 0
+                return ia - ib
+            })
+            state.data.splice(state.data.indexOf(lixeira), 1)
+            state.data.push(lixeira)
         },
         deselectAllLixeiras(state) {
             state.data.forEach(lixeira => {
