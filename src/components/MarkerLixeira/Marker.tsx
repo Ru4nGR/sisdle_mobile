@@ -27,7 +27,7 @@ const Marker : React.FC<Props> = (props) => {
             <Pressable style={[styles.container, {width : showCallout ? 194 : 30}]}>
                 <Icon lixeira={lixeira} onPress={() => toggleCallout(lixeira.id)}/>
                 {showCallout &&
-                    <Callout lixeira={lixeira} onButtonPress={calloutOnButtonPress!}/>
+                    <Callout lixeira={lixeira}/>
                 }
             </Pressable>
         </MapboxGL.MarkerView>

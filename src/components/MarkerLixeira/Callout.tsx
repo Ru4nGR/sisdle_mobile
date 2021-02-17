@@ -6,17 +6,34 @@ import {
     StyleSheet,
     Pressable
 } from 'react-native'
+import { useDispatch, useSelector } from 'react-redux'
+import { RootState } from 'src/reducers'
 import { Lixeira } from 'src/reducers/lixeirasSlice'
+import { loadRoute, Status } from 'src/reducers/routeSlice'
 
 interface Props {
     lixeira : Lixeira,
-    onButtonPress : (lixeira : Lixeira) => void,
 }
 
 const Callout : React.FC<Props> = (props) => {
 
+    const dispatch = useDispatch()
+
+    const status = useSelector((state : RootState) => state.route.status)
+    const userLocation = useSelector((state : RootState) => state.userPosition)
+    const profile = useSelector((state : RootState) => state.routingProfile)
     const lixeira = props.lixeira
-    const onButtonPress = props.onButtonPress
+
+    function onBtnRoutePress() {
+        if (status != Status.Pending) {
+            console.log('ok')
+            dispatch(loadRoute({
+                start : userLocation,
+                finish : lixeira.coordinate,
+                profile : profile
+            }))
+        }
+    }
 
     const localSize = Math.sqrt(140*35/lixeira.local.length)
     const descricaoSize = Math.sqrt(140*20/lixeira.descricao.length)
@@ -34,7 +51,7 @@ const Callout : React.FC<Props> = (props) => {
                 <Text style={[styles.txtDescricao, {fontSize : descricaoSize}]}>
                     {lixeira.descricao}
                 </Text>
-                <Pressable style={styles.btnRota} onPress={() => onButtonPress(lixeira)}>
+                <Pressable style={styles.btnRoute} onPress={onBtnRoutePress}>
                     <Text>Rota</Text>
                 </Pressable>
             </View>
@@ -82,7 +99,7 @@ const styles = StyleSheet.create({
         height : 20,
         marginBottom : 5
     },
-    btnRota : {
+    btnRoute : {
         justifyContent : 'center',
         alignItems : 'center',
         backgroundColor : '#2196F3',

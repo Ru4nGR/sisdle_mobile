@@ -14,7 +14,7 @@ import {
     Route,
     RoutingProfile,
     getRoute as APIGetRoute
-} from 'src/api/rotas'
+} from 'src/api/routes'
 import MapboxGL from '@react-native-mapbox-gl/maps'
 import { getOrtogonalProjection, magnitude, isOnSegment } from 'src/utils/complicatedGeometry'
 import Icon from 'react-native-vector-icons/MaterialIcons'
@@ -59,7 +59,7 @@ const MapScreen : React.FC = () => {
 
     async function getRoute(lixeira : any) {
         if (userLocation != undefined) {
-            const route = await APIGetRoute(routingProfile, userLocation, lixeira.coordinate)
+            const route = await APIGetRoute(userLocation, lixeira.coordinate, routingProfile)
             setSelectedLixeira(lixeira)
             setRoute(route)
         }

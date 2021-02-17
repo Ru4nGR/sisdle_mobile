@@ -7,8 +7,9 @@ import {MAPBOX_ACCESS_TOKEN} from 'src/api/constants'
 import MapboxGL from '@react-native-mapbox-gl/maps'
 import MarkerLixeira from 'src/components/MarkerLixeira'
 import { Lixeira } from 'src/reducers/lixeirasSlice'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { update } from 'src/reducers/userPositionSlice'
+import { RootState } from 'src/reducers'
 
 MapboxGL.setAccessToken(MAPBOX_ACCESS_TOKEN)
 
@@ -46,6 +47,7 @@ const Map : React.FC<Props> = (props) => {
 
     const dispatch = useDispatch()
 
+    const route = useSelector((state : RootState) => state.route.data)
     const [markers, setMarkers] = useState(new Markers())
 
     function togglePopup(key : string) {
@@ -68,7 +70,6 @@ const Map : React.FC<Props> = (props) => {
         MapboxGL.setTelemetryEnabled(false)
     }, [])
 
-    const route = props.route
     const lixeiras = props.lixeiras
     const onMarkerCalloutButtonPress = props.onMarkerCalloutButtonPress
     

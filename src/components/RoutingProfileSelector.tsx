@@ -5,7 +5,7 @@ import {
     StyleSheet,
     GestureResponderEvent
 } from 'react-native'
-import {RoutingProfile} from 'src/api/rotas'
+import {RoutingProfile} from 'src/api/routes'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 
 interface Props {
