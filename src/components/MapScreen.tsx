@@ -36,8 +36,10 @@ const MapScreen : React.FC = () => {
 
     useEffect(() => {
         if (sorted) {
-            camera.current?.flyTo(lixeiras[0].coordinates)
-            dispatch(toggleLixeiraSelected(lixeiras[0].id))
+            camera.current?.flyTo(lixeiras[0].coordinates, 1000)
+            setTimeout(() => {
+                dispatch(toggleLixeiraSelected(lixeiras[0].id))
+            }, 1000);
             setSorted(false)
         }
     }, [sorted])
