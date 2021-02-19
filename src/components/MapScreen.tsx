@@ -1,19 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react'
 import {
     View,
-    StyleSheet,
-    Pressable,
     Text
 } from 'react-native'
 import Map from 'src/components/Map'
-import Sorter from 'src/components/Sorter'
-import { deselectAllLixeiras, Lixeira, loadLixeiras, setLixeiras, Status, toggleLixeiraSelected } from 'src/reducers/lixeirasSlice'
-import RoutingProfileSelector from 'src/components/RoutingProfileSelector'
+import { loadLixeiras, Status, toggleLixeiraSelected } from 'src/reducers/lixeirasSlice'
 import MapboxGL from '@react-native-mapbox-gl/maps'
-import Icon from 'react-native-vector-icons/MaterialIcons'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'src/reducers'
 import Splash from './Splash'
+import ControllLayer from 'src/components/ControllLayer'
 
 const MapScreen : React.FC = () => {
 
@@ -44,9 +40,7 @@ const MapScreen : React.FC = () => {
         }
     }, [sorted])
 
-    function onSort(lixeiras : Array<Lixeira>) {
-        dispatch(setLixeiras(lixeiras))
-        dispatch(deselectAllLixeiras())
+    function onSort() {
         setFollowUserLocation(false)
         setSorted(true)
     }
@@ -59,17 +53,7 @@ const MapScreen : React.FC = () => {
                     cameraRef={camera}
                     onTouchStart={() => setFollowUserLocation(false)}
                     followUserLocation={followUserLocation}/>
-                <View style={styles.controlLayer}>
-                    <View>
-                        <RoutingProfileSelector/>
-                    </View>
-                    <View>
-                        <Sorter onSort={onSort}/>
-                    </View>
-                    <Pressable onPress={() => setFollowUserLocation(true)} style={styles.btnCenterOnUserLocation}>
-                        <Icon name='gps-fixed' style={styles.iconCenterOnUserLocation}/>
-                    </Pressable>
-                </View>
+                <ControllLayer onSort={onSort} onCenterOnUserPress={() => setFollowUserLocation(true)}/>
                 </>
             }
             {status === Status.Pending &&
@@ -82,31 +66,3 @@ const MapScreen : React.FC = () => {
     )
 }
 export default MapScreen
-
-const styles = StyleSheet.create({
-    controlLayer : {
-        bottom : 0,
-        width : '100%',
-        position : 'absolute',
-        marginVertical : 30,
-        flexDirection : 'row',
-        justifyContent : 'space-evenly',
-        alignItems : 'flex-end'
-    },
-    filler : {
-        width : 50,
-        height : 50,
-    },
-    btnCenterOnUserLocation : {
-        width : 50,
-        height : 50,
-        borderRadius : 25,
-        backgroundColor : '#2196F3',
-        justifyContent : 'center',
-        alignItems : 'center'
-    },
-    iconCenterOnUserLocation : {
-        fontSize : 30,
-        color : 'white'
-    }
-})
