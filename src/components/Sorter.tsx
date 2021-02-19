@@ -12,9 +12,9 @@ import { useSelector } from 'react-redux'
 import { RootState } from 'src/reducers'
 
 enum SortingMethod {
-    ByDistance = 'Lixeira mais próxima',
-    ByCapacity = 'Lixeira mais vazia',
-    ByNormalizedProduct = 'Melhor lixeira'
+    ByDistance = 'Distância',
+    ByCapacity = 'Capacidade',
+    ByNormalizedProduct = 'Automático'
 }
 
 interface Props {
