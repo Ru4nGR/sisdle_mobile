@@ -26,17 +26,19 @@ const lixeirasSlice = createSlice({
     name : 'lixeiras',
     initialState : {
         data : new Array<Lixeira>(),
+        sorted : new Array<Lixeira>(),
         status : Status.Idle,
         error : ''
     },
     reducers : {
-        setLixeiras(state, action) {
-            state.data = action.payload
+        setSorted(state, action) {
+            state.sorted = action.payload
         },
-        toggleLixeiraSelected(state, action : {payload : string}) {
+        selectLixeira(state, action : {payload : string}) {
             const id = action.payload
             const lixeira = state.data.find(lixeira => lixeira.id == id)!
-            lixeira.selected = !lixeira.selected
+            state.sorted.splice(state.sorted.indexOf(lixeira), 1)
+            state.sorted.unshift(lixeira)
         },
         deselectAllLixeiras(state) {
             state.data.forEach(lixeira => {
@@ -61,7 +63,7 @@ const lixeirasSlice = createSlice({
 
 export default lixeirasSlice.reducer
 export const {
-    setLixeiras,
-    toggleLixeiraSelected,
+    setSorted,
+    selectLixeira,
     deselectAllLixeiras
 } = lixeirasSlice.actions

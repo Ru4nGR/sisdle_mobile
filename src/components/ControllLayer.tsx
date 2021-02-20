@@ -8,7 +8,7 @@ import Sorter from 'src/components/Sorter'
 import RoutingProfileSelector from 'src/components/RoutingProfileSelector'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import { useDispatch } from 'react-redux'
-import { Lixeira, setLixeiras, deselectAllLixeiras } from 'src/reducers/lixeirasSlice'
+import { Lixeira, setSorted, deselectAllLixeiras } from 'src/reducers/lixeirasSlice'
 
 interface Props {
     onSort : () => void
@@ -20,7 +20,7 @@ const ControllLayer : React.FC<Props> = (props) => {
     const dispatch = useDispatch()
 
     function onSort(lixeiras : Array<Lixeira>) {
-        dispatch(setLixeiras(lixeiras))
+        dispatch(setSorted(lixeiras))
         dispatch(deselectAllLixeiras())
         props.onSort()
     }

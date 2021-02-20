@@ -6,8 +6,9 @@ import {
 import MapboxGL from '@react-native-mapbox-gl/maps'
 import Icon from './Icon'
 import Callout from './Callout'
-import { Lixeira, toggleLixeiraSelected } from 'src/reducers/lixeirasSlice'
-import { useDispatch } from 'react-redux'
+import { Lixeira, selectLixeira } from 'src/reducers/lixeirasSlice'
+import { useDispatch, useSelector } from 'react-redux'
+import { RootState } from 'src/reducers'
 
 interface Props {
     lixeira : Lixeira
@@ -18,13 +19,16 @@ const Marker : React.FC<Props> = (props) => {
     const dispatch = useDispatch()
 
     const lixeira = props.lixeira
+    const sorted = useSelector((state : RootState) => state.lixeiras.sorted)
 
     function onSelect() {
-        dispatch(toggleLixeiraSelected(lixeira.id))
+        dispatch(selectLixeira(lixeira.id))
     }
 
     function onDeselect() {
-        dispatch(toggleLixeiraSelected(lixeira.id))
+        if (sorted.indexOf(lixeira) == 0) {
+            dispatch(selectLixeira(lixeira.id))
+        }
     }
 
     return (

@@ -4,7 +4,7 @@ import {
     Text
 } from 'react-native'
 import Map from 'src/components/Map'
-import { loadLixeiras, Status, toggleLixeiraSelected } from 'src/reducers/lixeirasSlice'
+import { loadLixeiras, Status } from 'src/reducers/lixeirasSlice'
 import MapboxGL from '@react-native-mapbox-gl/maps'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'src/reducers'
@@ -19,6 +19,7 @@ const MapScreen : React.FC = () => {
     const status = useSelector((state : RootState) => state.lixeiras.status)
     const error = useSelector((state : RootState) => state.lixeiras.error)
     const lixeiras = useSelector((state : RootState) => state.lixeiras.data)
+    const sortedLixeiras = useSelector((state : RootState) => state.lixeiras.sorted)
 
     const [sorted, setSorted] = useState(false)
     const [followUserLocation, setFollowUserLocation] = useState(true)
@@ -33,10 +34,7 @@ const MapScreen : React.FC = () => {
 
     useEffect(() => {
         if (sorted) {
-            camera.current?.flyTo(lixeiras[0].coordinates, 1000)
-            setTimeout(() => {
-                dispatch(toggleLixeiraSelected(lixeiras[0].id))
-            }, 1000);
+            camera.current?.flyTo(sortedLixeiras[0].coordinates, 1000)
             setSorted(false)
         }
     }, [sorted])
@@ -54,7 +52,9 @@ const MapScreen : React.FC = () => {
                     cameraRef={camera}
                     onTouchStart={() => setFollowUserLocation(false)}
                     followUserLocation={followUserLocation}/>
-                <LixeiraPod lixeira={lixeiras[0]}/>
+                {sortedLixeiras.length != 0 &&
+                    <LixeiraPod lixeira={sortedLixeiras[0]}/>
+                }
                 <ControllLayer onSort={onSort} onCenterOnUserPress={() => setFollowUserLocation(true)}/>
                 </>
             }
