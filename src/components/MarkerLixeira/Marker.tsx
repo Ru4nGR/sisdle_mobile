@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import {
     StyleSheet,
+    View
 } from 'react-native'
 import MapboxGL from '@react-native-mapbox-gl/maps'
 import Icon from './Icon'
@@ -18,6 +19,11 @@ const Marker : React.FC<Props> = (props) => {
 
     const lixeira = props.lixeira
     const sorted = useSelector((state : RootState) => state.lixeiras.sorted)
+    const ref = useRef<MapboxGL.PointAnnotation>(null)
+
+    useEffect(() => {
+        ref.current?.refresh()
+    }, [sorted])
 
     function onSelect() {
         dispatch(selectLixeira(lixeira.id))
@@ -32,18 +38,24 @@ const Marker : React.FC<Props> = (props) => {
     return (
         <MapboxGL.PointAnnotation
             id={lixeira.id}
+            ref={ref}
             onSelected={onSelect}
             onDeselected={onDeselect}
             coordinate={lixeira.coordinates}>
-            <Icon lixeira={lixeira}/>
+            <View style={[styles.halo, {backgroundColor : sorted.indexOf(lixeira) == 0 ? 'yellow' : 'transparent'}]}>
+                <Icon lixeira={lixeira}/>
+            </View>
         </MapboxGL.PointAnnotation>
     )
 }
 export default Marker
 
 const styles = StyleSheet.create({
-    container : {
+    halo : {
+        width : 40,
+        height : 40,
+        justifyContent : 'center',
         alignItems : 'center',
-        flexDirection : 'row',
+        borderRadius : 20
     }
 })
