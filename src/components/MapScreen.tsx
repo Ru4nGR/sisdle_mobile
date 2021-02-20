@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'src/reducers'
 import Splash from './Splash'
 import ControllLayer from 'src/components/ControllLayer'
+import LixeiraPod from 'src/components/LixeiraPod'
 
 const MapScreen : React.FC = () => {
 
@@ -53,6 +54,7 @@ const MapScreen : React.FC = () => {
                     cameraRef={camera}
                     onTouchStart={() => setFollowUserLocation(false)}
                     followUserLocation={followUserLocation}/>
+                <LixeiraPod lixeira={lixeiras[0]}/>
                 <ControllLayer onSort={onSort} onCenterOnUserPress={() => setFollowUserLocation(true)}/>
                 </>
             }
