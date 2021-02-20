@@ -1,5 +1,5 @@
 import React from 'react'
-import { Pressable, StyleSheet, View } from 'react-native'
+import { Pressable, StyleSheet } from 'react-native'
 import MapboxGL from '@react-native-mapbox-gl/maps'
 import Callout from 'src/components/MarkerLixeira/Callout'
 import { Lixeira } from 'src/reducers/lixeirasSlice'

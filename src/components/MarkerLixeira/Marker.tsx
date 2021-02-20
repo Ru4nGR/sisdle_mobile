@@ -1,11 +1,9 @@
 import React from 'react'
 import {
     StyleSheet,
-    Pressable
 } from 'react-native'
 import MapboxGL from '@react-native-mapbox-gl/maps'
 import Icon from './Icon'
-import Callout from './Callout'
 import { Lixeira, selectLixeira } from 'src/reducers/lixeirasSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'src/reducers'
@@ -32,7 +30,11 @@ const Marker : React.FC<Props> = (props) => {
     }
 
     return (
-        <MapboxGL.PointAnnotation onSelected={onSelect} onDeselected={onDeselect} id={lixeira.id} coordinate={lixeira.coordinates}>
+        <MapboxGL.PointAnnotation
+            id={lixeira.id}
+            onSelected={onSelect}
+            onDeselected={onDeselect}
+            coordinate={lixeira.coordinates}>
             <Icon lixeira={lixeira}/>
         </MapboxGL.PointAnnotation>
     )

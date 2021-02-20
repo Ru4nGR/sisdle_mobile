@@ -1,4 +1,4 @@
-import React, { RefObject, useEffect, useState } from 'react'
+import React, { RefObject, useEffect } from 'react'
 import {
     GestureResponderEvent,
     PermissionsAndroid,
@@ -9,9 +9,7 @@ import MarkerLixeira from 'src/components/MarkerLixeira'
 import { useDispatch, useSelector } from 'react-redux'
 import { update } from 'src/reducers/userPositionSlice'
 import { RootState } from 'src/reducers'
-import { deselectAllLixeiras } from 'src/reducers/lixeirasSlice'
 import { getProjectionOnLineString } from 'src/utils/complicatedGeometry'
-import MarkerCallout from 'src/components/MarkerLixeira/MarkerCallout'
 
 MapboxGL.setAccessToken(MAPBOX_ACCESS_TOKEN)
 
@@ -44,17 +42,12 @@ const Map : React.FC<Props> = (props) => {
 
     const lixeiras = useSelector((state : RootState) => state.lixeiras.data)
     const route = useSelector((state : RootState) => state.route.data)
-    const status = useSelector((state : RootState) => state.route.status)
     const userPosition = useSelector((state : RootState) => state.userPosition)
 
     useEffect(() => {
         requestLocationPermission()
         MapboxGL.setTelemetryEnabled(false)
     }, [])
-
-    function onPress() {
-        dispatch(deselectAllLixeiras())
-    }
 
     function onUserLocationUpdate(location : MapboxGL.Location) {
         dispatch(update([location.coords.longitude, location.coords.latitude]))
@@ -74,7 +67,7 @@ const Map : React.FC<Props> = (props) => {
     }
     
     return (
-        <MapboxGL.MapView style={{flex : 1}} onTouchStart={props.onTouchStart} onPress={onPress}>
+        <MapboxGL.MapView style={{flex : 1}} onTouchStart={props.onTouchStart}>
             <MapboxGL.Camera
                 followUserLocation={props.followUserLocation}
                 ref={props.cameraRef}/>
@@ -82,9 +75,6 @@ const Map : React.FC<Props> = (props) => {
                 <MarkerLixeira
                     key={lixeira.id}
                     lixeira={lixeira}/>
-            ))}
-            {lixeiras.map(lixeira => (lixeira.selected &&
-                <MarkerCallout key={lixeira.id} lixeira={lixeira}/>
             ))}
             <MapboxGL.UserLocation onUpdate={onUserLocationUpdate}/>
             {route &&

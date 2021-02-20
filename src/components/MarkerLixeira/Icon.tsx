@@ -3,10 +3,8 @@ import {
     View,
     Pressable,
     StyleSheet,
-    GestureResponderEvent
 } from 'react-native'
-import { useDispatch } from 'react-redux'
-import { Lixeira, toggleLixeiraSelected } from 'src/reducers/lixeirasSlice'
+import { Lixeira } from 'src/reducers/lixeirasSlice'
 
 interface Props {
     lixeira : Lixeira
@@ -14,16 +12,10 @@ interface Props {
 
 const Icon : React.FC<Props> = (props) => {
 
-    const dispatch = useDispatch()
-
     const lixeira = props.lixeira
 
-    function onPress() {
-        dispatch(toggleLixeiraSelected(lixeira.id))
-    }
-
     return (
-        <Pressable onPress={onPress} style={styles.container}>
+        <Pressable style={styles.container}>
             <View style={{flex : 100 - lixeira.capacity}}/>
             <View style={{
                 flex : lixeira.capacity,

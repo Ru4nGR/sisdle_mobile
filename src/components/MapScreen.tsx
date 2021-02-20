@@ -18,7 +18,6 @@ const MapScreen : React.FC = () => {
 
     const status = useSelector((state : RootState) => state.lixeiras.status)
     const error = useSelector((state : RootState) => state.lixeiras.error)
-    const lixeiras = useSelector((state : RootState) => state.lixeiras.data)
     const sorted = useSelector((state : RootState) => state.lixeiras.sorted)
 
     const [followUserLocation, setFollowUserLocation] = useState(true)

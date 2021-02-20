@@ -22,8 +22,7 @@ export async function getLixeiras() : Promise<Array<Lixeira>> {
             location : lixeira.local,
             description : lixeira.descricao,
             capacity : parseFloat(lixeira.profundidade),
-            coordinates : [parseFloat(lixeira.longitude), parseFloat(lixeira.latitude)],
-            selected : false
+            coordinates : [parseFloat(lixeira.longitude), parseFloat(lixeira.latitude)]
         }
         return newLixeira
     })
