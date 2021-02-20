@@ -19,9 +19,8 @@ const MapScreen : React.FC = () => {
     const status = useSelector((state : RootState) => state.lixeiras.status)
     const error = useSelector((state : RootState) => state.lixeiras.error)
     const lixeiras = useSelector((state : RootState) => state.lixeiras.data)
-    const sortedLixeiras = useSelector((state : RootState) => state.lixeiras.sorted)
+    const sorted = useSelector((state : RootState) => state.lixeiras.sorted)
 
-    const [sorted, setSorted] = useState(false)
     const [followUserLocation, setFollowUserLocation] = useState(true)
 
     const camera = useRef<MapboxGL.Camera>(null)
@@ -33,15 +32,11 @@ const MapScreen : React.FC = () => {
     }, [])
 
     useEffect(() => {
-        if (sorted) {
-            camera.current?.flyTo(sortedLixeiras[0].coordinates, 1000)
-            setSorted(false)
-        }
+        camera.current?.flyTo(sorted[0].coordinates, 1000)
     }, [sorted])
 
     function onSort() {
         setFollowUserLocation(false)
-        setSorted(true)
     }
 
     return (
@@ -52,8 +47,8 @@ const MapScreen : React.FC = () => {
                     cameraRef={camera}
                     onTouchStart={() => setFollowUserLocation(false)}
                     followUserLocation={followUserLocation}/>
-                {sortedLixeiras.length != 0 &&
-                    <LixeiraPod lixeira={sortedLixeiras[0]}/>
+                {sorted.length != 0 &&
+                    <LixeiraPod lixeira={sorted[0]}/>
                 }
                 <ControllLayer onSort={onSort} onCenterOnUserPress={() => setFollowUserLocation(true)}/>
                 </>
