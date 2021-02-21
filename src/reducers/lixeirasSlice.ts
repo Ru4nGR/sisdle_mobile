@@ -14,6 +14,7 @@ export interface Lixeira {
     capacity : number
     location : string
     description : string
+    selected : boolean
 }
 
 export const loadLixeiras = createAsyncThunk('lixeiras/loadLixeiras', async () => {
@@ -38,6 +39,19 @@ const lixeirasSlice = createSlice({
             const lixeira = state.data.find(lixeira => lixeira.id == id)!
             state.sorted.splice(state.sorted.indexOf(lixeira), 1)
             state.sorted.unshift(lixeira)
+        },
+        setLixeiras(state, action) {
+            state.data = action.payload
+        },
+        toggleLixeiraSelected(state, action : {payload : string}) {
+            const id = action.payload
+            const lixeira = state.data.find(lixeira => lixeira.id == id)!
+            lixeira.selected = !lixeira.selected
+        },
+        deselectAllLixeiras(state) {
+            state.data.forEach(lixeira => {
+                lixeira.selected = false
+            })
         }
     },
     extraReducers : builder => {
@@ -59,4 +73,7 @@ export default lixeirasSlice.reducer
 export const {
     setSorted,
     selectLixeira,
+    setLixeiras,
+    toggleLixeiraSelected,
+    deselectAllLixeiras
 } = lixeirasSlice.actions

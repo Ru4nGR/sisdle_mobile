@@ -21,7 +21,6 @@ export async function getRoute(start : Array<number>, finish : Array<number>, pr
             `&access_token=${MAPBOX_ACCESS_TOKEN}`
         )
         let json = await response.json()
-        console.log(json)
         return json.routes[0].geometry
     }
     catch (error) {

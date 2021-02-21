@@ -9,6 +9,7 @@ import MapboxGL from '@react-native-mapbox-gl/maps'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'src/reducers'
 import Splash from './Splash'
+import IconGenerator, { IconColection } from './IconGenerator'
 import ControllLayer from 'src/components/ControllLayer'
 import LixeiraPod from 'src/components/LixeiraPod'
 
@@ -18,8 +19,10 @@ const MapScreen : React.FC = () => {
 
     const status = useSelector((state : RootState) => state.lixeiras.status)
     const error = useSelector((state : RootState) => state.lixeiras.error)
+    const lixeiras = useSelector((state : RootState) => state.lixeiras.data)
     const sorted = useSelector((state : RootState) => state.lixeiras.sorted)
 
+    const [icons, setIcons] = useState<IconColection>({})
     const [followUserLocation, setFollowUserLocation] = useState(true)
 
     const camera = useRef<MapboxGL.Camera>(null)
@@ -38,22 +41,30 @@ const MapScreen : React.FC = () => {
         setFollowUserLocation(false)
     }
 
+    function onIconGeneratorFinish(icons : IconColection) {
+        setIcons(icons)
+    }
+
     return (
         <View style={{flex : 1}}>
-            {status === Status.Fulfilled && 
+            {(status === Status.Fulfilled && Object.values(icons).length != lixeiras.length) &&
+                <IconGenerator onFinish={onIconGeneratorFinish}/>
+            }
+            {(status === Status.Pending || Object.values(icons).length != lixeiras.length) &&
+                <Splash/>
+            }
+            {(status === Status.Fulfilled && Object.values(icons).length == lixeiras.length) && 
                 <>
                 <Map
+                    icons={icons}
                     cameraRef={camera}
                     onTouchStart={() => setFollowUserLocation(false)}
                     followUserLocation={followUserLocation}/>
+                <ControllLayer onCenterOnUserPress={() => setFollowUserLocation(true)} onSort={onSort}/>
                 {sorted.length != 0 &&
                     <LixeiraPod lixeira={sorted[0]}/>
                 }
-                <ControllLayer onSort={onSort} onCenterOnUserPress={() => setFollowUserLocation(true)}/>
                 </>
-            }
-            {status === Status.Pending &&
-                <Splash/>
             }
             {status === Status.Rejected &&
                 <Text style={{flex : 1, textAlign : 'center', textAlignVertical : 'center'}}>{error}</Text>

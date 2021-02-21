@@ -2,14 +2,17 @@ import React, { RefObject, useEffect } from 'react'
 import {
     GestureResponderEvent,
     PermissionsAndroid,
+    PixelRatio
 } from 'react-native'
 import {MAPBOX_ACCESS_TOKEN} from 'src/api/constants'
-import MapboxGL from '@react-native-mapbox-gl/maps'
-import MarkerLixeira from 'src/components/MarkerLixeira'
+import MapboxGL, { OnPressEvent } from '@react-native-mapbox-gl/maps'
 import { useDispatch, useSelector } from 'react-redux'
 import { update } from 'src/reducers/userPositionSlice'
 import { RootState } from 'src/reducers'
+import { deselectAllLixeiras, toggleLixeiraSelected } from 'src/reducers/lixeirasSlice'
 import { getProjectionOnLineString } from 'src/utils/complicatedGeometry'
+import MarkerCallout from 'src/components/MarkerLixeira/MarkerCallout'
+import { toGeoJSON } from 'src/api/lixeiras'
 
 MapboxGL.setAccessToken(MAPBOX_ACCESS_TOKEN)
 
@@ -34,6 +37,7 @@ interface Props {
     followUserLocation : boolean
     cameraRef : RefObject<MapboxGL.Camera>
     onTouchStart : (event : GestureResponderEvent) => void
+    icons : any
 }
 
 const Map : React.FC<Props> = (props) => {
@@ -49,8 +53,16 @@ const Map : React.FC<Props> = (props) => {
         MapboxGL.setTelemetryEnabled(false)
     }, [])
 
+    function onPress() {
+        dispatch(deselectAllLixeiras())
+    }
+
     function onUserLocationUpdate(location : MapboxGL.Location) {
         dispatch(update([location.coords.longitude, location.coords.latitude]))
+    }
+
+    function onShapeSourcePress(feature : OnPressEvent) {
+        dispatch(toggleLixeiraSelected(feature.features[0].properties!.id))
     }
 
     const routePast : GeoJSON.LineString = route != undefined && JSON.parse(JSON.stringify(route))
@@ -67,14 +79,19 @@ const Map : React.FC<Props> = (props) => {
     }
     
     return (
-        <MapboxGL.MapView style={{flex : 1}} onTouchStart={props.onTouchStart}>
+        <MapboxGL.MapView style={{flex : 1}} onTouchStart={props.onTouchStart} onPress={onPress}>
             <MapboxGL.Camera
                 followUserLocation={props.followUserLocation}
                 ref={props.cameraRef}/>
-            {lixeiras.map(lixeira => (
-                <MarkerLixeira
-                    key={lixeira.id}
-                    lixeira={lixeira}/>
+            <MapboxGL.Images images={props.icons}/>
+            <MapboxGL.ShapeSource onPress={onShapeSourcePress} id='lixeiras_source' shape={toGeoJSON(lixeiras)}>
+                <MapboxGL.SymbolLayer style={{
+                    iconImage : ['get', 'capacity'],
+                    iconSize : 1 / PixelRatio.getPixelSizeForLayoutSize(1)
+                }} id='lixeiras_symbol'/>
+            </MapboxGL.ShapeSource>
+            {lixeiras.map(lixeira => (lixeira.selected && 
+                <MarkerCallout key={lixeira.id} lixeira={lixeira}/>
             ))}
             <MapboxGL.UserLocation onUpdate={onUserLocationUpdate}/>
             {route &&

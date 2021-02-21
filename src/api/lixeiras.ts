@@ -22,8 +22,34 @@ export async function getLixeiras() : Promise<Array<Lixeira>> {
             location : lixeira.local,
             description : lixeira.descricao,
             capacity : parseFloat(lixeira.profundidade),
-            coordinates : [parseFloat(lixeira.longitude), parseFloat(lixeira.latitude)]
+            coordinates : [parseFloat(lixeira.longitude), parseFloat(lixeira.latitude)],
+            selected : false
         }
         return newLixeira
     })
+}
+
+export function toGeoJSON(lixeiras : Array<Lixeira>) : GeoJSON.FeatureCollection {
+    const out : GeoJSON.FeatureCollection = {
+        type : 'FeatureCollection',
+        features : []
+    }
+    lixeiras.forEach(lixeira => {
+        const coiso : GeoJSON.Feature = {
+            type : 'Feature',
+            geometry : {
+                type : 'Point',
+                coordinates : lixeira.coordinates
+            },
+            properties : {
+                id : lixeira.id,
+                location : lixeira.location,
+                description : lixeira.description,
+                capacity : lixeira.capacity.toString(),
+                selected : lixeira.selected
+            }
+        }
+        out.features.push(coiso)
+    })
+    return out
 }
