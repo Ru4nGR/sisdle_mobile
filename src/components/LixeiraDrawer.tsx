@@ -5,8 +5,7 @@ import {
     Pressable,
     StyleSheet,
     Easing,
-    GestureResponderEvent,
-    PanResponder
+    GestureResponderEvent
 } from 'react-native'
 import { useSelector } from 'react-redux'
 import { RootState } from 'src/reducers'
@@ -15,30 +14,24 @@ import LixeiraPod from './LixeiraPod'
 const LixeiraDrawer : React.FC = () => {
 
     const y = useRef(new Animated.Value(0)).current
+    let pageY0 = useRef(0).current
+    let y0 = useRef(0).current
+    let dy = useRef(0).current
     const lixeiras = useSelector((state : RootState) => state.lixeiras.data)
+    
+    function onTouchMove(e : GestureResponderEvent) {
+        dy = e.nativeEvent.pageY - pageY0
+        y.setValue(y0 + dy)
+    }
 
-    const pan = useRef(new Animated.ValueXY()).current;
-
-    const panResponder = useRef(PanResponder.create({
-        onMoveShouldSetPanResponder: () => true,
-        onPanResponderGrant: () => {
-            pan.setOffset({
-                x: (pan.x as any)._value,
-                y: (pan.y as any)._value
-            });
-        },
-        onPanResponderMove: Animated.event([
-            null,
-            { dx: pan.x, dy: pan.y }
-        ], {useNativeDriver : false}),
-        onPanResponderRelease: () => {
-            pan.flattenOffset();
-        }
-    })).current;
+    function onPressIn(e : GestureResponderEvent) {
+        pageY0 = e.nativeEvent.pageY
+        y0 = (y as any)._value
+    }
 
     return (
-        <Animated.View {...panResponder.panHandlers} style={[styles.container, {transform : [{translateY : pan.y}]}]}>
-            <LixeiraPod lixeira={lixeiras[0]}/>
+        <Animated.View style={[styles.container, {transform : [{translateY : y}]}]}>
+            <LixeiraPod onTouchStart={onPressIn} onTouchMove={onTouchMove} lixeira={lixeiras[0]}/>
         </Animated.View>
     )
 }
