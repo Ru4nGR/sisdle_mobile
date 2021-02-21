@@ -5,7 +5,8 @@ import {
     Pressable,
     StyleSheet,
     Easing,
-    GestureResponderEvent
+    GestureResponderEvent,
+    Dimensions
 } from 'react-native'
 import { useSelector } from 'react-redux'
 import { RootState } from 'src/reducers'
@@ -21,7 +22,9 @@ const LixeiraDrawer : React.FC = () => {
     
     function onTouchMove(e : GestureResponderEvent) {
         dy = e.nativeEvent.pageY - pageY0
-        y.setValue(y0 + dy)
+        if (y0 + dy <= Dimensions.get('screen').height / 2) {
+            y.setValue(y0 + dy)
+        } 
     }
 
     function onPressIn(e : GestureResponderEvent) {
