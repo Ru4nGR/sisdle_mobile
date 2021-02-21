@@ -46,33 +46,25 @@ const LixeiraPod : React.FC<Props> = (props) => {
     }
 
     return (
-        <View style={{position : 'absolute', width : '100%', height : '100%'}}>
-            <Draggable minX={0} maxX={0} maxY={Dimensions.get('screen').height / 2}>
-                <View style={styles.container}>
-                    <Capacitometer lixeira={lixeira} style={styles.capacitometer} styleTxt={styles.txtCapacitometer}/>
-                    <View style={styles.content}>
-                        <View style={styles.contentBody}>
-                            <Pressable onPress={onBtnRoutePress} style={styles.btnRoute}>
-                                {status === Status.Idle &&
-                                    <Icon style={styles.iconRoute} name='directions'/>
-                                }
-                                {status === Status.Pending &&
-                                    <ActivityIndicator color='white'/>
-                                }
-                            </Pressable>
-                            <View style={{flex : 1}}>
-                                <Text style={styles.txtLocation}>{lixeira.location}</Text>
-                            </View>
-                            <Pressable style={styles.btnOpenDrawer}>
-                                <Icon style={styles.iconOpenDrawer} name='keyboard-arrow-down'/>
-                            </Pressable>
-                        </View>
-                        <View style={styles.contentFooter}>
-                            <Text style={styles.txtDescription}>{lixeira.description}</Text>
-                        </View>
-                    </View>
+        <View style={styles.container}>
+            <View style={styles.content}>
+                <Pressable onPress={onBtnRoutePress} style={styles.btnRoute}>
+                    {status === Status.Idle &&
+                        <Icon style={styles.iconRoute} name='directions'/>
+                    }
+                    {status === Status.Pending &&
+                        <ActivityIndicator color='white'/>
+                    }
+                </Pressable>
+                <View style={{flex : 1}}>
+                    <Text style={styles.txtLocation}>{lixeira.location}</Text>
+                    <Text style={styles.txtDescription}>{lixeira.description}</Text>
                 </View>
-            </Draggable>
+                <Pressable style={styles.btnOpenDrawer}>
+                    <Icon style={styles.iconOpenDrawer} name='keyboard-arrow-down'/>
+                </Pressable>
+            </View>
+            <Capacitometer lixeira={lixeira} style={styles.capacitometer} styleTxt={styles.txtCapacitometer}/>
         </View>
     )
 }
@@ -106,19 +98,17 @@ const styles = StyleSheet.create({
         backgroundColor : 'white',
         borderBottomLeftRadius : 20,
         borderBottomRightRadius : 20,
-        elevation : 20
-    },
-    contentBody : {
+        elevation : 20,
         flexDirection : 'row',
         justifyContent : 'space-between',
-        alignItems : 'center'
+        alignItems : 'center',
+        paddingHorizontal : 10
     },
     txtLocation : {
         flex : 2,
         textAlign : 'center',
         textAlignVertical : 'center',
-        fontSize : 17,
-        marginTop : 0
+        fontSize : 17
     },
     btnRoute : {
         width : 50,
@@ -127,32 +117,26 @@ const styles = StyleSheet.create({
         borderRadius : 25,
         justifyContent : 'center',
         alignItems : 'center',
-        marginLeft : 10,
-        marginTop : 10
     },
     iconRoute : {
         fontSize : 30,
         color : 'white'
     },
-    contentFooter : {
+    txtDescription : {
+        color : 'gray',
+        fontSize : 10,
         position : 'absolute',
         width : '100%',
         bottom : 0,
         height : 20,
-        justifyContent : 'center',
-        alignItems : 'center',
-    },
-    txtDescription : {
-        color : 'gray',
-        fontSize : 10
+        textAlign : 'center',
+        textAlignVertical : 'center',
     },
     btnOpenDrawer : {
         width : 50,
         height : 50,
         justifyContent : 'center',
         alignItems : 'center',
-        marginRight : 10,
-        marginTop : 10
     },
     iconOpenDrawer : {
         fontSize : 30

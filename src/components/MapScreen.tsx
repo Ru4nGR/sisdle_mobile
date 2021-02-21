@@ -62,7 +62,9 @@ const MapScreen : React.FC = () => {
                     followUserLocation={followUserLocation}/>
                 <ControllLayer onCenterOnUserPress={() => setFollowUserLocation(true)} onSort={onSort}/>
                 {sorted.length != 0 &&
-                    <LixeiraPod lixeira={sorted[0]}/>
+                    <View style={{position : 'absolute', width : '100%', height : '100%'}}>
+                        <LixeiraPod lixeira={sorted[0]}/>
+                    </View>
                 }
                 </>
             }
