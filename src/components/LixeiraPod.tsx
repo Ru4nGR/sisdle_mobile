@@ -13,6 +13,7 @@ import { RootState } from 'src/reducers'
 import { Lixeira } from 'src/reducers/lixeirasSlice'
 import { loadRoute, Status } from 'src/reducers/routeSlice'
 import Draggable from 'react-native-draggable'
+import Capacitometer from 'src/components/Capacitometer'
 
 interface Props {
     lixeira : Lixeira
@@ -48,14 +49,7 @@ const LixeiraPod : React.FC<Props> = (props) => {
         <View style={{position : 'absolute', width : '100%', height : '100%'}}>
             <Draggable minX={0} maxX={0} maxY={Dimensions.get('screen').height / 2}>
                 <View style={styles.container}>
-                    <View style={styles.containerCapacity}>
-                        <View style={{
-                            flex : lixeira.capacity,
-                            backgroundColor : lixeira.capacity < 80 ? 'green' : 'red'
-                        }}/>
-                        <View style={{flex : 100 - lixeira.capacity}}/>
-                        <Text style={{position : 'absolute', bottom : 0, width : '100%', textAlign : 'center', fontSize : 12}}>{lixeira.capacity + '%'}</Text>
-                    </View>
+                    <Capacitometer lixeira={lixeira} style={styles.capacitometer} styleTxt={styles.txtCapacitometer}/>
                     <View style={styles.content}>
                         <View style={styles.contentBody}>
                             <Pressable onPress={onBtnRoutePress} style={styles.btnRoute}>
@@ -94,9 +88,16 @@ const styles = StyleSheet.create({
         borderBottomRightRadius : 20,
         overflow : 'hidden'
     },
-    containerCapacity : {
+    capacitometer : {
         flex : 1,
         flexDirection : 'row'
+    },
+    txtCapacitometer : {
+        position : 'absolute',
+        bottom : 0,
+        width : '100%',
+        textAlign : 'center',
+        fontSize : 12
     },
     content : {
         position : 'absolute',
