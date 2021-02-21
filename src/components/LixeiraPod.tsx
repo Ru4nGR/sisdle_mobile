@@ -4,13 +4,15 @@ import {
     Text,
     Pressable,
     StyleSheet,
-    ActivityIndicator
+    ActivityIndicator,
+    Dimensions
 } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'src/reducers'
 import { Lixeira } from 'src/reducers/lixeirasSlice'
 import { loadRoute, Status } from 'src/reducers/routeSlice'
+import Draggable from 'react-native-draggable'
 
 interface Props {
     lixeira : Lixeira
@@ -43,36 +45,40 @@ const LixeiraPod : React.FC<Props> = (props) => {
     }
 
     return (
-        <View style={styles.container}>
-            <View style={styles.containerCapacity}>
-                <View style={{
-                    flex : lixeira.capacity,
-                    backgroundColor : lixeira.capacity < 80 ? 'green' : 'red'
-                }}/>
-                <View style={{flex : 100 - lixeira.capacity}}/>
-                <Text style={{position : 'absolute', bottom : 0, width : '100%', textAlign : 'center', fontSize : 12}}>{lixeira.capacity + '%'}</Text>
-            </View>
-            <View style={styles.content}>
-                <View style={styles.contentBody}>
-                    <Pressable onPress={onBtnRoutePress} style={styles.btnRoute}>
-                        {status === Status.Idle &&
-                            <Icon style={styles.iconRoute} name='directions'/>
-                        }
-                        {status === Status.Pending &&
-                            <ActivityIndicator color='white'/>
-                        }
-                    </Pressable>
-                    <View style={{flex : 1}}>
-                        <Text style={styles.txtLocation}>{lixeira.location}</Text>
+        <View style={{position : 'absolute', width : '100%', height : '100%'}}>
+            <Draggable minX={0} maxX={0} maxY={Dimensions.get('screen').height / 2}>
+                <View style={styles.container}>
+                    <View style={styles.containerCapacity}>
+                        <View style={{
+                            flex : lixeira.capacity,
+                            backgroundColor : lixeira.capacity < 80 ? 'green' : 'red'
+                        }}/>
+                        <View style={{flex : 100 - lixeira.capacity}}/>
+                        <Text style={{position : 'absolute', bottom : 0, width : '100%', textAlign : 'center', fontSize : 12}}>{lixeira.capacity + '%'}</Text>
                     </View>
-                    <Pressable style={styles.btnOpenDrawer}>
-                        <Icon style={styles.iconOpenDrawer} name='keyboard-arrow-down'/>
-                    </Pressable>
+                    <View style={styles.content}>
+                        <View style={styles.contentBody}>
+                            <Pressable onPress={onBtnRoutePress} style={styles.btnRoute}>
+                                {status === Status.Idle &&
+                                    <Icon style={styles.iconRoute} name='directions'/>
+                                }
+                                {status === Status.Pending &&
+                                    <ActivityIndicator color='white'/>
+                                }
+                            </Pressable>
+                            <View style={{flex : 1}}>
+                                <Text style={styles.txtLocation}>{lixeira.location}</Text>
+                            </View>
+                            <Pressable style={styles.btnOpenDrawer}>
+                                <Icon style={styles.iconOpenDrawer} name='keyboard-arrow-down'/>
+                            </Pressable>
+                        </View>
+                        <View style={styles.contentFooter}>
+                            <Text style={styles.txtDescription}>{lixeira.description}</Text>
+                        </View>
+                    </View>
                 </View>
-                <View style={styles.contentFooter}>
-                    <Text style={styles.txtDescription}>{lixeira.description}</Text>
-                </View>
-            </View>
+            </Draggable>
         </View>
     )
 }
@@ -81,8 +87,7 @@ export default LixeiraPod
 
 const styles = StyleSheet.create({
     container : {
-        position : 'absolute',
-        width : '100%',
+        width : Dimensions.get('screen').width,
         height : 85,
         backgroundColor : 'white',
         borderBottomLeftRadius : 20,
