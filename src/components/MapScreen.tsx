@@ -12,6 +12,7 @@ import Splash from './Splash'
 import IconGenerator, { IconColection } from './IconGenerator'
 import ControllLayer from 'src/components/ControllLayer'
 import LixeiraPod from 'src/components/LixeiraPod'
+import LixeiraDrawer from 'src/components/LixeiraDrawer'
 
 const MapScreen : React.FC = () => {
 
@@ -63,7 +64,7 @@ const MapScreen : React.FC = () => {
                 <ControllLayer onCenterOnUserPress={() => setFollowUserLocation(true)} onSort={onSort}/>
                 {sorted.length != 0 &&
                     <View style={{position : 'absolute', width : '100%', height : '100%'}}>
-                        <LixeiraPod lixeira={sorted[0]}/>
+                        <LixeiraDrawer/>
                     </View>
                 }
                 </>

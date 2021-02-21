@@ -5,7 +5,8 @@ import {
     Pressable,
     StyleSheet,
     ActivityIndicator,
-    Dimensions
+    Dimensions,
+    GestureResponderEvent
 } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import { useDispatch, useSelector } from 'react-redux'
@@ -46,7 +47,7 @@ const LixeiraPod : React.FC<Props> = (props) => {
     }
 
     return (
-        <View style={styles.container}>
+        <Pressable style={styles.container}>
             <View style={styles.content}>
                 <Pressable onPress={onBtnRoutePress} style={styles.btnRoute}>
                     {status === Status.Idle &&
@@ -65,7 +66,7 @@ const LixeiraPod : React.FC<Props> = (props) => {
                 </Pressable>
             </View>
             <Capacitometer lixeira={lixeira} style={styles.capacitometer} styleTxt={styles.txtCapacitometer}/>
-        </View>
+        </Pressable>
     )
 }
 
