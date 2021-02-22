@@ -27,14 +27,16 @@ const LixeiraDrawer : React.FC = () => {
         } 
     }
 
-    function onPressIn(e : GestureResponderEvent) {
+    function onTouchStart(e : GestureResponderEvent) {
         pageY0 = e.nativeEvent.pageY
         y0 = (y as any)._value
     }
 
     return (
         <Animated.View style={[styles.container, {transform : [{translateY : y}]}]}>
-            <LixeiraPod onTouchStart={onPressIn} onTouchMove={onTouchMove} lixeira={lixeiras[0]}/>
+            <Pressable onTouchStart={onTouchStart} onTouchMove={onTouchMove}>
+                <LixeiraPod lixeira={lixeiras[0]}/>
+            </Pressable>
         </Animated.View>
     )
 }

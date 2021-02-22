@@ -18,8 +18,6 @@ import Capacitometer from 'src/components/Capacitometer'
 
 interface Props {
     lixeira : Lixeira
-    onTouchMove : (event : GestureResponderEvent) => void
-    onTouchStart : (event : GestureResponderEvent) => void
 }
 
 const LixeiraPod : React.FC<Props> = (props) => {
@@ -49,7 +47,7 @@ const LixeiraPod : React.FC<Props> = (props) => {
     }
 
     return (
-        <Pressable onTouchStart={props.onTouchStart} onTouchMove={props.onTouchMove} style={styles.container}>
+        <View style={styles.container}>
             <View style={styles.content}>
                 <Pressable onPress={onBtnRoutePress} style={styles.btnRoute}>
                     {status === Status.Idle &&
@@ -68,7 +66,7 @@ const LixeiraPod : React.FC<Props> = (props) => {
                 </Pressable>
             </View>
             <Capacitometer lixeira={lixeira} style={styles.capacitometer} styleTxt={styles.txtCapacitometer}/>
-        </Pressable>
+        </View>
     )
 }
 
