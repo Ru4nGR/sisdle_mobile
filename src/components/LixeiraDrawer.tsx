@@ -21,14 +21,15 @@ const LixeiraDrawer : React.FC = () => {
 
     const dispatch = useDispatch()
 
-    const y = useRef(new Animated.Value(-210)).current
-    let pageY0 = useRef(0).current
-    let y0 = useRef(0).current
-    let dy = useRef(0).current
-    const lixeiras = useSelector((state : RootState) => state.lixeiras.sorted)
-    const [isOpen, setIsOpen] = useState(false)
-    let btnOpenPressed = useRef(false).current
+    let dy = useRef(0)
+    let y0 = useRef(0)
+    let pageY0 = useRef(0)
+    let btnOpenPressed = useRef(false)
     const list = useRef<FlatList>(null)
+    const y = useRef(new Animated.Value(-210)).current
+    
+    const [isOpen, setIsOpen] = useState(false)
+    const lixeiras = useSelector((state : RootState) => state.lixeiras.sorted)
 
     useEffect(() => {
         list.current?.scrollToOffset({animated : true, offset : 0})
@@ -49,7 +50,7 @@ const LixeiraDrawer : React.FC = () => {
             easing : Easing.out(Easing.exp),
             useNativeDriver : true
         }).start(() => {
-            btnOpenPressed = false
+            btnOpenPressed.current = false
             y.setValue(0)
         })
     }
@@ -62,7 +63,7 @@ const LixeiraDrawer : React.FC = () => {
             easing : Easing.out(Easing.exp),
             useNativeDriver : true
         }).start(() => {
-            btnOpenPressed = false
+            btnOpenPressed.current = false
             y.setValue(-210)
         })
     }
@@ -74,18 +75,18 @@ const LixeiraDrawer : React.FC = () => {
             easing : Easing.out(Easing.exp),
             useNativeDriver : true
         }).start(() => {
-            btnOpenPressed = false
+            btnOpenPressed.current = false
             dispatch(setSorted([]))
         })
     }
     
     function onTouchMove(e : GestureResponderEvent) {
-        dy = e.nativeEvent.pageY - pageY0
-        if (y0 + dy <= -245) {
+        dy.current = e.nativeEvent.pageY - pageY0.current
+        if (y0.current + dy.current <= -245) {
             y.setValue(-245)
         }
-        else if (y0 + dy <= 0) {
-            y.setValue(y0 + dy)
+        else if (y0.current + dy.current <= 0) {
+            y.setValue(y0.current + dy.current)
         }
         else {
             y.setValue(0)
@@ -93,12 +94,12 @@ const LixeiraDrawer : React.FC = () => {
     }
 
     function onTouchStart(e : GestureResponderEvent) {
-        pageY0 = e.nativeEvent.pageY
-        y0 = (y as any)._value
+        pageY0.current = e.nativeEvent.pageY
+        y0.current = (y as any)._value
     }
 
     function onBtnOpenPress() {
-        btnOpenPressed = true
+        btnOpenPressed.current = true
         if (isOpen) {
             close()
         }
@@ -108,7 +109,7 @@ const LixeiraDrawer : React.FC = () => {
     }
 
     function onTouchEnd() {
-        if (btnOpenPressed == false) {
+        if (btnOpenPressed.current == false) {
             const value = (y as any)._value
             if (value > -105) {
                 open()
@@ -124,9 +125,11 @@ const LixeiraDrawer : React.FC = () => {
 
     function onSwipe(gestureName : string, gestureState : PanResponderGestureState) {
         if (Math.abs(gestureState.vy) > 0.5) {
-            btnOpenPressed = true
+            btnOpenPressed.current = true
             if (gestureState.vy > 0) {
-                open()
+                if (!isOpen) {
+                    open()
+                }
             }
             else {
                 if (isOpen) {
