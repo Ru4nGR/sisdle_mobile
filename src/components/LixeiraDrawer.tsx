@@ -14,7 +14,7 @@ import LixeiraPodSmall from 'src/components/LixeiraPodSmall'
 
 const LixeiraDrawer : React.FC = () => {
 
-    const y = useRef(new Animated.Value(-250)).current
+    const y = useRef(new Animated.Value(-210)).current
     let pageY0 = useRef(0).current
     let y0 = useRef(0).current
     let dy = useRef(0).current
