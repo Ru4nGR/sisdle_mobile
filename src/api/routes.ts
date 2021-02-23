@@ -17,7 +17,7 @@ export async function getRoute(start : Array<number>, finish : Array<number>, pr
             "https://api.mapbox.com/directions/v5/mapbox/" +
             `${profile}/` +
             `${start.toString()};${finish.toString()}` +
-            "?geometries=geojson" +
+            "?geometries=geojson&overview=full" +
             `&access_token=${MAPBOX_ACCESS_TOKEN}`
         )
         let json = await response.json()
