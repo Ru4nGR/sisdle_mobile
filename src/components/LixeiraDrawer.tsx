@@ -49,6 +49,18 @@ const LixeiraDrawer : React.FC = () => {
         }
     }
 
+    function onTouchEnd() {
+        const value = (y as any)._value
+        if (value > -105) {
+            setOpen(true)
+            y.setValue(0)
+        }
+        else {
+            setOpen(false)
+            y.setValue(-210)
+        }
+    }
+
     return (
         <Animated.View style={[styles.container, {transform : [{translateY : y}]}]}>
             <FlatList style={styles.list} inverted data={lixeiras.slice(1, lixeiras.length)} renderItem={({item, index}) => (
@@ -56,7 +68,7 @@ const LixeiraDrawer : React.FC = () => {
                     <LixeiraPodSmall lixeira={item}/>
                 </View>
             )}/>
-            <Pressable style={styles.handle} onTouchStart={onTouchStart} onTouchMove={onTouchMove}>
+            <Pressable style={styles.handle} onTouchEnd={onTouchEnd} onTouchStart={onTouchStart} onTouchMove={onTouchMove}>
                 <LixeiraPod open={open} onBtnOpenPress={onBtnOpenPress} lixeira={lixeiras[0]}/>
             </Pressable>
         </Animated.View>
