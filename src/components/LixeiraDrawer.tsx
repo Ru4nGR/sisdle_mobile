@@ -45,7 +45,7 @@ const LixeiraDrawer : React.FC = () => {
                     </View>
                 ))}
             </ScrollView>
-            <Pressable onTouchStart={onTouchStart} onTouchMove={onTouchMove}>
+            <Pressable style={styles.handle} onTouchStart={onTouchStart} onTouchMove={onTouchMove}>
                 <LixeiraPod lixeira={lixeiras[0]}/>
             </Pressable>
         </Animated.View>
@@ -59,15 +59,19 @@ const styles = StyleSheet.create({
 
     },
     handle : {
-        width : 50,
-        height : 50,
-        backgroundColor : 'green'
+        backgroundColor : 'transparent',
+        elevation : 5
     },
     list : {
         height : 250,
         flexDirection : 'column-reverse',
         paddingTop : 10,
         backgroundColor : 'white'
+    },
+    separator : {
+        flex : 1,
+        height : StyleSheet.hairlineWidth,
+        backgroundColor : 'gray'
     },
     podWrapper : {
         marginHorizontal : 10,
