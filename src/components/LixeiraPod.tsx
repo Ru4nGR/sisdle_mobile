@@ -13,7 +13,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'src/reducers'
 import { Lixeira } from 'src/reducers/lixeirasSlice'
 import { loadRoute, Status } from 'src/reducers/routeSlice'
-import Draggable from 'react-native-draggable'
 import Capacitometer from 'src/components/Capacitometer'
 
 interface Props {
