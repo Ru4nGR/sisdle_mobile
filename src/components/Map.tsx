@@ -11,7 +11,7 @@ import { update } from 'src/reducers/userPositionSlice'
 import { RootState } from 'src/reducers'
 import { deselectAllLixeiras, toggleLixeiraSelected } from 'src/reducers/lixeirasSlice'
 import { getProjectionOnLineString } from 'src/utils/complicatedGeometry'
-import MarkerCallout from 'src/components/MarkerLixeira/MarkerCallout'
+import MarkerCallout from 'src/components/MarkerCallout'
 import { toGeoJSON } from 'src/api/lixeiras'
 
 MapboxGL.setAccessToken(MAPBOX_ACCESS_TOKEN)

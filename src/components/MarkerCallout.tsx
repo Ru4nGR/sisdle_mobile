@@ -1,7 +1,7 @@
 import React from 'react'
 import { Pressable, StyleSheet } from 'react-native'
 import MapboxGL from '@react-native-mapbox-gl/maps'
-import Callout from 'src/components/MarkerLixeira/Callout'
+import Callout from 'src/components/Callout'
 import { Lixeira } from 'src/reducers/lixeirasSlice'
 
 interface Props {
