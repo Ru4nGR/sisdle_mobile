@@ -1,9 +1,11 @@
-import React, {useState} from 'react'
+import React, {useRef, useState} from 'react'
 import {
     View,
     Text,
     Pressable,
-    StyleSheet
+    StyleSheet,
+    Animated,
+    Easing
 } from 'react-native'
 import { Lixeira } from 'src/reducers/lixeirasSlice'
 import {magnitude} from 'src/utils/complicatedGeometry'
@@ -26,12 +28,14 @@ const Sorter : React.FC<Props> = (props) => {
     const userLocation = useSelector((state : RootState) => state.userPosition)
     const lixeiras = useSelector((state : RootState) => state.lixeiras.data)
 
-    const [showOptions, setShowOptions] = useState(false)
+    const [isOpen, setIsOpen] = useState(false)
     const [sortingMethod, setSortingMethod] = useState(SortingMethod.ByNormalizedProduct)
+
+    const y = useRef(new Animated.Value(200)).current
 
     function selectMethod(method : SortingMethod) {
         setSortingMethod(method)
-        setShowOptions(false)
+        toggleOptions()
     }
 
     function sort(method : SortingMethod) {
@@ -107,13 +111,29 @@ const Sorter : React.FC<Props> = (props) => {
     }
 
     function toggleOptions() {
-        setShowOptions(prevShowOptions => !prevShowOptions)
+        if (isOpen) {
+            setIsOpen(false)
+            Animated.timing(y, {
+                toValue : 200,
+                duration : 500,
+                useNativeDriver : true,
+                easing : Easing.out(Easing.exp)
+            }).start()
+        }
+        else {
+            setIsOpen(true)
+            Animated.timing(y, {
+                toValue : 50,
+                duration : 500,
+                useNativeDriver : true,
+                easing : Easing.out(Easing.exp)
+            }).start()
+        }
     }
 
     return (
-        <View style={styles.container}>
-            {showOptions &&
-                <>
+        <View pointerEvents='box-none' style={styles.container}>
+            <Animated.View style={[styles.containerOptions, {transform : [{translateY : y}]}]}>
                 <Pressable onPress={() => selectMethod(SortingMethod.ByNormalizedProduct)} style={styles.btnOption}>
                     <Text>{SortingMethod.ByNormalizedProduct}</Text>
                 </Pressable>
@@ -125,8 +145,8 @@ const Sorter : React.FC<Props> = (props) => {
                 <Pressable onPress={() => selectMethod(SortingMethod.ByCapacity)} style={styles.btnOption}>
                     <Text>{SortingMethod.ByCapacity}</Text>
                 </Pressable>
-                </>
-            }
+                <View style={styles.filler}/>
+            </Animated.View>
             <View style={styles.btnGroup}>
                 <Pressable onPress={() => props.onSort(sort(sortingMethod))} style={styles.btn}>
                     <Text style={styles.txtBtn}>
@@ -135,7 +155,7 @@ const Sorter : React.FC<Props> = (props) => {
                 </Pressable>
                 <View style={styles.vSeparator}/>
                 <Pressable onPress={toggleOptions} style={styles.btnSelector}>
-                    <Icon style={styles.iconSelector} name={showOptions ? 'keyboard-arrow-down' : 'keyboard-arrow-up'}/>
+                    <Icon style={styles.iconSelector} name={isOpen ? 'keyboard-arrow-down' : 'keyboard-arrow-up'}/>
                 </Pressable>
             </View>
         </View>
@@ -145,7 +165,14 @@ const Sorter : React.FC<Props> = (props) => {
 const styles = StyleSheet.create({
     container : {
         borderRadius : 25,
+        overflow : 'hidden'
+    },
+    containerOptions : {
+        borderRadius : 25,
         backgroundColor : 'lightgray',
+    },
+    filler : {
+        height : 50
     },
     btnGroup : {
         width : 200,
