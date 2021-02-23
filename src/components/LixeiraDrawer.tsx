@@ -52,6 +52,18 @@ const LixeiraDrawer : React.FC = () => {
             y.setValue(-210)
         })
     }
+
+    function disappear() {
+        Animated.timing(y, {
+            toValue : -295,
+            duration : 500,
+            easing : Easing.out(Easing.exp),
+            useNativeDriver : true
+        }).start(() => {
+            btnOpenPressed = false
+            dispatch(setSorted([]))
+        })
+    }
     
     function onTouchMove(e : GestureResponderEvent) {
         dy = e.nativeEvent.pageY - pageY0
@@ -88,7 +100,7 @@ const LixeiraDrawer : React.FC = () => {
                 open()
             }
             else if (value == -245) {
-                dispatch(setSorted([]))
+                disappear()
             }
             else {
                 close()
