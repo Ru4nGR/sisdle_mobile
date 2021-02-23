@@ -7,13 +7,15 @@ import {
     GestureResponderEvent,
     ScrollView,
     FlatList,
-    Easing
+    Easing,
+    PanResponderGestureState
 } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'src/reducers'
 import LixeiraPod from 'src/components/LixeiraPod'
 import LixeiraPodSmall from 'src/components/LixeiraPodSmall'
 import { setSorted } from 'src/reducers/lixeirasSlice'
+import GestureRecognizer from 'react-native-swipe-gestures'
 
 const LixeiraDrawer : React.FC = () => {
 
@@ -108,6 +110,16 @@ const LixeiraDrawer : React.FC = () => {
         }
     }
 
+    function onSwipe(gestureName : string, gestureState : PanResponderGestureState) {
+        btnOpenPressed = true
+        if (gestureState.vy > 0) {
+            open()
+        }
+        else {
+            close()
+        }
+    }
+
     return (
         <Animated.View style={[styles.container, {transform : [{translateY : y}]}]}>
             <FlatList style={styles.list} inverted data={lixeiras.slice(1, lixeiras.length)} renderItem={({item, index}) => (
@@ -115,9 +127,9 @@ const LixeiraDrawer : React.FC = () => {
                     <LixeiraPodSmall lixeira={item}/>
                 </View>
             )}/>
-            <Pressable style={styles.handle} onTouchEnd={onTouchEnd} onTouchStart={onTouchStart} onTouchMove={onTouchMove}>
+            <GestureRecognizer onSwipe={onSwipe} style={styles.handle} onTouchEnd={onTouchEnd} onTouchStart={onTouchStart} onTouchMove={onTouchMove}>
                 <LixeiraPod open={isOpen} onBtnOpenPress={onBtnOpenPress} lixeira={lixeiras[0]}/>
-            </Pressable>
+            </GestureRecognizer>
         </Animated.View>
     )
 }
