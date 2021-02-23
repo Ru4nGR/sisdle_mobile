@@ -25,7 +25,7 @@ const LixeiraDrawer : React.FC = () => {
     let y0 = useRef(0)
     let pageY0 = useRef(0)
     const lastPopped = useRef(0)
-    let btnOpenPressed = useRef(false)
+    let animationLock = useRef(false)
     const list = useRef<FlatList>(null)
     const y = useRef(new Animated.Value(-210)).current
     
@@ -56,7 +56,7 @@ const LixeiraDrawer : React.FC = () => {
             easing : Easing.out(Easing.exp),
             useNativeDriver : true
         }).start(() => {
-            btnOpenPressed.current = false
+            animationLock.current = false
             y.setValue(0)
         })
     }
@@ -69,7 +69,7 @@ const LixeiraDrawer : React.FC = () => {
             easing : Easing.out(Easing.exp),
             useNativeDriver : true
         }).start(() => {
-            btnOpenPressed.current = false
+            animationLock.current = false
             y.setValue(-210)
         })
     }
@@ -81,7 +81,7 @@ const LixeiraDrawer : React.FC = () => {
             easing : Easing.out(Easing.exp),
             useNativeDriver : true
         }).start(() => {
-            btnOpenPressed.current = false
+            animationLock.current = false
             dispatch(setSorted([]))
         })
     }
@@ -105,17 +105,19 @@ const LixeiraDrawer : React.FC = () => {
     }
 
     function onBtnOpenPress() {
-        btnOpenPressed.current = true
-        if (isOpen) {
-            close()
-        }
-        else {
-            open()
+        if (!animationLock.current) {
+            animationLock.current = true
+            if (isOpen) {
+                close()
+            }
+            else {
+                open()
+            }
         }
     }
 
     function onTouchEnd() {
-        if (btnOpenPressed.current == false) {
+        if (animationLock.current == false) {
             const value = (y as any)._value
             if (value > -105) {
                 open()
@@ -131,7 +133,7 @@ const LixeiraDrawer : React.FC = () => {
 
     function onSwipe(gestureName : string, gestureState : PanResponderGestureState) {
         if (Math.abs(gestureState.vy) > 0.5) {
-            btnOpenPressed.current = true
+            animationLock.current = true
             if (gestureState.vy > 0) {
                 if (!isOpen) {
                     open()
