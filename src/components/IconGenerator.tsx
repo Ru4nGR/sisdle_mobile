@@ -4,7 +4,7 @@ import {
     View
 } from 'react-native'
 import ViewShot from 'react-native-view-shot'
-import Icon from 'src/components/MarkerLixeira/Icon'
+import Capacitometer from 'src/components/Capacitometer'
 import { useSelector } from 'react-redux'
 import { RootState } from 'src/reducers'
 import { Lixeira } from 'src/reducers/lixeirasSlice'
@@ -43,7 +43,10 @@ const IconGenerator : React.FC<Props> = (props) => {
                     style={styles.container}
                     options={{result : 'data-uri'}}
                     onCapture={(uri) => onCapture(uri, lixeira)}>
-                    <Icon lixeira={lixeira}/>
+                    <Capacitometer
+                        lixeira={lixeira}
+                        style={styles.capacitometer}
+                        styleTxt={styles.txtCapacitometer}/>
                 </ViewShot>
             ))}
         </View>
@@ -56,5 +59,16 @@ const styles = StyleSheet.create({
     container : {
         width : 30,
         height : 30
+    },
+    capacitometer : {
+        width : 30,
+        height : 30,
+        borderWidth : 1,
+        borderRadius : 15,
+        overflow : 'hidden',
+        backgroundColor : 'white'
+    },
+    txtCapacitometer : {
+        display : 'none'
     }
 })
