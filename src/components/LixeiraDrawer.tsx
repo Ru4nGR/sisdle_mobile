@@ -36,7 +36,7 @@ const LixeiraDrawer : React.FC = () => {
             useNativeDriver : true
         }).start(() => {
             btnOpenPressed = false
-            y0 = 0
+            y.setValue(0)
         })
     }
 
@@ -49,13 +49,12 @@ const LixeiraDrawer : React.FC = () => {
             useNativeDriver : true
         }).start(() => {
             btnOpenPressed = false
-            y0 = -210
+            y.setValue(-210)
         })
     }
     
     function onTouchMove(e : GestureResponderEvent) {
         dy = e.nativeEvent.pageY - pageY0
-        console.log((y as any)._value)
         if (y0 + dy <= -245) {
             y.setValue(-245)
         }
@@ -86,15 +85,13 @@ const LixeiraDrawer : React.FC = () => {
         if (btnOpenPressed == false) {
             const value = (y as any)._value
             if (value > -105) {
-                setIsOpen(true)
-                y.setValue(0)
+                open()
             }
             else if (value == -245) {
                 dispatch(setSorted([]))
             }
             else {
-                setIsOpen(false)
-                y.setValue(-210)
+                close()
             }
         }
     }
