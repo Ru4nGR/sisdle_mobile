@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {
     View,
     Animated,
@@ -14,7 +14,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'src/reducers'
 import LixeiraPod from 'src/components/LixeiraPod'
 import LixeiraPodSmall from 'src/components/LixeiraPodSmall'
-import { setSorted } from 'src/reducers/lixeirasSlice'
+import { Lixeira, setSorted } from 'src/reducers/lixeirasSlice'
 import GestureRecognizer from 'react-native-swipe-gestures'
 
 const LixeiraDrawer : React.FC = () => {
@@ -28,6 +28,18 @@ const LixeiraDrawer : React.FC = () => {
     const lixeiras = useSelector((state : RootState) => state.lixeiras.sorted)
     const [isOpen, setIsOpen] = useState(false)
     let btnOpenPressed = useRef(false).current
+    const list = useRef<FlatList>(null)
+
+    useEffect(() => {
+        list.current?.scrollToOffset({animated : true, offset : 0})
+    }, [lixeiras])
+
+    function onSelect(lixeira : Lixeira) {
+        const sorted = lixeiras.slice()
+        sorted.splice(sorted.indexOf(lixeira), 1)
+        sorted.unshift(lixeira)
+        dispatch(setSorted(sorted))
+    }
 
     function open() {
         setIsOpen(true)
@@ -111,21 +123,28 @@ const LixeiraDrawer : React.FC = () => {
     }
 
     function onSwipe(gestureName : string, gestureState : PanResponderGestureState) {
-        btnOpenPressed = true
-        if (gestureState.vy > 0) {
-            open()
-        }
-        else {
-            close()
+        if (Math.abs(gestureState.vy) > 0.5) {
+            btnOpenPressed = true
+            if (gestureState.vy > 0) {
+                open()
+            }
+            else {
+                if (isOpen) {
+                    close()
+                }
+                else {
+                    disappear()
+                }
+            }
         }
     }
 
     return (
         <Animated.View style={[styles.container, {transform : [{translateY : y}]}]}>
-            <FlatList style={styles.list} inverted data={lixeiras.slice(1, lixeiras.length)} renderItem={({item, index}) => (
-                <View style={[styles.podWrapper, index == lixeiras.length - 2 && {marginTop : 10}]}>
+            <FlatList ref={list} style={styles.list} inverted data={lixeiras.slice(1, lixeiras.length)} renderItem={({item, index}) => (
+                <Pressable onPress={() => onSelect(item)} style={[styles.podWrapper, index == lixeiras.length - 2 && {marginTop : 10}]}>
                     <LixeiraPodSmall lixeira={item}/>
-                </View>
+                </Pressable>
             )}/>
             <GestureRecognizer onSwipe={onSwipe} style={styles.handle} onTouchEnd={onTouchEnd} onTouchStart={onTouchStart} onTouchMove={onTouchMove}>
                 <LixeiraPod open={isOpen} onBtnOpenPress={onBtnOpenPress} lixeira={lixeiras[0]}/>
