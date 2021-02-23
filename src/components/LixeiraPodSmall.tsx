@@ -36,8 +36,7 @@ const styles = StyleSheet.create({
         flex : 1,
         height : 70,
         backgroundColor : 'white',
-        borderBottomLeftRadius : 20,
-        borderBottomRightRadius : 20,
+        borderRadius : 20,
         overflow : 'hidden'
     },
     capacitometer : {

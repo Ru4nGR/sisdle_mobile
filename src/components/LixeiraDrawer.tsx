@@ -59,8 +59,10 @@ const styles = StyleSheet.create({
 
     },
     handle : {
-        backgroundColor : 'transparent',
-        elevation : 5
+        backgroundColor : 'white',
+        borderBottomLeftRadius : 20,
+        borderBottomRightRadius : 20,
+        elevation : 10
     },
     list : {
         height : 250,
@@ -78,7 +80,6 @@ const styles = StyleSheet.create({
         marginBottom : 10,
         backgroundColor : 'white',
         elevation : 7,
-        borderBottomLeftRadius : 20,
-        borderBottomRightRadius : 20
+        borderRadius : 20
     }
 })
