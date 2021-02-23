@@ -11,7 +11,6 @@ import { RootState } from 'src/reducers'
 import Splash from './Splash'
 import IconGenerator, { IconColection } from './IconGenerator'
 import ControllLayer from 'src/components/ControllLayer'
-import LixeiraPod from 'src/components/LixeiraPod'
 import LixeiraDrawer from 'src/components/LixeiraDrawer'
 
 const MapScreen : React.FC = () => {

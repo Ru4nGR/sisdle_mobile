@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { getRoute, RoutingProfile } from 'src/api/routes'
-import { RootState } from '.'
+import { RootState } from 'src/reducers'
 
 export enum Status {
     Idle,

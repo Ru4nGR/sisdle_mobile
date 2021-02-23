@@ -1,11 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react'
 import {
-    View,
     Animated,
     Pressable,
     StyleSheet,
     GestureResponderEvent,
-    ScrollView,
     FlatList,
     Easing,
     PanResponderGestureState

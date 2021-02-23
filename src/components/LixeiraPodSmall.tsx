@@ -3,7 +3,6 @@ import {
     View,
     Text,
     StyleSheet,
-    Dimensions,
 } from 'react-native'
 import { Lixeira } from 'src/reducers/lixeirasSlice'
 import Capacitometer from 'src/components/Capacitometer'
