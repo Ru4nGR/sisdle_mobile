@@ -48,6 +48,7 @@ const LixeiraPod : React.FC<Props> = (props) => {
 
     return (
         <View style={styles.container}>
+            <Capacitometer lixeira={lixeira} style={styles.capacitometer} styleTxt={styles.txtCapacitometer}/>
             <View style={styles.content}>
                 <Pressable onPress={onBtnRoutePress} style={styles.btnRoute}>
                     {status === Status.Idle &&
@@ -65,7 +66,6 @@ const LixeiraPod : React.FC<Props> = (props) => {
                     <Icon style={styles.iconOpenDrawer} name='keyboard-arrow-down'/>
                 </Pressable>
             </View>
-            <Capacitometer lixeira={lixeira} style={styles.capacitometer} styleTxt={styles.txtCapacitometer}/>
         </View>
     )
 }
