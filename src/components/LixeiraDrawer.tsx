@@ -27,21 +27,23 @@ const LixeiraDrawer : React.FC = () => {
     const [isOpen, setIsOpen] = useState(false)
 
     function open() {
+        setIsOpen(true)
         Animated.timing(y, {
             toValue : 0,
             duration : 500,
             easing : Easing.out(Easing.exp),
             useNativeDriver : true
-        }).start(() => setIsOpen(true))
+        }).start()
     }
 
     function close() {
+        setIsOpen(false)
         Animated.timing(y, {
             toValue : -210,
             duration : 500,
             easing : Easing.out(Easing.exp),
             useNativeDriver : true
-        }).start(() => setIsOpen(false))
+        }).start()
     }
     
     function onTouchMove(e : GestureResponderEvent) {
