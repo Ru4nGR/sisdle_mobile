@@ -6,7 +6,8 @@ import {
     StyleSheet,
     GestureResponderEvent,
     ScrollView,
-    FlatList
+    FlatList,
+    Easing
 } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'src/reducers'
@@ -23,7 +24,25 @@ const LixeiraDrawer : React.FC = () => {
     let y0 = useRef(0).current
     let dy = useRef(0).current
     const lixeiras = useSelector((state : RootState) => state.lixeiras.sorted)
-    const [open, setOpen] = useState(false)
+    const [isOpen, setIsOpen] = useState(false)
+
+    function open() {
+        Animated.timing(y, {
+            toValue : 0,
+            duration : 500,
+            easing : Easing.out(Easing.exp),
+            useNativeDriver : true
+        }).start(() => setIsOpen(true))
+    }
+
+    function close() {
+        Animated.timing(y, {
+            toValue : -210,
+            duration : 500,
+            easing : Easing.out(Easing.exp),
+            useNativeDriver : true
+        }).start(() => setIsOpen(false))
+    }
     
     function onTouchMove(e : GestureResponderEvent) {
         dy = e.nativeEvent.pageY - pageY0
@@ -45,29 +64,27 @@ const LixeiraDrawer : React.FC = () => {
     }
 
     function onBtnOpenPress() {
-        if (open) {
-            setOpen(false)
-            y.setValue(-210)
+        if (isOpen) {
+            close()
         }
         else {
-            setOpen(true)
-            y.setValue(0)
+            open()
         }
     }
 
     function onTouchEnd() {
         const value = (y as any)._value
-        if (value > -105) {
-            setOpen(true)
-            y.setValue(0)
-        }
-        else if (value < -210) {
-            dispatch(setSorted([]))
-        }
-        else {
-            setOpen(false)
-            y.setValue(-210)
-        }
+        // if (value > -105) {
+        //     setIsOpen(true)
+        //     y.setValue(0)
+        // }
+        // else if (value < -210) {
+        //     dispatch(setSorted([]))
+        // }
+        // else {
+        //     setIsOpen(false)
+        //     y.setValue(-210)
+        // }
     }
 
     return (
@@ -78,7 +95,7 @@ const LixeiraDrawer : React.FC = () => {
                 </View>
             )}/>
             <Pressable style={styles.handle} onTouchEnd={onTouchEnd} onTouchStart={onTouchStart} onTouchMove={onTouchMove}>
-                <LixeiraPod open={open} onBtnOpenPress={onBtnOpenPress} lixeira={lixeiras[0]}/>
+                <LixeiraPod open={isOpen} onBtnOpenPress={onBtnOpenPress} lixeira={lixeiras[0]}/>
             </Pressable>
         </Animated.View>
     )
