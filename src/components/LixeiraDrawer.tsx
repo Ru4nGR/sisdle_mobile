@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import {
     View,
     Animated,
@@ -20,6 +20,7 @@ const LixeiraDrawer : React.FC = () => {
     let y0 = useRef(0).current
     let dy = useRef(0).current
     const lixeiras = useSelector((state : RootState) => state.lixeiras.sorted)
+    const [open, setOpen] = useState(false)
     
     function onTouchMove(e : GestureResponderEvent) {
         dy = e.nativeEvent.pageY - pageY0
@@ -37,6 +38,17 @@ const LixeiraDrawer : React.FC = () => {
         y0 = (y as any)._value
     }
 
+    function onBtnOpenPress() {
+        if (open) {
+            setOpen(false)
+            y.setValue(-210)
+        }
+        else {
+            setOpen(true)
+            y.setValue(0)
+        }
+    }
+
     return (
         <Animated.View style={[styles.container, {transform : [{translateY : y}]}]}>
             <FlatList style={styles.list} inverted data={lixeiras.slice(1, lixeiras.length)} renderItem={({item, index}) => (
@@ -45,7 +57,7 @@ const LixeiraDrawer : React.FC = () => {
                 </View>
             )}/>
             <Pressable style={styles.handle} onTouchStart={onTouchStart} onTouchMove={onTouchMove}>
-                <LixeiraPod lixeira={lixeiras[0]}/>
+                <LixeiraPod open={open} onBtnOpenPress={onBtnOpenPress} lixeira={lixeiras[0]}/>
             </Pressable>
         </Animated.View>
     )

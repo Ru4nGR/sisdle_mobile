@@ -17,6 +17,8 @@ import Capacitometer from 'src/components/Capacitometer'
 
 interface Props {
     lixeira : Lixeira
+    onBtnOpenPress : (event : GestureResponderEvent) => void
+    open : boolean
 }
 
 const LixeiraPod : React.FC<Props> = (props) => {
@@ -61,8 +63,8 @@ const LixeiraPod : React.FC<Props> = (props) => {
                     <Text style={styles.txtLocation}>{lixeira.location}</Text>
                     <Text style={styles.txtDescription}>{lixeira.description}</Text>
                 </View>
-                <Pressable style={styles.btnOpenDrawer}>
-                    <Icon style={styles.iconOpenDrawer} name='keyboard-arrow-down'/>
+                <Pressable onPress={props.onBtnOpenPress} style={styles.btnOpen}>
+                    <Icon style={styles.iconOpen} name={props.open ? 'keyboard-arrow-up' : 'keyboard-arrow-down'}/>
                 </Pressable>
             </View>
         </View>
@@ -132,13 +134,13 @@ const styles = StyleSheet.create({
         textAlign : 'center',
         textAlignVertical : 'center',
     },
-    btnOpenDrawer : {
+    btnOpen : {
         width : 50,
         height : 50,
         justifyContent : 'center',
         alignItems : 'center',
     },
-    iconOpenDrawer : {
+    iconOpen : {
         fontSize : 30
     }
 })
