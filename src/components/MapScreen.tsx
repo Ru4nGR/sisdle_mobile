@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react'
 import {
     View,
-    Text
+    Text,
+    PermissionsAndroid
 } from 'react-native'
 import Map from 'src/components/Map'
 import { loadLixeiras, Status } from 'src/reducers/lixeirasSlice'
@@ -20,6 +21,7 @@ const MapScreen : React.FC = () => {
 
     const lixeiraStatus = useSelector((state : RootState) => state.lixeiras.status)
     const permissionStatus = useSelector((state : RootState) => state.locationPermission.status)
+    const permission = useSelector((state : RootState) => state.locationPermission.data)
     const error = useSelector((state : RootState) => state.lixeiras.error)
     const lixeiras = useSelector((state : RootState) => state.lixeiras.data)
     const sorted = useSelector((state : RootState) => state.lixeiras.sorted)
@@ -54,13 +56,13 @@ const MapScreen : React.FC = () => {
 
     return (
         <View style={{flex : 1}}>
-            {(lixeiraStatus === Status.Fulfilled && Object.values(icons).length != lixeiras.length) &&
+            {(Object.values(icons).length != lixeiras.length) &&
                 <IconGenerator onFinish={onIconGeneratorFinish}/>
             }
-            {(lixeiraStatus === Status.Pending || permissionStatus === Status.Pending || Object.values(icons).length != lixeiras.length) &&
+            {(lixeiraStatus === Status.Pending || Object.values(icons).length != lixeiras.length) &&
                 <Splash/>
             }
-            {(lixeiraStatus === Status.Fulfilled && permissionStatus === Status.Fulfilled && Object.values(icons).length == lixeiras.length) && 
+            {(lixeiraStatus === Status.Fulfilled && permissionStatus != Status.Idle && Object.values(icons).length == lixeiras.length) && 
                 <>
                 <Map
                     icons={icons}
