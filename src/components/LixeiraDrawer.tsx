@@ -1,17 +1,16 @@
-import React, { useRef, useEffect } from 'react'
+import React, { useRef } from 'react'
 import {
     View,
     Animated,
     Pressable,
     StyleSheet,
-    Easing,
     GestureResponderEvent,
-    Dimensions,
     ScrollView
 } from 'react-native'
 import { useSelector } from 'react-redux'
 import { RootState } from 'src/reducers'
-import LixeiraPod from './LixeiraPod'
+import LixeiraPod from 'src/components/LixeiraPod'
+import LixeiraPodSmall from 'src/components/LixeiraPodSmall'
 
 const LixeiraDrawer : React.FC = () => {
 
@@ -42,7 +41,7 @@ const LixeiraDrawer : React.FC = () => {
             <ScrollView style={styles.list}>
                 {lixeiras.map(lixeira => lixeiras.indexOf(lixeira) != 0 && (
                     <View key={lixeira.id} style={styles.podWrapper}>
-                        <LixeiraPod lixeira={lixeira}/>
+                        <LixeiraPodSmall lixeira={lixeira}/>
                     </View>
                 ))}
             </ScrollView>
@@ -68,10 +67,14 @@ const styles = StyleSheet.create({
         height : 250,
         flexDirection : 'column-reverse',
         paddingTop : 10,
-        backgroundColor : 'gray'
+        backgroundColor : 'white'
     },
     podWrapper : {
         marginHorizontal : 10,
-        marginBottom : 10
+        marginBottom : 10,
+        backgroundColor : 'white',
+        elevation : 7,
+        borderBottomLeftRadius : 20,
+        borderBottomRightRadius : 20
     }
 })
