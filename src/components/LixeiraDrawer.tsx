@@ -24,6 +24,7 @@ const LixeiraDrawer : React.FC = () => {
     let dy = useRef(0)
     let y0 = useRef(0)
     let pageY0 = useRef(0)
+    const lastPopped = useRef(0)
     let btnOpenPressed = useRef(false)
     const list = useRef<FlatList>(null)
     const y = useRef(new Animated.Value(-210)).current
@@ -37,6 +38,11 @@ const LixeiraDrawer : React.FC = () => {
 
     function onSelect(lixeira : Lixeira) {
         const sorted = lixeiras.slice()
+        const first = sorted[0]
+        sorted.splice(lastPopped.current + 1, 0, first)
+        sorted.splice(0, 1)
+
+        lastPopped.current = sorted.indexOf(lixeira)
         sorted.splice(sorted.indexOf(lixeira), 1)
         sorted.unshift(lixeira)
         dispatch(setSorted(sorted))
