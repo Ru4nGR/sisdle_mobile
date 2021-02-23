@@ -8,12 +8,15 @@ import {
     ScrollView,
     FlatList
 } from 'react-native'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'src/reducers'
 import LixeiraPod from 'src/components/LixeiraPod'
 import LixeiraPodSmall from 'src/components/LixeiraPodSmall'
+import { setSorted } from 'src/reducers/lixeirasSlice'
 
 const LixeiraDrawer : React.FC = () => {
+
+    const dispatch = useDispatch()
 
     const y = useRef(new Animated.Value(-210)).current
     let pageY0 = useRef(0).current
@@ -25,8 +28,8 @@ const LixeiraDrawer : React.FC = () => {
     function onTouchMove(e : GestureResponderEvent) {
         dy = e.nativeEvent.pageY - pageY0
         console.log((y as any)._value)
-        if (y0 + dy <= -210) {
-            y.setValue(-210)
+        if (y0 + dy <= -245) {
+            y.setValue(-245)
         }
         else if (y0 + dy <= 0) {
             y.setValue(y0 + dy)
@@ -57,6 +60,9 @@ const LixeiraDrawer : React.FC = () => {
         if (value > -105) {
             setOpen(true)
             y.setValue(0)
+        }
+        else if (value < -210) {
+            dispatch(setSorted([]))
         }
         else {
             setOpen(false)
