@@ -65,15 +65,9 @@ const styles = StyleSheet.create({
         elevation : 10
     },
     list : {
-        height : 250,
+        height : 210,
         flexDirection : 'column-reverse',
-        paddingTop : 10,
         backgroundColor : 'white'
-    },
-    separator : {
-        flex : 1,
-        height : StyleSheet.hairlineWidth,
-        backgroundColor : 'gray'
     },
     podWrapper : {
         marginHorizontal : 10,
