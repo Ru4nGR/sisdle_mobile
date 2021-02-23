@@ -4,11 +4,13 @@ import {
     View,
     StyleSheet,
     Pressable,
-    ActivityIndicator
+    ActivityIndicator,
+    PermissionsAndroid
 } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'src/reducers'
 import { Lixeira } from 'src/reducers/lixeirasSlice'
+import { requestLocationPermission } from 'src/reducers/locationPermissionSlice'
 import { loadRoute, Status } from 'src/reducers/routeSlice'
 
 interface Props {
@@ -20,6 +22,7 @@ const Callout : React.FC<Props> = (props) => {
     const dispatch = useDispatch()
 
     const routeStatus = useSelector((state : RootState) => state.route.status)
+    const permission = useSelector((state : RootState) => state.locationPermission.data)
     const userLocation = useSelector((state : RootState) => state.userPosition)
     const [status, setStatus] = useState(Status.Idle)
     const lixeira = props.lixeira
@@ -31,12 +34,17 @@ const Callout : React.FC<Props> = (props) => {
     }, [routeStatus])
 
     function onBtnRoutePress() {
-        if (routeStatus != Status.Pending) {
-            dispatch(loadRoute({
-                start : userLocation,
-                finish : lixeira.coordinates,
-            }))
-            setStatus(Status.Pending)
+        if (permission == PermissionsAndroid.RESULTS.GRANTED) {
+            if (routeStatus != Status.Pending) {
+                dispatch(loadRoute({
+                    start : userLocation,
+                    finish : lixeira.coordinates,
+                }))
+                setStatus(Status.Pending)
+            }
+        }
+        else {
+            dispatch(requestLocationPermission())
         }
     }
 

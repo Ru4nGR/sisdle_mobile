@@ -2,13 +2,16 @@ import React from 'react'
 import {
     View,
     Pressable,
-    StyleSheet
+    StyleSheet,
+    PermissionsAndroid
 } from 'react-native'
 import Sorter from 'src/components/Sorter'
 import RoutingProfileSelector from 'src/components/RoutingProfileSelector'
 import Icon from 'react-native-vector-icons/MaterialIcons'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Lixeira, setSorted } from 'src/reducers/lixeirasSlice'
+import { RootState } from 'src/reducers'
+import { requestLocationPermission } from 'src/reducers/locationPermissionSlice'
 
 interface Props {
     onSort : () => void
@@ -19,9 +22,20 @@ const ControllLayer : React.FC<Props> = (props) => {
 
     const dispatch = useDispatch()
 
+    const permission = useSelector((state : RootState) => state.locationPermission.data)
+
     function onSort(lixeiras : Array<Lixeira>) {
         dispatch(setSorted(lixeiras))
         props.onSort()
+    }
+
+    function onBtnCenterOnUserLocation() {
+        if (permission == PermissionsAndroid.RESULTS.GRANTED) {
+            props.onCenterOnUserPress()
+        }
+        else {
+            dispatch(requestLocationPermission())
+        }
     }
 
     return (
@@ -32,7 +46,7 @@ const ControllLayer : React.FC<Props> = (props) => {
             <View>
                 <Sorter onSort={onSort}/>
             </View>
-            <Pressable onPress={props.onCenterOnUserPress} style={styles.btnCenterOnUserLocation}>
+            <Pressable onPress={onBtnCenterOnUserLocation} style={styles.btnCenterOnUserLocation}>
                 <Icon name='gps-fixed' style={styles.iconCenterOnUserLocation}/>
             </Pressable>
         </View>
