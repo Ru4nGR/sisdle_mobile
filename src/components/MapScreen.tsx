@@ -25,7 +25,8 @@ const MapScreen : React.FC = () => {
     const error = useSelector((state : RootState) => state.lixeiras.error)
     const lixeiras = useSelector((state : RootState) => state.lixeiras.data)
     const sorted = useSelector((state : RootState) => state.lixeiras.sorted)
-
+    
+    const [renderedMap, setRenderedMap] = useState(false)
     const [icons, setIcons] = useState<IconColection>({})
     const [followUserLocation, setFollowUserLocation] = useState(true)
 
@@ -62,8 +63,9 @@ const MapScreen : React.FC = () => {
             {(lixeiraStatus === Status.Pending || Object.values(icons).length != lixeiras.length) &&
                 <Splash/>
             }
-            {(lixeiraStatus === Status.Fulfilled && permissionStatus != Status.Idle && Object.values(icons).length == lixeiras.length) && 
+            {(lixeiraStatus === Status.Fulfilled && (permissionStatus == Status.Fulfilled || renderedMap) && Object.values(icons).length == lixeiras.length) && 
                 <>
+                {!renderedMap && setRenderedMap(true)}
                 <Map
                     icons={icons}
                     cameraRef={camera}
