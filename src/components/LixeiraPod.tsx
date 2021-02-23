@@ -63,7 +63,7 @@ const LixeiraPod : React.FC<Props> = (props) => {
                     <Text style={styles.txtLocation}>{lixeira.location}</Text>
                     <Text style={styles.txtDescription}>{lixeira.description}</Text>
                 </View>
-                <Pressable onPress={props.onBtnOpenPress} style={styles.btnOpen}>
+                <Pressable onTouchEnd={props.onBtnOpenPress} style={styles.btnOpen}>
                     <Icon style={styles.iconOpen} name={props.open ? 'keyboard-arrow-up' : 'keyboard-arrow-down'}/>
                 </Pressable>
             </View>
