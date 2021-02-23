@@ -5,7 +5,8 @@ import {
     Pressable,
     StyleSheet,
     GestureResponderEvent,
-    ScrollView
+    ScrollView,
+    FlatList
 } from 'react-native'
 import { useSelector } from 'react-redux'
 import { RootState } from 'src/reducers'
@@ -38,13 +39,11 @@ const LixeiraDrawer : React.FC = () => {
 
     return (
         <Animated.View style={[styles.container, {transform : [{translateY : y}]}]}>
-            <ScrollView style={styles.list}>
-                {lixeiras.map(lixeira => lixeiras.indexOf(lixeira) != 0 && (
-                    <View key={lixeira.id} style={styles.podWrapper}>
-                        <LixeiraPodSmall lixeira={lixeira}/>
-                    </View>
-                ))}
-            </ScrollView>
+            <FlatList style={styles.list} inverted data={lixeiras.slice(1, lixeiras.length)} renderItem={({item, index}) => (
+                <View style={[styles.podWrapper, index == lixeiras.length - 2 && {marginTop : 10}]}>
+                    <LixeiraPodSmall lixeira={item}/>
+                </View>
+            )}/>
             <Pressable style={styles.handle} onTouchStart={onTouchStart} onTouchMove={onTouchMove}>
                 <LixeiraPod lixeira={lixeiras[0]}/>
             </Pressable>
@@ -66,7 +65,6 @@ const styles = StyleSheet.create({
     },
     list : {
         height : 210,
-        flexDirection : 'column-reverse',
         backgroundColor : 'white'
     },
     podWrapper : {
