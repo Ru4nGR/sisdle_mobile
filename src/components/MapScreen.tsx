@@ -12,12 +12,14 @@ import Splash from './Splash'
 import IconGenerator, { IconColection } from './IconGenerator'
 import ControllLayer from 'src/components/ControllLayer'
 import LixeiraDrawer from 'src/components/LixeiraDrawer'
+import { requestLocationPermission } from 'src/reducers/locationPermissionSlice'
 
 const MapScreen : React.FC = () => {
 
     const dispatch = useDispatch()
 
-    const status = useSelector((state : RootState) => state.lixeiras.status)
+    const lixeiraStatus = useSelector((state : RootState) => state.lixeiras.status)
+    const permissionStatus = useSelector((state : RootState) => state.locationPermission.status)
     const error = useSelector((state : RootState) => state.lixeiras.error)
     const lixeiras = useSelector((state : RootState) => state.lixeiras.data)
     const sorted = useSelector((state : RootState) => state.lixeiras.sorted)
@@ -28,7 +30,10 @@ const MapScreen : React.FC = () => {
     const camera = useRef<MapboxGL.Camera>(null)
 
     useEffect(() => {
-        if (status === Status.Idle) {
+        if (permissionStatus === Status.Idle) {
+            dispatch(requestLocationPermission())
+        }
+        if (lixeiraStatus === Status.Idle) {
             dispatch(loadLixeiras())
         }
     }, [])
@@ -49,13 +54,13 @@ const MapScreen : React.FC = () => {
 
     return (
         <View style={{flex : 1}}>
-            {(status === Status.Fulfilled && Object.values(icons).length != lixeiras.length) &&
+            {(lixeiraStatus === Status.Fulfilled && Object.values(icons).length != lixeiras.length) &&
                 <IconGenerator onFinish={onIconGeneratorFinish}/>
             }
-            {(status === Status.Pending || Object.values(icons).length != lixeiras.length) &&
+            {(lixeiraStatus === Status.Pending || permissionStatus === Status.Pending || Object.values(icons).length != lixeiras.length) &&
                 <Splash/>
             }
-            {(status === Status.Fulfilled && Object.values(icons).length == lixeiras.length) && 
+            {(lixeiraStatus === Status.Fulfilled && permissionStatus === Status.Fulfilled && Object.values(icons).length == lixeiras.length) && 
                 <>
                 <Map
                     icons={icons}
@@ -70,7 +75,7 @@ const MapScreen : React.FC = () => {
                 }
                 </>
             }
-            {status === Status.Rejected &&
+            {lixeiraStatus === Status.Rejected &&
                 <Text style={{flex : 1, textAlign : 'center', textAlignVertical : 'center'}}>{error}</Text>
             }
         </View>

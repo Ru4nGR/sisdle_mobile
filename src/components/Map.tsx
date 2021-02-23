@@ -16,23 +16,6 @@ import { toGeoJSON } from 'src/api/lixeiras'
 
 MapboxGL.setAccessToken(MAPBOX_ACCESS_TOKEN)
 
-const requestLocationPermission = async () => {
-    try {
-        const granted = await PermissionsAndroid.request(
-            PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
-        )
-        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-            console.log("ok");
-        }
-        else {
-            console.log("negado");
-        }
-    }
-    catch (err) {
-        console.warn(err);
-    }
-}
-
 interface Props {
     followUserLocation : boolean
     cameraRef : RefObject<MapboxGL.Camera>
@@ -49,7 +32,6 @@ const Map : React.FC<Props> = (props) => {
     const userPosition = useSelector((state : RootState) => state.userPosition)
 
     useEffect(() => {
-        requestLocationPermission()
         MapboxGL.setTelemetryEnabled(false)
     }, [])
 
