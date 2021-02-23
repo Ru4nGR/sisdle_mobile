@@ -31,7 +31,7 @@ const Sorter : React.FC<Props> = (props) => {
     const [isOpen, setIsOpen] = useState(false)
     const [sortingMethod, setSortingMethod] = useState(SortingMethod.ByNormalizedProduct)
 
-    const y = useRef(new Animated.Value(200)).current
+    const y = useRef(new Animated.Value(201)).current
 
     function selectMethod(method : SortingMethod) {
         setSortingMethod(method)
