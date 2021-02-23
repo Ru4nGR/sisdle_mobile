@@ -179,7 +179,7 @@ const styles = StyleSheet.create({
         backgroundColor : 'white'
     },
     podWrapper : {
-        marginHorizontal : 10,
+        marginHorizontal : 5,
         marginBottom : 10,
         backgroundColor : 'white',
         elevation : 7,
