@@ -18,7 +18,7 @@ const LixeiraDrawer : React.FC = () => {
     let pageY0 = useRef(0).current
     let y0 = useRef(0).current
     let dy = useRef(0).current
-    const lixeiras = useSelector((state : RootState) => state.lixeiras.data)
+    const lixeiras = useSelector((state : RootState) => state.lixeiras.sorted)
     
     function onTouchMove(e : GestureResponderEvent) {
         dy = e.nativeEvent.pageY - pageY0
