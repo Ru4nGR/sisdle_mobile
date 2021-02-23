@@ -114,7 +114,7 @@ const Sorter : React.FC<Props> = (props) => {
         if (isOpen) {
             setIsOpen(false)
             Animated.timing(y, {
-                toValue : 200,
+                toValue : 201,
                 duration : 500,
                 useNativeDriver : true,
                 easing : Easing.out(Easing.exp)
