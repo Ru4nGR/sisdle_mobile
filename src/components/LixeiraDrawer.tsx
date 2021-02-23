@@ -25,7 +25,10 @@ const LixeiraDrawer : React.FC = () => {
     function onTouchMove(e : GestureResponderEvent) {
         dy = e.nativeEvent.pageY - pageY0
         console.log((y as any)._value)
-        if (y0 + dy <= 0) {
+        if (y0 + dy <= -210) {
+            y.setValue(-210)
+        }
+        else if (y0 + dy <= 0) {
             y.setValue(y0 + dy)
         }
         else {
