@@ -42,8 +42,8 @@ const MapScreen : React.FC = () => {
     }, [])
 
     useEffect(() => {
-        if (sorted.length != 0) {
-            camera.current?.flyTo(sorted[0].coordinates, 1000)
+        if (sorted.features.length != 0) {
+            camera.current?.flyTo(sorted.features[0].geometry.coordinates, 1000)
         }
     }, [sorted])
 
@@ -57,13 +57,13 @@ const MapScreen : React.FC = () => {
 
     return (
         <View style={{flex : 1}}>
-            {(Object.values(icons).length != lixeiras.length) &&
+            {(Object.values(icons).length != lixeiras.features.length) &&
                 <IconGenerator onFinish={onIconGeneratorFinish}/>
             }
-            {(lixeiraStatus === Status.Pending || Object.values(icons).length != lixeiras.length) &&
+            {(lixeiraStatus === Status.Pending || Object.values(icons).length != lixeiras.features.length) &&
                 <Splash/>
             }
-            {(lixeiraStatus === Status.Fulfilled && (permissionStatus == Status.Fulfilled || renderedMap) && Object.values(icons).length == lixeiras.length) && 
+            {(lixeiraStatus === Status.Fulfilled && (permissionStatus == Status.Fulfilled || renderedMap) && Object.values(icons).length == lixeiras.features.length) && 
                 <>
                 {!renderedMap && setRenderedMap(true)}
                 <Map
@@ -72,7 +72,7 @@ const MapScreen : React.FC = () => {
                     onTouchStart={() => setFollowUserLocation(false)}
                     followUserLocation={followUserLocation}/>
                 <ControllLayer onCenterOnUserPress={() => setFollowUserLocation(true)} onSort={onSort}/>
-                {sorted.length != 0 &&
+                {sorted.features.length != 0 &&
                     <View style={{position : 'absolute', width : '100%', height : '100%'}}>
                         <LixeiraDrawer/>
                     </View>

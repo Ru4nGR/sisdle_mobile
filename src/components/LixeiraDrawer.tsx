@@ -35,7 +35,7 @@ const LixeiraDrawer : React.FC = () => {
     }, [lixeiras])
 
     function onSelect(lixeira : Lixeira) {
-        const sorted = lixeiras.slice()
+        const sorted = lixeiras.features.slice()
         const first = sorted[0]
         sorted.splice(lastPopped.current + 1, 0, first)
         sorted.splice(0, 1)
@@ -150,13 +150,13 @@ const LixeiraDrawer : React.FC = () => {
 
     return (
         <Animated.View style={[styles.container, {transform : [{translateY : y}]}]}>
-            <FlatList ref={list} style={styles.list} inverted data={lixeiras.slice(1, lixeiras.length)} renderItem={({item, index}) => (
-                <Pressable onPress={() => onSelect(item)} style={[styles.podWrapper, index == lixeiras.length - 2 && {marginTop : 10}]}>
+            <FlatList ref={list} style={styles.list} inverted data={lixeiras.features.slice(1, lixeiras.features.length)} renderItem={({item, index}) => (
+                <Pressable onPress={() => onSelect(item)} style={[styles.podWrapper, index == lixeiras.features.length - 2 && {marginTop : 10}]}>
                     <LixeiraPodSmall lixeira={item}/>
                 </Pressable>
             )}/>
             <GestureRecognizer onSwipe={onSwipe} style={styles.handle} onTouchEnd={onTouchEnd} onTouchStart={onTouchStart} onTouchMove={onTouchMove}>
-                <LixeiraPod open={isOpen} onBtnOpenPress={onBtnOpenPress} lixeira={lixeiras[0]}/>
+                <LixeiraPod open={isOpen} onBtnOpenPress={onBtnOpenPress} lixeira={lixeiras.features[0]}/>
             </GestureRecognizer>
         </Animated.View>
     )

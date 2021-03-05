@@ -54,11 +54,11 @@ const Sorter : React.FC<Props> = (props) => {
     function byNormalizedProduct() {
         const distances = byDistance().map(lixeira => {
             return magnitude([
-                lixeira.coordinates[0] - userLocation[0],
-                lixeira.coordinates[1] - userLocation[1]
+                lixeira.geometry.coordinates[0] - userLocation[0],
+                lixeira.geometry.coordinates[1] - userLocation[1]
             ])
         })
-        const capacities = byCapacity().map(lixeira => lixeira.capacity)
+        const capacities = byCapacity().map(lixeira => lixeira.properties.capacity)
 
         const minD = distances[0]
         const maxD = distances[distances.length - 1]
@@ -66,15 +66,15 @@ const Sorter : React.FC<Props> = (props) => {
         const minC = capacities[0]
         const maxC = capacities[capacities.length - 1]
 
-        return lixeiras.slice().sort(
+        return lixeiras.features.slice().sort(
             (a, b) => {
                 const da = magnitude([
-                    a.coordinates[0] - userLocation[0],
-                    a.coordinates[1] - userLocation[1]
+                    a.geometry.coordinates[0] - userLocation[0],
+                    a.geometry.coordinates[1] - userLocation[1]
                 ])
                 const db = magnitude([
-                    b.coordinates[0] - userLocation[0],
-                    b.coordinates[1] - userLocation[1]
+                    b.geometry.coordinates[0] - userLocation[0],
+                    b.geometry.coordinates[1] - userLocation[1]
                 ])
 
                 // normalized distance
@@ -82,8 +82,8 @@ const Sorter : React.FC<Props> = (props) => {
                 const ndb = 1 - (db - minD) / (maxD - minD)
 
                 //normalized capacity
-                const nca = 1 - (a.capacity - minC) / (maxC - minC)
-                const ncb = 1 - (b.capacity - minC) / (maxC - minC)
+                const nca = 1 - (a.properties.capacity - minC) / (maxC - minC)
+                const ncb = 1 - (b.properties.capacity - minC) / (maxC - minC)
 
                 return (ndb * ncb) - (nda * nca)
             }
@@ -91,15 +91,15 @@ const Sorter : React.FC<Props> = (props) => {
     }
 
     function byDistance() {
-        return lixeiras.slice().sort(
+        return lixeiras.features.slice().sort(
             (a, b) => {
                 const da = magnitude([
-                    a.coordinates[0] - userLocation[0],
-                    a.coordinates[1] - userLocation[1]
+                    a.geometry.coordinates[0] - userLocation[0],
+                    a.geometry.coordinates[1] - userLocation[1]
                 ])
                 const db = magnitude([
-                    b.coordinates[0] - userLocation[0],
-                    b.coordinates[1] - userLocation[1]
+                    b.geometry.coordinates[0] - userLocation[0],
+                    b.geometry.coordinates[1] - userLocation[1]
                 ])
                 return da - db
             }
@@ -107,7 +107,7 @@ const Sorter : React.FC<Props> = (props) => {
     }
 
     function byCapacity() {
-        return lixeiras.slice().sort((a, b) => a.capacity - b.capacity)
+        return lixeiras.features.slice().sort((a, b) => a.properties.capacity - b.properties.capacity)
     }
 
     function toggleOptions() {

@@ -8,25 +8,40 @@ export enum Status {
     Rejected
 }
 
-export interface Lixeira {
-    id : string
-    coordinates : Array<number>
-    capacity : number
-    location : string
-    description : string
-    selected : boolean
+export interface Lixeira extends GeoJSON.Feature {
+    id : string,
+    geometry : {
+        type : 'Point',
+        coordinates : Array<number>
+    },
+    properties : {
+        location : string,
+        description : string,
+        capacity : number,
+        selected : boolean
+    }
+}
+
+interface InitialState extends GeoJSON.FeatureCollection {
+    features : Array<Lixeira>
+}
+
+const initialState : InitialState = {
+    type : 'FeatureCollection',
+    features : new Array<Lixeira>()
 }
 
 export const loadLixeiras = createAsyncThunk('lixeiras/loadLixeiras', async () => {
     const lixeiras = await getLixeiras()
+    console.log(lixeiras)
     return lixeiras
 })
 
 const lixeirasSlice = createSlice({
     name : 'lixeiras',
     initialState : {
-        data : new Array<Lixeira>(),
-        sorted : new Array<Lixeira>(),
+        data : initialState,
+        sorted : initialState,
         status : Status.Idle,
         error : ''
     },
@@ -36,21 +51,22 @@ const lixeirasSlice = createSlice({
         },
         selectLixeira(state, action : {payload : string}) {
             const id = action.payload
-            const lixeira = state.data.find(lixeira => lixeira.id == id)!
-            state.sorted.splice(state.sorted.indexOf(lixeira), 1)
-            state.sorted.unshift(lixeira)
+            const lixeira = state.data.features.find(lixeira => lixeira.id == id)!
+            state.sorted.features.splice(state.sorted.features.indexOf(lixeira), 1)
+            state.sorted.features.unshift(lixeira)
         },
         setLixeiras(state, action) {
             state.data = action.payload
         },
         toggleLixeiraSelected(state, action : {payload : string}) {
             const id = action.payload
-            const lixeira = state.data.find(lixeira => lixeira.id == id)!
-            lixeira.selected = !lixeira.selected
+            const lixeira = state.data.features.find(lixeira => lixeira.id == id)!
+            console.log(lixeira)
+            lixeira.properties.selected = !lixeira.properties.selected
         },
         deselectAllLixeiras(state) {
-            state.data.forEach(lixeira => {
-                lixeira.selected = false
+            state.data.features.forEach(lixeira => {
+                lixeira.properties.selected = false
             })
         }
     },
@@ -60,7 +76,7 @@ const lixeirasSlice = createSlice({
         })
         builder.addCase(loadLixeiras.fulfilled, (state, action) => {
             state.status = Status.Fulfilled
-            state.data = action.payload
+            state.data.features = action.payload
         })
         builder.addCase(loadLixeiras.rejected, (state, action) => {
             state.status = Status.Rejected

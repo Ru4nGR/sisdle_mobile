@@ -38,7 +38,7 @@ const Callout : React.FC<Props> = (props) => {
             if (routeStatus != Status.Pending) {
                 dispatch(loadRoute({
                     start : userLocation,
-                    finish : lixeira.coordinates,
+                    finish : lixeira.geometry.coordinates,
                 }))
                 setStatus(Status.Pending)
             }
@@ -48,21 +48,21 @@ const Callout : React.FC<Props> = (props) => {
         }
     }
 
-    const localSize = Math.sqrt(140*35/lixeira.location.length)
-    const descricaoSize = Math.sqrt(140*20/lixeira.description.length)
+    const localSize = Math.sqrt(140*35/lixeira.properties.location.length)
+    const descricaoSize = Math.sqrt(140*20/lixeira.properties.description.length)
 
     return (
         <View style={styles.container}>
             <View style={styles.content}>
                 <Text style={[styles.txtLocation, {fontSize : localSize}]}>
-                    {lixeira.location}
+                    {lixeira.properties.location}
                 </Text>
                 <View style={styles.separator}/>
                 <Text style={styles.txtCapacity}>
-                    {lixeira.capacity + '%'}
+                    {lixeira.properties.capacity + '%'}
                 </Text>
                 <Text style={[styles.txtDescription, {fontSize : descricaoSize}]}>
-                    {lixeira.description}
+                    {lixeira.properties.description}
                 </Text>
                 <Pressable style={styles.btnRoute} onPress={onBtnRoutePress}>
                     {status === Status.Idle &&

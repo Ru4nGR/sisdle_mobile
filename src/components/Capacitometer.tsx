@@ -21,11 +21,11 @@ const Capacitometer : React.FC<Props> = (props) => {
     return(
         <View style={props.style}>
             <View style={{
-                flex : lixeira.capacity,
-                backgroundColor : lixeira.capacity < 80 ? 'green' : 'red'
+                flex : lixeira.properties.capacity,
+                backgroundColor : lixeira.properties.capacity < 80 ? 'green' : 'red'
             }}/>
-            <View style={{flex : 100 - lixeira.capacity}}/>
-            <Text style={props.styleTxt}>{lixeira.capacity + '%'}</Text>
+            <View style={{flex : 100 - lixeira.properties.capacity}}/>
+            <Text style={props.styleTxt}>{lixeira.properties.capacity + '%'}</Text>
         </View>
     )
 }

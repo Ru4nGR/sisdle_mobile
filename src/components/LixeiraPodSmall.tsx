@@ -19,8 +19,8 @@ const LixeiraPodSmall : React.FC<Props> = (props) => {
         <View style={styles.container}>
             <View style={styles.content}>
                 <View style={{flex : 1}}>
-                    <Text style={styles.txtLocation}>{lixeira.location}</Text>
-                    <Text style={styles.txtDescription}>{lixeira.description}</Text>
+                    <Text style={styles.txtLocation}>{lixeira.properties.location}</Text>
+                    <Text style={styles.txtDescription}>{lixeira.properties.description}</Text>
                 </View>
             </View>
             <Capacitometer lixeira={lixeira} style={styles.capacitometer} styleTxt={styles.txtCapacitometer}/>

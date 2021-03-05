@@ -23,20 +23,20 @@ const IconGenerator : React.FC<Props> = (props) => {
     const [icons, setIcons] = useState<IconColection>({})
     
     useEffect(() => {
-        if (Object.values(icons).length == lixeiras.length) {
+        if (Object.values(icons).length == lixeiras.features.length) {
             props.onFinish(icons)
         }
     }, [icons])
 
     function onCapture(uri : string, lixeira : Lixeira) {
         const out = {...icons}
-        out[lixeira.capacity.toString()] = uri
+        out[lixeira.properties.capacity.toString()] = uri
         setIcons(out)
     }
 
     return (
         <View>
-            {lixeiras.map(lixeira => (
+            {lixeiras.features.map(lixeira => (
                 <ViewShot
                     key={lixeira.id}
                     captureMode='mount'

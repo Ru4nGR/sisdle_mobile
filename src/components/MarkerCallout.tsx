@@ -10,7 +10,7 @@ interface Props {
 
 const MarkerCallout : React.FC<Props> = (props) => {
     return (
-        <MapboxGL.MarkerView id={props.lixeira.id} anchor={{x : -0.1, y : 0.5}} coordinate={props.lixeira.coordinates}>
+        <MapboxGL.MarkerView id={props.lixeira.id} anchor={{x : -0.1, y : 0.5}} coordinate={props.lixeira.geometry.coordinates}>
             <Pressable style={styles.container}>
                 <Callout lixeira={props.lixeira}/>
             </Pressable>

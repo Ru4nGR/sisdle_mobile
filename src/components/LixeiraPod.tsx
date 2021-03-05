@@ -45,7 +45,7 @@ const LixeiraPod : React.FC<Props> = (props) => {
                 console.log('press')
                 dispatch(loadRoute({
                     start : userLocation,
-                    finish : lixeira.coordinates,
+                    finish : lixeira.geometry.coordinates,
                 }))
                 setStatus(Status.Pending)
             }
@@ -68,8 +68,8 @@ const LixeiraPod : React.FC<Props> = (props) => {
                     }
                 </Pressable>
                 <View style={{flex : 1}}>
-                    <Text style={styles.txtLocation}>{lixeira.location}</Text>
-                    <Text style={styles.txtDescription}>{lixeira.description}</Text>
+                    <Text style={styles.txtLocation}>{lixeira.properties.location}</Text>
+                    <Text style={styles.txtDescription}>{lixeira.properties.description}</Text>
                 </View>
                 <Pressable onTouchEnd={props.onBtnOpenPress} style={styles.btnOpen}>
                     <Icon style={styles.iconOpen} name={props.open ? 'keyboard-arrow-up' : 'keyboard-arrow-down'}/>
