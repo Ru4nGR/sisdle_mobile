@@ -8,25 +8,22 @@ export enum Status {
     Rejected
 }
 
-export interface Lixeira extends GeoJSON.Feature {
-    id : string,
-    geometry : {
-        type : 'Point',
-        coordinates : Array<number>
-    },
-    properties : {
-        location : string,
-        description : string,
-        capacity : number,
-        selected : boolean
-    }
+interface Properties {
+    location : string,
+    description : string,
+    capacity : number,
+    selected? : boolean
 }
 
-interface InitialState extends GeoJSON.FeatureCollection {
+export interface Lixeira extends GeoJSON.Feature<GeoJSON.Point, Properties> {
+    id : string
+}
+
+export interface LixeiraCollection extends GeoJSON.FeatureCollection<GeoJSON.Point, Properties> {
     features : Array<Lixeira>
 }
 
-const initialState : InitialState = {
+const initialState : LixeiraCollection = {
     type : 'FeatureCollection',
     features : new Array<Lixeira>()
 }
@@ -76,7 +73,7 @@ const lixeirasSlice = createSlice({
         })
         builder.addCase(loadLixeiras.fulfilled, (state, action) => {
             state.status = Status.Fulfilled
-            state.data.features = action.payload
+            state.data = action.payload
         })
         builder.addCase(loadLixeiras.rejected, (state, action) => {
             state.status = Status.Rejected
