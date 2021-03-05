@@ -1,28 +1,15 @@
 import { Lixeira } from 'src/reducers/lixeirasSlice'
 
-export interface APILixeira {
-    id : string,
-    local : string,
-    capacity : number
-    local_id : string,
-    latitude : string,
-    longitude : string,
-    descricao : string,
-    tempo_info : string,
-    profundidade : string,
-    coordinate : Array<number>,
-}
-
 export async function getLixeiras() : Promise<Array<Lixeira>> {
-    const response = await fetch('http://api.ifprinteligente.com.br/sisdle/rest.php/trash')
-    const json = await response.json()
-    return json.map((lixeira : APILixeira) => {
+    const response = await fetch('http://localhost:3000/bin/bins')
+    const json : GeoJSON.FeatureCollection = await response.json()
+    return json.features.map((lixeira : GeoJSON.Feature) => {
         const newLixeira : Lixeira = {
-            id : lixeira.id,
-            location : lixeira.local,
-            description : lixeira.descricao,
-            capacity : parseFloat(lixeira.profundidade),
-            coordinates : [parseFloat(lixeira.longitude), parseFloat(lixeira.latitude)],
+            id : (lixeira as any)._id,
+            location : lixeira.properties!.location,
+            description : lixeira.properties!.description,
+            capacity : lixeira.properties!.capacity,
+            coordinates : (lixeira.geometry as GeoJSON.Point).coordinates,
             selected : false
         }
         return newLixeira
